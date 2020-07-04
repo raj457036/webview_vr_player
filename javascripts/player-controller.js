@@ -407,9 +407,19 @@ function getUrlParameter(name) {
 function processParams() {
     const url = getUrlParameter('video');
     const VRBtn = getUrlParameter('VRBtn');
+    const autoPlay = getUrlParameter('autoPlay');
+
+    window.mediaController = new MediaController('video_player_id');
+
     if (url !== null) {
         playlist.streams[0] = url;
         init(true)
+    }
+
+    if (autoPlay !== 'false') {
+        mediaController.play();
+    } else {
+        mediaController.pause();
     }
 
     if (VRBtn === 'false') {
@@ -420,7 +430,6 @@ function processParams() {
         h.appendChild(s);
     }
 
-    window.mediaController = new MediaController('video_player_id');
 }
 
 document.addEventListener('DOMContentLoaded', processParams);
