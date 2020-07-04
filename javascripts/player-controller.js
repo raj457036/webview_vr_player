@@ -408,6 +408,7 @@ function processParams() {
     const url = getUrlParameter('video');
     const VRBtn = getUrlParameter('VRBtn');
     const autoPlay = getUrlParameter('autoPlay');
+    const loop = getUrlParameter('loop');
 
     window.mediaController = new MediaController('video_player_id');
 
@@ -420,6 +421,10 @@ function processParams() {
         mediaController.play();
     } else {
         mediaController.pause();
+    }
+
+    if (loop === 'true') {
+        mediaController.video.loop = true;
     }
 
     if (VRBtn === 'false') {
