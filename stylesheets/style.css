@@ -70,8 +70,3 @@ iframe {
 ::-webkit-media-controls {
   display:none !important;
 }
-
-.a-enter-ar, .a-enter-vr {
-  top: 90vh;
-  bottom: unset;
-}
