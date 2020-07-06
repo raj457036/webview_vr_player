@@ -11,11 +11,11 @@ img {
 }
 
 a {
-  color: #000000;
+  color: orangered;
 }
 
 .a-dialog-allow-button {
-  background-color: black;
+  background-color: white;
 }
 
 .a-dialog-deny-button {
@@ -23,11 +23,7 @@ a {
 }
 
 .a-dialog-ok-button {
-  background-color: lightgreen;
-}
-
-.a-loader-title {
-  color: white;
+  background-color: dodgerblue;
 }
 
 ::-webkit-media-controls {

@@ -452,10 +452,8 @@ function processParams() {
             s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
             h.appendChild(s);
         }
-    }
-
-
-
+    } 
 }
 
+document.title = "";
 document.addEventListener('DOMContentLoaded', processParams);
