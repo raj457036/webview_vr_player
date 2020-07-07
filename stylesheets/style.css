@@ -30,7 +30,7 @@ a {
   display:none !important;
 }
 
-/* #scene {
+.balance {
   filter: url(#_color);
   -webkit-filter: url(#_color);
-} */
+}
