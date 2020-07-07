@@ -29,3 +29,8 @@ a {
 ::-webkit-media-controls {
   display:none !important;
 }
+
+.balance {
+  filter: url(#_color);
+  -webkit-filter: url(#_color);
+}
