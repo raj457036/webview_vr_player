@@ -67,12 +67,10 @@ class MediaColorFilter {
 
         var balance = (r + g + b) / 3;
 
-        var normalizedBalance = this.__clamp__(balance / (strength || 1.0), 0.0, 1.0);
+        var normalizedBalance = balance / (strength || 1.0);
+        console.log(normalizedBalance);
 
-        _filter.setAttribute('values', `${normalizedBalance} 0 ${normalizedBalance} 0 0
-            0 ${normalizedBalance} ${normalizedBalance} 0 0
-            0 0 ${normalizedBalance} 0 0
-            0 0 0 1 0`
+        _filter.setAttribute('values', `${normalizedBalance} 0 ${normalizedBalance} 0 0 0 ${normalizedBalance} ${normalizedBalance} 0 0 0 0 ${normalizedBalance} 0 0 0 0 0 1 0`
         );
 
         return '';
