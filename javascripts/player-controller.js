@@ -455,7 +455,6 @@ function processParams() {
             s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
             h.appendChild(s);
         }
-        mediaFilter.filter(1.5, 1.2, 160);
     }
 }
 
