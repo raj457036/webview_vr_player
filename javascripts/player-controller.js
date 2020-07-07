@@ -54,127 +54,127 @@ class MediaMessageChannel {
         const vid = this.controller.video;
 
         if (code == MediaEvent.ABORTED) {
-            vid.onabort = function () {
+            vid.onabort = function() {
                 self.sendMessage(MediaEvent.ABORTED);
             };
         }
 
         if (code == MediaEvent.CAN_PLAY) {
-            vid.oncanplay = function () {
+            vid.oncanplay = function() {
                 self.sendMessage(MediaEvent.CAN_PLAY);
             };
         }
 
         if (code == MediaEvent.CAN_PLAY_THROUGH) {
-            vid.oncanplaythrough = function () {
+            vid.oncanplaythrough = function() {
                 self.sendMessage(MediaEvent.CAN_PLAY_THROUGH);
             };
         }
 
         if (code == MediaEvent.DURATION_CHANGE) {
-            vid.ondurationchange = function () {
+            vid.ondurationchange = function() {
                 self.sendMessage(MediaEvent.DURATION_CHANGE);
             };
         }
 
         if (code == MediaEvent.ENDED) {
-            vid.onended = function () {
+            vid.onended = function() {
                 self.sendMessage(MediaEvent.ENDED);
             };
         }
 
         if (code == MediaEvent.ERROR) {
-            vid.onerror = function () {
+            vid.onerror = function() {
                 self.sendMessage(MediaEvent.ERROR);
             };
         }
 
         if (code == MediaEvent.LOADED_DATA) {
-            vid.onloadeddata = function () {
+            vid.onloadeddata = function() {
                 self.sendMessage(MediaEvent.LOADED_DATA);
             };
         }
 
         if (code == MediaEvent.LOADED_META_DATA) {
-            vid.onloadedmetadata = function () {
+            vid.onloadedmetadata = function() {
                 self.sendMessage(MediaEvent.LOADED_META_DATA);
             };
         }
 
         if (code == MediaEvent.LOAD_START) {
-            vid.onloadstart = function () {
+            vid.onloadstart = function() {
                 self.sendMessage(MediaEvent.LOAD_START);
             };
         }
 
         if (code == MediaEvent.PAUSE) {
-            vid.onpause = function () {
+            vid.onpause = function() {
                 self.sendMessage(MediaEvent.PAUSE);
             };
         }
 
         if (code == MediaEvent.PLAY) {
-            vid.onplay = function () {
+            vid.onplay = function() {
                 self.sendMessage(MediaEvent.PLAY);
             };
         }
 
         if (code == MediaEvent.PLAYING) {
-            vid.onplaying = function () {
+            vid.onplaying = function() {
                 self.sendMessage(MediaEvent.PLAYING);
             };
         }
 
         if (code == MediaEvent.PROGRESS) {
-            vid.onprogress = function () {
+            vid.onprogress = function() {
                 self.sendMessage(MediaEvent.PROGRESS);
             };
         }
 
         if (code == MediaEvent.RATE_CHANGE) {
-            vid.onratechange = function () {
+            vid.onratechange = function() {
                 self.sendMessage(MediaEvent.RATE_CHANGE);
             }
         }
 
         if (code == MediaEvent.SEEKED) {
-            vid.onseeked = function () {
+            vid.onseeked = function() {
                 self.sendMessage(MediaEvent.SEEKED);
             };
         }
 
         if (code == MediaEvent.SEEKING) {
-            vid.onseeking = function () {
+            vid.onseeking = function() {
                 self.sendMessage(MediaEvent.SEEKING);
             };
         }
 
         if (code == MediaEvent.STALLED) {
-            vid.onstalled = function () {
+            vid.onstalled = function() {
                 self.sendMessage(MediaEvent.STALLED);
             };
         }
 
         if (code == MediaEvent.SUSPEND) {
-            vid.onsuspend = function () {
+            vid.onsuspend = function() {
                 self.sendMessage(MediaEvent.SUSPEND);
             };
         }
 
         if (code == MediaEvent.TIME_UPDATE) {
-            vid.ontimeupdate = function () {
+            vid.ontimeupdate = function() {
                 self.sendMessage(MediaEvent.TIME_UPDATE);
             };
         }
 
         if (code == MediaEvent.VOLUME_CHANGE) {
-            vid.onvolumechange = function () {
+            vid.onvolumechange = function() {
                 self.sendMessage(MediaEvent.VOLUME_CHANGE);
             };
         }
 
         if (code == MediaEvent.WAITING) {
-            vid.onwaiting = function () {
+            vid.onwaiting = function() {
                 self.sendMessage(MediaEvent.WAITING);
             };
         }
@@ -432,6 +432,8 @@ function processParams() {
     window.mediaController = new MediaController('video_player_id');
     window.mediaFilter = new MediaColorFilter('scene_id');
 
+
+
     if (url !== null) {
         playlist.streams[0] = url;
         init(true)
@@ -453,7 +455,8 @@ function processParams() {
             s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
             h.appendChild(s);
         }
-    } 
+        mediaFilter.filter(1.5, 1.2, 160);
+    }
 }
 
 document.title = "";

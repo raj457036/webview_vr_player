@@ -38,10 +38,23 @@ class MediaColorFilter {
     }
 
     applyFilter(colorFilterCode) {
+
         const elm = document.querySelector(`#${this.elm_id}`);
+        elm.style.filter = "";
+        elm.style.webkitFilter = "";
         elm.className = `${colorFilterCode}`;
 
         return '';
+    }
+
+
+    filter(brightness, contrast, hue, sepia, saturation) {
+        const elm = document.querySelector(`#${this.elm_id}`);
+        console.log(elm);
+        let filter = `brightness(${brightness || 1}) contrast(${contrast || 1}) hue-rotate(${hue || 0}deg) sepia(${sepia || 0})  saturate(${saturation || 100}%)`;
+        elm.style.filter = filter;
+        elm.style.webkitFilter = filter;
+        return "";
     }
 
 
@@ -56,7 +69,8 @@ class MediaColorFilter {
     __clamp__(value, min, max) {
         if (value < min) {
             return min;
-        } if (value > max) {
+        }
+        if (value > max) {
             return max;
         }
         return value;
@@ -70,8 +84,7 @@ class MediaColorFilter {
         var normalizedBalance = balance / (strength || 1.0);
         console.log(normalizedBalance);
 
-        _filter.setAttribute('values', `${normalizedBalance} 0 ${normalizedBalance} 0 0 0 ${normalizedBalance} ${normalizedBalance} 0 0 0 0 ${normalizedBalance} 0 0 0 0 0 1 0`
-        );
+        _filter.setAttribute('values', `${normalizedBalance} 0 ${normalizedBalance} 0 0 0 ${normalizedBalance} ${normalizedBalance} 0 0 0 0 ${normalizedBalance} 0 0 0 0 0 1 0`);
 
         return '';
     }
