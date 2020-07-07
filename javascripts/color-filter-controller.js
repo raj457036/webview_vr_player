@@ -51,7 +51,7 @@ class MediaColorFilter {
     filter(brightness, contrast, hue, sepia, saturation) {
         const elm = document.querySelector(`#${this.elm_id}`);
         console.log(elm);
-        let filter = `brightness(${brightness || 1}) contrast(${contrast || 1}) hue-rotate(${hue || 0}deg) sepia(${sepia || 0})  saturate(${saturation || 100}%)`;
+        let filter = `sepia(${sepia || 0}) saturate(${saturation || 100}%) brightness(${brightness || 1}) contrast(${contrast || 1}) hue-rotate(${hue || 0}deg)`;
         elm.style.filter = filter;
         elm.style.webkitFilter = filter;
         return "";
