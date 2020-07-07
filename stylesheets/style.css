@@ -1,36 +1,36 @@
 body {
-  padding: 0;
-  margin: 0;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background: #000000;
-  overflow: hidden;
+    padding: 0;
+    margin: 0;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background: #000000;
+    overflow: hidden;
 }
 
 img {
-  height: 60px;
+    height: 60px;
 }
 
 a {
-  color: orangered;
+    color: orangered;
 }
 
 .a-dialog-allow-button {
-  background-color: white;
+    background-color: white;
 }
 
 .a-dialog-deny-button {
-  background-color: gray;
+    background-color: gray;
 }
 
 .a-dialog-ok-button {
-  background-color: dodgerblue;
+    background-color: dodgerblue;
 }
 
 ::-webkit-media-controls {
-  display:none !important;
+    display: none !important;
 }
 
 .balance {
-  filter: url(#_color);
-  -webkit-filter: url(#_color);
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'_color\'><feColorMatrix type=\'matrix\' values=\'0 0 0 0 0 0.75 0 0 0 0 1.265 0 0 0 0 0 0 0 1 0\'/></filter></svg>#_color");
+    -webkit-filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'_color\'><feColorMatrix type=\'matrix\' values=\'0 0 0 0 0 0.75 0 0 0 0 1.265 0 0 0 0 0 0 0 1 0\'/></filter></svg>#_color");
 }

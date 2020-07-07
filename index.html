@@ -2,42 +2,40 @@
 <html>
 
 <head>
-  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
-  <title>360 VR Player</title>
-  <script src="javascripts/aframe.min.js"></script>
-  <script src="javascripts/jquery.min.js"></script>
-  <script src="javascripts/hls.min.js"></script>
-  <script src="javascripts/shaka-player.compiled.min.js"></script>
-  <script src="javascripts/shaka-loader.min.js"></script>
-  <script src="javascripts/touch-support.min.js"></script>
-  <script src="javascripts/color-filter-controller.min.js"></script>
-  <script src="javascripts/player-controller.min.js"></script>
-  <link rel="stylesheet" href="stylesheets/style.min.css" />
-  <link rel="stylesheet" href="stylesheets/filters.css">
+    <title>360 VR Player</title>
+    <script src="javascripts/aframe.min.js"></script>
+    <script src="javascripts/jquery.min.js"></script>
+    <script src="javascripts/hls.min.js"></script>
+    <script src="javascripts/shaka-player.compiled.min.js"></script>
+    <script src="javascripts/shaka-loader.min.js"></script>
+    <script src="javascripts/touch-support.min.js"></script>
+    <script src="javascripts/color-filter-controller.min.js"></script>
+    <script src="javascripts/player-controller.min.js"></script>
+    <link rel="stylesheet" href="stylesheets/style.min.css" />
+    <link rel="stylesheet" href="stylesheets/filters.css">
 </head>
 
 <body>
-  <a-scene loading-screen="dotsColor: white; backgroundColor: black" vr-mode-ui="enabled: true"
-    ar-mode-ui="enabled: false" id="scene_id">
-    <a-entity camera="user-height: 1.6;" touch-look-controls></a-entity>
-    <a-assets>
-      <video id="video_player_id" autoplay playsinline webkit-playsinline preload="auto"
-        crossorigin="anonymous"></video>
-    </a-assets>
-    <a-videosphere src="#video_player_id" width="16" height="9" position="0 0 0">
-    </a-videosphere>
-  </a-scene>
+    <a-scene loading-screen="dotsColor: white; backgroundColor: black" vr-mode-ui="enabled: true" ar-mode-ui="enabled: false" id="scene_id">
+        <a-entity camera="user-height: 1.6;" touch-look-controls></a-entity>
+        <a-assets>
+            <video id="video_player_id" autoplay playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
+        </a-assets>
+        <a-videosphere src="#video_player_id" width="16" height="9" position="0 0 0">
+        </a-videosphere>
+    </a-scene>
 
 
 
 
-  <svg>
-    <filter id="_color">
+    <!-- <svg>
+    <filter id="">
       <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0" />
     </filter>
-  </svg>
+  </svg> -->
 </body>
 
 </html>
