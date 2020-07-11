@@ -110,7 +110,7 @@ function configPlayer() {
     ...window.Hls.DefaultConfig,
     autoStartLoad: true,
     startPosition: -1,
-    debug: false,
+    // debug: false,
     capLevelOnFPSDrop: false,
     capLevelToPlayerSize: false,
     // defaultAudioCodec: undefined,
@@ -193,6 +193,7 @@ function hlsLoad(stream) {
     });
     hls.on(Hls.Events.ERROR, (event, data) => onHlsError(hls, event, data));
     setupEvents(hls);
+    window.HlsPlayer = hls;
   } else {
     initApp();
   }
