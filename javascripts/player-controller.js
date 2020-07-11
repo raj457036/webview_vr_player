@@ -439,11 +439,12 @@ function processParams() {
     const autoPlay = getUrlParameter('autoPlay');
     const loop = getUrlParameter('loop');
     const debug = getUrlParameter('debug');
+    
+    window.Hls.DefaultConfig['debug'] = debug === 'true';
 
     window.mediaController = new MediaController('video_player_id');
     window.mediaFilter = new MediaColorFilter('scene_id');
 
-    window.Hls.DefaultConfig['debug'] = debug == 'true';
 
     if (url !== null) {
         playlist.streams[0] = url;
