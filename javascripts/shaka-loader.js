@@ -98,7 +98,8 @@ function setupEvents(HLSPlayer) {
 
     HLSPlayer.on(
       window.Hls.Events.FRAG_BUFFERED ||
-      window.Hls.Events.FRAG_LOADED, () => {
+      window.Hls.Events.FRAG_LOADED ||
+      window.Hls.Events.LEVEL_LOADED, () => {
         mediaController.setLoader(false);
       });
   }
