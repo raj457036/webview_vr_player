@@ -65,15 +65,134 @@ function onError(error) {
   console.error('Error code', error.code, 'object', error);
 }
 
+function onHlsError(hls, event, data) {
+  mediaController.setLoader(true);
+  switch (data.type) {
+    case Hls.ErrorTypes.NETWORK_ERROR:
+      // try to recover network error
+      console.log("fatal network error encountered, try to recover");
+      hls.startLoad();
+      break;
+    case Hls.ErrorTypes.MEDIA_ERROR:
+      console.log("fatal media error encountered, try to recover");
+      hls.recoverMediaError();
+      break;
+    default:
+      // cannot recover
+      console.log('couldn\'t recovered');
+      hls.destroy();
+      mediaController.forceRetry();
+      break;
+  }
+}
+
+function setupEvents(HLSPlayer) {
+
+  if (HLSPlayer !== null) {
+    console.log('setting up');
+
+    HLSPlayer.on(
+      window.Hls.Events.LEVEL_LOADING ||
+      window.Hls.Events.FRAG_LOAD_PROGRESS, () => {
+        mediaController.setLoader(true);
+      });
+
+    HLSPlayer.on(
+      window.Hls.Events.FRAG_BUFFERED ||
+      window.Hls.Events.FRAG_LOADED, () => {
+        mediaController.setLoader(false);
+      });
+  }
+}
+
+function configPlayer() {
+  window.Hls.DefaultConfig = {
+    ...window.Hls.DefaultConfig,
+    autoStartLoad: true,
+    startPosition: -1,
+    debug: false,
+    capLevelOnFPSDrop: false,
+    capLevelToPlayerSize: false,
+    // defaultAudioCodec: undefined,
+    // initialLiveManifestSize: 1,
+    // maxBufferLength: 30,
+    // maxMaxBufferLength: 600,
+    // maxBufferSize: 60 * 1000 * 1000,
+    // maxBufferHole: 0.5,
+    // lowBufferWatchdogPeriod: 0.5,
+    // highBufferWatchdogPeriod: 3,
+    // nudgeOffset: 0.1,
+    // nudgeMaxRetry: 3,
+    // maxFragLookUpTolerance: 0.25,
+    liveSyncDuration: 10,
+    // liveMaxLatencyDurationCount: Infinity,
+    // liveDurationInfinity: false,
+    // liveBackBufferLength: Infinity,
+    // enableWorker: true,
+    // enableSoftwareAES: true,
+    // manifestLoadingTimeOut: 10000,
+    manifestLoadingMaxRetry: 10,
+    // manifestLoadingMaxRetryTimeout: 64000,
+    // startLevel: undefined,
+    // levelLoadingTimeOut: 10000,
+    levelLoadingMaxRetry: 40,
+    // levelLoadingRetryDelay: 1000,
+    // levelLoadingMaxRetryTimeout: 64000,
+    // fragLoadingTimeOut: 20000,
+    fragLoadingMaxRetry: 60,
+    // fragLoadingRetryDelay: 1000,
+    // fragLoadingMaxRetryTimeout: 64000,
+    startFragPrefetch: true,
+    // testBandwidth: true,
+    // fpsDroppedMonitoringPeriod: 5000,
+    // fpsDroppedMonitoringThreshold: 0.2,
+    // appendErrorMaxRetry: 3,
+    // loader: customLoader,
+    // fLoader: customFragmentLoader,
+    // pLoader: customPlaylistLoader,
+    // xhrSetup: XMLHttpRequestSetupCallback,
+    // fetchSetup: FetchSetupCallback,
+    // abrController: AbrController,
+    // bufferController: BufferController,
+    // capLevelController: CapLevelController,
+    // fpsController: FPSController,
+    // timelineController: TimelineController,
+    // enableWebVTT: true,
+    // enableCEA708Captions: true,
+    // stretchShortVideoTrack: false,
+    // maxAudioFramesDrift: 1,
+    // forceKeyFrameOnDiscontinuity: true,
+    // abrEwmaFastLive: 3.0,
+    // abrEwmaSlowLive: 9.0,
+    // abrEwmaFastVoD: 3.0,
+    // abrEwmaSlowVoD: 9.0,
+    // abrEwmaDefaultEstimate: 500000,
+    // abrBandWidthFactor: 0.95,
+    // abrBandWidthUpFactor: 0.7,
+    // abrMaxWithRealBitrate: false,
+    // maxStarvationDelay: 4,
+    // maxLoadingDelay: 4,
+    // minAutoBitrate: 0,
+    // emeEnabled: false,
+    // widevineLicenseUrl: undefined,
+    // drmSystemOptions: {},
+    // requestMediaKeySystemAccessFunc: requestMediaKeySystemAccess
+  };
+}
+
 function hlsLoad(stream) {
+
   if (Hls.isSupported()) {
     var video = document.getElementById('video_player_id');
+    configPlayer();
     var hls = new Hls();
     hls.loadSource(playlist.streams[0]);
     hls.attachMedia(video);
     hls.on(Hls.Events.MANIFEST_PARSED, function () {
-      MediaController.mediaReady = true;
+      console.log("MANIFEST_PARSED");
     });
+    hls.on(Hls.Events.ERROR, (event, data) => onHlsError(hls, event, data));
+    setupEvents(hls);
   } else {
     initApp();
   }

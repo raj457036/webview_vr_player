@@ -275,7 +275,8 @@ class MediaMessageChannel {
             this._postMessage(mediaMessage.getMessage());
             return true;
         } catch (error) {
-            console.error("postMessage is not defined. try : MediaMessageChannel.postMessage = someMethod");
+            console.error("postMessage is not defined. Setting : MediaMessageChannel.postMessage = console.log");
+            MediaMessageChannel.postMessage = console.log;
         }
 
         return false;
@@ -291,8 +292,17 @@ class MediaController {
     constructor(id) {
         this.video = document.getElementById(id);
         this.channel = new MediaMessageChannel(this);
+        
     }
 
+    setLoader(value) {
+        if (value === true)
+            $("#spinner").show();
+        else
+            $("#spinner").hide();
+    }
+    
+    // Methods
     play() {
         this.video.play();
         return "";
@@ -428,11 +438,12 @@ function processParams() {
     const VRBtn = getUrlParameter('VRBtn');
     const autoPlay = getUrlParameter('autoPlay');
     const loop = getUrlParameter('loop');
+    const debug = getUrlParameter('debug');
 
     window.mediaController = new MediaController('video_player_id');
     window.mediaFilter = new MediaColorFilter('scene_id');
 
-
+    window.Hls.DefaultConfig['debug'] = debug == 'true';
 
     if (url !== null) {
         playlist.streams[0] = url;
@@ -456,7 +467,12 @@ function processParams() {
             h.appendChild(s);
         }
     }
+
+    
 }
+window.addEventListener('error', function(e) {
+    console.log("error detected: ", e);
+}, true);
 
 document.title = "";
 document.addEventListener('DOMContentLoaded', processParams);

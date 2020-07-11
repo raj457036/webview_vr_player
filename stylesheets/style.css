@@ -34,3 +34,27 @@ a {
     -webkit-filter: url(#_color);
     filter: url(#_color);
 }
+
+.loader {
+    border: 4px solid rgba(122, 122, 122, 0.267);
+    /* Light grey */
+    border-bottom: 4px solid #fff;
+    /* Blue */
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
