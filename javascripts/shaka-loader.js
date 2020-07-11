@@ -92,8 +92,7 @@ function setupEvents(HLSPlayer) {
     console.log('setting up');
 
     HLSPlayer.on(
-      window.Hls.Events.LEVEL_LOADING ||
-      window.Hls.Events.FRAG_LOAD_PROGRESS, () => {
+      window.Hls.Events.LEVEL_LOADING, () => {
         mediaController.setLoader(true);
       });
 
@@ -124,22 +123,22 @@ function configPlayer() {
     // nudgeOffset: 0.1,
     // nudgeMaxRetry: 3,
     // maxFragLookUpTolerance: 0.25,
-    liveSyncDuration: 10,
+    liveSyncDuration: 6,
     // liveMaxLatencyDurationCount: Infinity,
     // liveDurationInfinity: false,
     // liveBackBufferLength: Infinity,
     // enableWorker: true,
     // enableSoftwareAES: true,
     // manifestLoadingTimeOut: 10000,
-    manifestLoadingMaxRetry: 10,
+    manifestLoadingMaxRetry: 4,
     // manifestLoadingMaxRetryTimeout: 64000,
     // startLevel: undefined,
     // levelLoadingTimeOut: 10000,
-    levelLoadingMaxRetry: 40,
+    levelLoadingMaxRetry: 16,
     // levelLoadingRetryDelay: 1000,
     // levelLoadingMaxRetryTimeout: 64000,
     // fragLoadingTimeOut: 20000,
-    fragLoadingMaxRetry: 60,
+    fragLoadingMaxRetry: 24,
     // fragLoadingRetryDelay: 1000,
     // fragLoadingMaxRetryTimeout: 64000,
     startFragPrefetch: true,
