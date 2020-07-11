@@ -92,11 +92,6 @@ function setupEvents(HLSPlayer) {
     console.log('setting up');
 
     HLSPlayer.on(
-      window.Hls.Events.LEVEL_LOADING, () => {
-        mediaController.setLoader(true);
-      });
-
-    HLSPlayer.on(
       window.Hls.Events.FRAG_BUFFERED ||
       window.Hls.Events.FRAG_LOADED ||
       window.Hls.Events.LEVEL_LOADED, () => {
