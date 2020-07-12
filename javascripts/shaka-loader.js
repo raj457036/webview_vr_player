@@ -38,12 +38,12 @@ function initApp() {
 function initPlayer() {
   var video = document.getElementById('video_player_id');
   var player = new shaka.Player(video);
-
   player.addEventListener('error', onErrorEvent);
   video.addEventListener('ended', function () {
     player.unload();
     doPlay(player, pushNext());
   });
+  video.currentTime=0.1;
   return player;
 }
 
@@ -183,6 +183,7 @@ function hlsLoad(stream) {
 
   if (Hls.isSupported()) {
     var video = document.getElementById('video_player_id');
+    
     configPlayer();
     var hls = new Hls();
     hls.loadSource(playlist.streams[0]);
@@ -193,6 +194,7 @@ function hlsLoad(stream) {
     hls.on(Hls.Events.ERROR, (event, data) => onHlsError(hls, event, data));
     setupEvents(hls);
     window.HlsPlayer = hls;
+    video.currentTime=0.1;
   } else {
     initApp();
   }
