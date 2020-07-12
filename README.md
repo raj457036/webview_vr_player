@@ -11,6 +11,6 @@ A VR/360 Player can be used in any platform
 
 # NOTE
 ### On phones auto play of video is not allowed (browsers) to play the video programatically you can call **mediaController.play()**
-Else this you can try to tap on loading screen during loading(ofcourse 😅)
+Else you can try to tap on loading screen during loading (ofcourse 😅)
 
 ## Thank You
