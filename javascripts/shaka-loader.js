@@ -43,7 +43,6 @@ function initPlayer() {
     player.unload();
     doPlay(player, pushNext());
   });
-  video.currentTime=0.1;
   return player;
 }
 
@@ -194,7 +193,6 @@ function hlsLoad(stream) {
     hls.on(Hls.Events.ERROR, (event, data) => onHlsError(hls, event, data));
     setupEvents(hls);
     window.HlsPlayer = hls;
-    video.currentTime=0.1;
   } else {
     initApp();
   }
