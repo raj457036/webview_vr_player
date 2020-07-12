@@ -17,11 +17,18 @@ function init(passIf) {
   }
 }
 
+function setupShakaEvents(player) {
+  player.addEventListener('loaded', ()=>mediaController.setLoader(false));
+  player.addEventListener('loading', ()=>mediaController.setLoader(true));
+  player.addEventListener('buffering', (_)=>mediaController.setLoader(_['buffering']));
+}
+
 function initApp() {
   shaka.polyfill.installAll();
   if (shaka.Player.isBrowserSupported()) {
     var player = initPlayer();
     window.player = player;
+    setupShakaEvents(player);
     doPlay(player, pushNext());
   } else {
     console.error('Browser not supported!');
@@ -42,7 +49,7 @@ function initPlayer() {
 
 function doPlay(player, src) {
   player.load(src.manifest).then(function () {
-    console.log("hello");
+    console.log("Manifest Loaded Successfully");
   }).catch(onError);
 }
 
@@ -63,8 +70,14 @@ function onErrorEvent(event) {
 
 function onError(error) {
   console.error('Error code', error.code, 'object', error);
+  console.info('Retrying...');
+  if (error.severity === 2) {
+    console.warn("Forcing Retry... Please Wait...");
+    location.reload();
+  }
 }
 
+// hls only
 function onHlsError(hls, event, data) {
   mediaController.setLoader(true);
   switch (data.type) {
