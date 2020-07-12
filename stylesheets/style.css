@@ -36,9 +36,9 @@ a {
 }
 
 .loader {
-    border: 4px solid rgba(122, 122, 122, 0.267);
+    border: 4px solid rgba(0, 255, 98, 0.267);
     /* Light grey */
-    border-bottom: 4px solid #fff;
+    border-bottom: 4px solid rgb(0, 177, 80);
     /* Blue */
     position: absolute;
     top: 25px;
