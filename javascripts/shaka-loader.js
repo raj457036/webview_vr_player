@@ -71,7 +71,7 @@ function onErrorEvent(event) {
 function onError(error) {
   console.error('Error code', error.code, 'object', error);
   console.error("Forcing Retry... Please Wait...");
-  mediaController.forceRetry();
+  location.reload();
 }
 
 // hls only
