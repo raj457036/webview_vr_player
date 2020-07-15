@@ -1,4 +1,4 @@
-# webview_vr_player
+# Webview_vr_player
 A VR/360 Player can be used in any platform
 
 ### Easy Query params (For advance control and handling events use mediaController)

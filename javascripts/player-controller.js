@@ -321,6 +321,7 @@ class MediaController {
     }
 
     play() {
+        this.video.currentTime = 0.1;
         this.video.play();
         return "";
     }
@@ -444,7 +445,6 @@ function processParams() {
 
     window.mediaController = new MediaController('video_player_id');
     window.mediaFilter = new MediaColorFilter('scene_id');
-
 
     if (url !== null) {
         playlist.streams[0] = url;
