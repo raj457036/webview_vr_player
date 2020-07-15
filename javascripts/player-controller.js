@@ -446,32 +446,28 @@ function processParams() {
     window.mediaController = new MediaController('video_player_id');
     window.mediaFilter = new MediaColorFilter('scene_id');
 
+    if (url !== null) {
+        playlist.streams[0] = url;
+        init(true)
 
-    setTimeout(() => {
-        console.log('Playing Now...');
-        if (url !== null) {
-            playlist.streams[0] = url;
-            init(true)
-    
-            if (autoPlay !== 'false') {
-                mediaController.play();
-            } else {
-                mediaController.pause();
-            }
-    
-            if (loop === 'true') {
-                mediaController.video.loop = true;
-            }
-    
-            if (VRBtn === 'false') {
-                var h = document.getElementsByTagName('head').item(0);
-                var s = document.createElement("style");
-                s.type = "text/css";
-                s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
-                h.appendChild(s);
-            }
+        if (autoPlay !== 'false') {
+            mediaController.play();
+        } else {
+            mediaController.pause();
         }
-    }, 8000);
+
+        if (loop === 'true') {
+            mediaController.video.loop = true;
+        }
+
+        if (VRBtn === 'false') {
+            var h = document.getElementsByTagName('head').item(0);
+            var s = document.createElement("style");
+            s.type = "text/css";
+            s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
+            h.appendChild(s);
+        }
+    }
 
     
 }
