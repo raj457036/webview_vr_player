@@ -321,8 +321,8 @@ class MediaController {
     }
 
     play() {
-        this.video.currentTime = 0.1;
         this.video.play();
+        this.video.currentTime = 0.1;
         return "";
     }
 
