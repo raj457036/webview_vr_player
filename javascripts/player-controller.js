@@ -447,28 +447,31 @@ function processParams() {
     window.mediaFilter = new MediaColorFilter('scene_id');
 
 
-    if (url !== null) {
-        playlist.streams[0] = url;
-        init(true)
-
-        if (autoPlay !== 'false') {
-            mediaController.play();
-        } else {
-            mediaController.pause();
+    setTimeout(() => {
+        console.log('Playing');
+        if (url !== null) {
+            playlist.streams[0] = url;
+            init(true)
+    
+            if (autoPlay !== 'false') {
+                mediaController.play();
+            } else {
+                mediaController.pause();
+            }
+    
+            if (loop === 'true') {
+                mediaController.video.loop = true;
+            }
+    
+            if (VRBtn === 'false') {
+                var h = document.getElementsByTagName('head').item(0);
+                var s = document.createElement("style");
+                s.type = "text/css";
+                s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
+                h.appendChild(s);
+            }
         }
-
-        if (loop === 'true') {
-            mediaController.video.loop = true;
-        }
-
-        if (VRBtn === 'false') {
-            var h = document.getElementsByTagName('head').item(0);
-            var s = document.createElement("style");
-            s.type = "text/css";
-            s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
-            h.appendChild(s);
-        }
-    }
+    }, 9000);
 
     
 }
