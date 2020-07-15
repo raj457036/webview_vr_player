@@ -448,7 +448,7 @@ function processParams() {
 
 
     setTimeout(() => {
-        console.log('Playing');
+        console.log('Playing Now...');
         if (url !== null) {
             playlist.streams[0] = url;
             init(true)
@@ -471,7 +471,7 @@ function processParams() {
                 h.appendChild(s);
             }
         }
-    }, 9000);
+    }, 8000);
 
     
 }
