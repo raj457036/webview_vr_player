@@ -35,7 +35,7 @@ function warnMessage(value) {
     console.warnLog(value);
 }
 
-function setup() {
+function setupDebugger() {
     console.errorLog = console.error;
     console.norLog = console.log;
     console.infoLog = console.info;
@@ -53,5 +53,3 @@ function execute() {
     const value = document.querySelector(".inlog input").value;
     console.log(JSON.stringify(eval(value), null, 1));
 }
-
-setup();

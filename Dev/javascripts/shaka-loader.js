@@ -5,18 +5,10 @@ var playlist = {
 };
 
 function init(passIf) {
-  // console.log("init");
-  // if (playlist.streams.length > 0 || passIf === true) {
-  //   if (playlist.streams[0].indexOf("m3u8") != -1) {
-  //     console.log("hls");
-  //     hlsLoad()
-  //   } else {
-  //     console.log("dash");
-  //     initApp()
-  //   }
-  // }
-
-  initApp()
+  console.log("init");
+  if (playlist.streams.length > 0 || passIf === true) {
+    hlsLoad();
+  }
 }
 
 function setupShakaEvents(player) {
@@ -72,27 +64,32 @@ function onErrorEvent(event) {
 function onError(error) {
   console.error('Error code', error.code, 'object', error);
   console.info('Retrying...');
-  
+  if (error.severity === 2) {
+    console.warn("Forcing Retry... Please Wait...");
+    location.reload();
+  }
 }
 
 // hls only
 function onHlsError(hls, event, data) {
-  mediaController.setLoader(true);
   switch (data.type) {
     case Hls.ErrorTypes.NETWORK_ERROR:
       // try to recover network error
+      mediaController.setLoader(true, true);
       console.log("fatal network error encountered, try to recover");
       hls.startLoad();
       break;
     case Hls.ErrorTypes.MEDIA_ERROR:
       console.log("fatal media error encountered, try to recover");
+      mediaController.setLoader(true, true);
       hls.recoverMediaError();
       break;
     default:
       // cannot recover
       console.log('couldn\'t recovered');
+      mediaController.setLoader(true, true);
       hls.destroy();
-      mediaController.forceRetry();
+      location.reload();
       break;
   }
 }
@@ -178,8 +175,10 @@ function configPlayer() {
 }
 
 function hlsLoad(stream) {
+  console.log('ddddddddddddddddddddddddddddddddddddddddddddddddddddddddd');
 
   if (Hls.isSupported()) {
+    
     var video = document.getElementById('video_player_id');
     
     configPlayer();

@@ -15,62 +15,11 @@
     <script src="javascripts/touch-support.min.js"></script>
     <script src="javascripts/color-filter-controller.min.js"></script>
     <script src="javascripts/player-controller.js"></script>
-    <link rel="stylesheet" href="stylesheets/style.min.css" />
-    <link rel="stylesheet" href="stylesheets/filters.css">
     <script src="debugger.js"></script>
-    <style>
-      .debugger {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 300px;
-        background-color: white;
-        overflow-y: auto;
-        padding-bottom: 30px;
-      }
 
-      .inlog {
-        position: fixed;
-        bottom: 0;
-        z-index: 1000;
-        left: 0;
-        right: 0;
-      }
-
-      .inlog input {
-        width: 80%;
-
-      }
-
-      .log-box {
-        border-bottom: 1px solid #eeeeee;
-        padding: 6px;
-        margin: 0;
-      }
-
-      .debugger .logs .error {
-        color: red;
-        background-color: rgba(255, 0, 0, 0.2);
-      }
-
-      .debugger .logs .log {
-        color: black;
-      }
-
-      .debugger .logs .info {
-        color: skyblue;
-        background-color: rgba(135, 207, 235, 0.2);
-
-      }
-
-      .debugger .logs .warn {
-        color: orange;
-        background-color: rgba(255, 166, 0, 0.2);
-      }
-    </style>
-
-    
+    <link rel="stylesheet" href="stylesheets/style.css" />
+    <link rel="stylesheet" href="stylesheets/filters.css">
+    <link rel="stylesheet" href="stylesheets/debugger.css">
 </head>
 
 <body>
@@ -90,6 +39,7 @@
       <div class="inlog">
         <input type="text">
         <button onclick="execute()">Execute</button>
+        <button onclick="mediaController.play()">play</button>
       </div>
     </div>
 

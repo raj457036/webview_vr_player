@@ -287,6 +287,7 @@ class MediaMessageChannel {
     }
 }
 
+
 class MediaController {
 
     constructor(id) {
@@ -295,18 +296,22 @@ class MediaController {
         
     }
 
-    setLoader(value) {
+    setLoader(value, error=false) {
+        const spinner = $("#spinner");
+
         if (value === true)
-            $("#spinner").show();
+            spinner.show();
         else
-            $("#spinner").hide();
+            spinner.hide();
+
+        if (error) {
+            spinner.addClass('error');
+        } else {
+            spinner.removeClass('error');
+        }
     }
     
     // Methods
-    play() {
-        this.video.play();
-        return "";
-    }
 
     seek(by_time) {
         this.currentTime(this.currentTime() + by_time);
@@ -320,9 +325,11 @@ class MediaController {
         } else return this.video.currentTime;
     }
 
-    play() {
+    play(time=false) {
         this.video.play();
-        this.video.currentTime = 0.1;
+        if (time !== false) {
+            this.video.currentTime = time;
+        }
         return "";
     }
 
@@ -440,8 +447,14 @@ function processParams() {
     const autoPlay = getUrlParameter('autoPlay');
     const loop = getUrlParameter('loop');
     const debug = getUrlParameter('debug');
-    
-    window.Hls.DefaultConfig['debug'] = debug === 'true';
+
+
+    if (debug !== 'true') {
+        $('.debugger').hide();
+    } else {{
+        window.Hls.DefaultConfig['debug'] = true;
+        setupDebugger();
+    }}
 
     window.mediaController = new MediaController('video_player_id');
     window.mediaFilter = new MediaColorFilter('scene_id');
@@ -457,9 +470,14 @@ function processParams() {
                 // Automatic playback started!
                 alert('playing');
               }).catch(function(error) {
-                console.log(error);
-                alert(error);
-                init(true);
+                alert(JSON.stringify({
+                    'code': error.code,
+                    'message': error.message,
+                    'name': error.name,
+                }));
+                if (error.code === 9) {
+                    hlsLoad();
+                }
               });
         } else {
             mediaController.pause();
