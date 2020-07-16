@@ -5,7 +5,14 @@ function errorMessage(value) {
     para.classList.add('error', 'log-box');
     
     document.querySelector(".debugger .logs").prepend(para);
+
+    if (value.toString() === "THREE.WebGLState:") {
+        init();
+    }
+
     console.errorLog(value);
+    
+
 }
 function logMessage(value) {
     const para = document.createElement("p");

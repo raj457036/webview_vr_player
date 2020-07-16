@@ -50,6 +50,8 @@ class MediaMessageChannel {
         this.controller = controller;
     }
 
+
+
     subscribe(code, self = this) {
         const vid = this.controller.video;
 
@@ -451,6 +453,16 @@ function processParams() {
 
     if (debug !== 'true') {
         $('.debugger').hide();
+
+        const errorMsg = console.error;
+
+        console.error = function(msg) {
+            if (msg.toString() === "THREE.WebGLState:") {
+                init();
+            }
+            errorMsg(msg);
+        }
+
     } else {{
         window.Hls.DefaultConfig['debug'] = true;
         setupDebugger();
@@ -485,7 +497,7 @@ function processParams() {
         }
 
 
-
+        
         if (loop === 'true') {
             mediaController.video.loop = true;
         }
