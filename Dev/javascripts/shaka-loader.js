@@ -62,7 +62,8 @@ function onErrorEvent(event) {
 }
 
 function onError(error) {
-  console.error('Error code', error.code, 'object', error);
+  console.error('Error');
+  console.log(error)
   console.info('Retrying...Please Wait..');
 }
 
