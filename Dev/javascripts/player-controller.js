@@ -466,19 +466,21 @@ function processParams() {
 
 
         if (autoPlay !== 'false') {
-            mediaController.video.play().then(function() {
-                // Automatic playback started!
-                alert('playing');
-              }).catch(function(error) {
-                alert(JSON.stringify({
-                    'code': error.code,
-                    'message': error.message,
-                    'name': error.name,
-                }));
-                if (error.code === 9) {
-                    hlsLoad();
-                }
-              });
+            initApp();
+            // mediaController.video.play().then(function() {
+            //     // Automatic playback started!
+            //     alert('playing');
+                
+            //   }).catch(function(error) {
+            //     alert(JSON.stringify({
+            //         'code': error.code,
+            //         'message': error.message,
+            //         'name': error.name,
+            //     }));
+            //     if (error.code === 9) {
+            //         hlsLoad();
+            //     }
+            //   });
         } else {
             mediaController.pause();
         }
