@@ -460,7 +460,7 @@ function processParams() {
     window.mediaFilter = new MediaColorFilter('scene_id');
 
     if (url !== null) {
-        // mediaController.video.src = url;
+        mediaController.video.src = url;
         playlist.streams[0] = url;
         // init(true)
 
@@ -504,7 +504,8 @@ function processParams() {
     
 }
 window.addEventListener('error', function(e) {
-    console.log("error detected: ", e);
+    console.log("error detected: ");
+    console.log(e);
 }, true);
 
 document.title = "";
