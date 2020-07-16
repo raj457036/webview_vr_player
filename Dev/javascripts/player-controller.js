@@ -460,7 +460,7 @@ function processParams() {
     window.mediaFilter = new MediaColorFilter('scene_id');
 
     if (url !== null) {
-        mediaController.video.src = url;
+        // mediaController.video.src = url;
         playlist.streams[0] = url;
         // init(true)
 
