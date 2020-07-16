@@ -172,7 +172,7 @@ function configPlayer() {
 }
 
 function hlsLoad(stream) {
-  console.log('Native Player Failed... Switching to Decorder 1');
+  console.log('Native Player Failed... Switching to Decoder 1');
 
   if (Hls.isSupported()) {
     
@@ -189,7 +189,7 @@ function hlsLoad(stream) {
     setupEvents(hls);
     window.HlsPlayer = hls;
   } else {
-    console.log('Decoder 1 not supported... Switching to Decorder 2');
+    console.log('Decoder 1 not supported... Switching to Decoder 2');
     initApp();
   }
 }
