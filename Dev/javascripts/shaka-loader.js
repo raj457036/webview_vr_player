@@ -63,11 +63,7 @@ function onErrorEvent(event) {
 
 function onError(error) {
   console.error('Error code', error.code, 'object', error);
-  console.info('Retrying...');
-  if (error.severity === 2) {
-    console.warn("Forcing Retry... Please Wait...");
-    location.reload();
-  }
+  console.info('Retrying...Please Wait..');
 }
 
 // hls only

@@ -4,7 +4,7 @@ function errorMessage(value) {
     para.appendChild(text);
     para.classList.add('error', 'log-box');
     
-    document.querySelector(".debugger .logs").appendChild(para);
+    document.querySelector(".debugger .logs").prepend(para);
     console.errorLog(value);
 }
 function logMessage(value) {
@@ -13,7 +13,7 @@ function logMessage(value) {
     para.appendChild(text);
     para.classList.add('log', 'log-box');
     
-    document.querySelector(".debugger .logs").appendChild(para);
+    document.querySelector(".debugger .logs").prepend(para);
     console.norLog(value);
 }
 function infoMessage(value) {
@@ -22,7 +22,7 @@ function infoMessage(value) {
     para.appendChild(text);
     para.classList.add('info', 'log-box');
     
-    document.querySelector(".debugger .logs").appendChild(para);
+    document.querySelector(".debugger .logs").prepend(para);
     console.infoLog(value);
 }
 function warnMessage(value) {
@@ -31,7 +31,7 @@ function warnMessage(value) {
     para.appendChild(text);
     para.classList.add('warn', 'log-box');
     
-    document.querySelector(".debugger .logs").appendChild(para);
+    document.querySelector(".debugger .logs").prepend(para);
     console.warnLog(value);
 }
 
