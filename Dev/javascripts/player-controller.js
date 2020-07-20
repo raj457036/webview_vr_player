@@ -50,25 +50,39 @@ class MediaMessageChannel {
         this.controller = controller;
     }
 
+    onVideoPlaybackFailure() {
+        this.controller.setLoader(true, true);
+    }
 
+    onVideoPlaybackSuccess() {
+        this.controller.setLoader(false);
+    }
+
+    onVideoPlaybackWaiting() {
+        this.controller.setLoader(true);
+    }
 
     subscribe(code, self = this) {
         const vid = this.controller.video;
 
         if (code == MediaEvent.ABORTED) {
             vid.onabort = function() {
+                this.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.ABORTED);
             };
         }
 
         if (code == MediaEvent.CAN_PLAY) {
             vid.oncanplay = function() {
+                this.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.CAN_PLAY);
             };
         }
 
         if (code == MediaEvent.CAN_PLAY_THROUGH) {
+
             vid.oncanplaythrough = function() {
+                this.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.CAN_PLAY_THROUGH);
             };
         }
@@ -87,12 +101,14 @@ class MediaMessageChannel {
 
         if (code == MediaEvent.ERROR) {
             vid.onerror = function() {
+                this.onVideoPlaybackFailure();
                 self.sendMessage(MediaEvent.ERROR);
             };
         }
 
         if (code == MediaEvent.LOADED_DATA) {
             vid.onloadeddata = function() {
+                this.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.LOADED_DATA);
             };
         }
@@ -105,6 +121,7 @@ class MediaMessageChannel {
 
         if (code == MediaEvent.LOAD_START) {
             vid.onloadstart = function() {
+                this.onVideoPlaybackWaiting();
                 self.sendMessage(MediaEvent.LOAD_START);
             };
         }
@@ -153,6 +170,7 @@ class MediaMessageChannel {
 
         if (code == MediaEvent.STALLED) {
             vid.onstalled = function() {
+                this.onVideoPlaybackFailure();
                 self.sendMessage(MediaEvent.STALLED);
             };
         }
@@ -177,6 +195,7 @@ class MediaMessageChannel {
 
         if (code == MediaEvent.WAITING) {
             vid.onwaiting = function() {
+                this.onVideoPlaybackWaiting();
                 self.sendMessage(MediaEvent.WAITING);
             };
         }
@@ -186,15 +205,15 @@ class MediaMessageChannel {
         const vid = this.controller.video;
 
         if (code == MediaEvent.ABORTED) {
-            vid.onabort = null;
+            vid.onabort = this.onVideoPlaybackSuccess;
         }
 
         if (code == MediaEvent.CAN_PLAY) {
-            vid.oncanplay = null;
+            vid.oncanplay = this.onVideoPlaybackSuccess;
         }
 
         if (code == MediaEvent.CAN_PLAY_THROUGH) {
-            vid.oncanplaythrough = null;
+            vid.oncanplaythrough = this.onVideoPlaybackSuccess;
         }
 
         if (code == MediaEvent.DURATION_CHANGE) {
@@ -206,11 +225,11 @@ class MediaMessageChannel {
         }
 
         if (code == MediaEvent.ERROR) {
-            vid.onerror = null;
+            vid.onerror = this.onVideoPlaybackFailure;
         }
 
         if (code == MediaEvent.LOADED_DATA) {
-            vid.onloadeddata = null;
+            vid.onloadeddata = this.onVideoPlaybackSuccess;
         }
 
         if (code == MediaEvent.LOADED_META_DATA) {
@@ -250,7 +269,7 @@ class MediaMessageChannel {
         }
 
         if (code == MediaEvent.STALLED) {
-            vid.onstalled = null;
+            vid.onstalled = this.onVideoPlaybackFailure;
         }
 
         if (code == MediaEvent.SUSPEND) {
@@ -266,7 +285,7 @@ class MediaMessageChannel {
         }
 
         if (code == MediaEvent.WAITING) {
-            vid.onwaiting = null;
+            vid.onwaiting = this.onVideoPlaybackWaiting;
         }
     }
 
@@ -277,7 +296,7 @@ class MediaMessageChannel {
             this._postMessage(mediaMessage.getMessage());
             return true;
         } catch (error) {
-            console.error("postMessage is not defined. Setting : MediaMessageChannel.postMessage = console.log");
+            console.warn("postMessage is not defined. Setting : MediaMessageChannel.postMessage = console.log");
             MediaMessageChannel.postMessage = console.log;
         }
 
@@ -294,8 +313,8 @@ class MediaController {
 
     constructor(id) {
         this.video = document.getElementById(id);
+        this.autoPlay = true;
         this.channel = new MediaMessageChannel(this);
-        
     }
 
     setLoader(value, error=false) {
@@ -327,11 +346,25 @@ class MediaController {
         } else return this.video.currentTime;
     }
 
-    play(time=false) {
-        this.video.play();
-        if (time !== false) {
+    play(time) {
+        this.video.play().then(function() {
+            // Automatic playback started!
+            console.log('playing...');
+          }).catch(function(error) {
+            console.log("Native Decoder Failed: " ,JSON.stringify({
+                'code': error.code,
+                'message': error.message,
+                'name': error.name,
+            }));
+            if (error.code === 9) {
+                hlsLoad();
+            } 
+          });
+
+        if (time) {
             this.video.currentTime = time;
         }
+
         return "";
     }
 
@@ -478,26 +511,13 @@ function processParams() {
 
 
         if (autoPlay !== 'false') {
-            mediaController.video.play().then(function() {
-                // Automatic playback started!
-                alert('playing');
-                
-              }).catch(function(error) {
-                alert(JSON.stringify({
-                    'code': error.code,
-                    'message': error.message,
-                    'name': error.name,
-                }));
-                if (error.code === 9) {
-                    hlsLoad();
-                }
-              });
+            mediaController.play()
         } else {
+            mediaController.autoPlay = false;
+            mediaController.channel.subscribeToBufferingEvents();
             mediaController.pause();
         }
 
-
-        
         if (loop === 'true') {
             mediaController.video.loop = true;
         }
@@ -509,16 +529,15 @@ function processParams() {
             s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
             h.appendChild(s);
         }
-
-        mediaController.subscribeToAllEvents();
+    } else {
+        mediaController.setLoader(true, true);
     }
 
     
 }
 window.addEventListener('error', function(e) {
-    console.log("error detected: ");
-    console.log(e);
-}, true);
+    console.log("error detected: ", e);
+});
 
 document.title = "";
 document.addEventListener('DOMContentLoaded', processParams);

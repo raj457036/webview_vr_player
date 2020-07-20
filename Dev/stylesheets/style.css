@@ -36,8 +36,8 @@ a {
 }
 
 .loader {
-    border: 4px solid rgba(0, 255, 98, 0.267);
-    border-bottom: 4px solid rgb(177, 0, 118);
+    border: 4px solid rgba(0, 255, 98, 0.250);
+    border-bottom: 4px solid darkgreen;
     position: absolute;
     top: 25px;
     right: 25px;
@@ -48,8 +48,8 @@ a {
 }
 
 .loader.error {
-    border: 4px solid rgba(255, 0, 0, 0.267);
-    border-bottom: 4px solid rgb(177, 0, 0);
+    border: 4px solid rgba(255, 100, 100, 0.250);
+    border-bottom: 4px solid darkred;
 }
 
 @keyframes spin {
