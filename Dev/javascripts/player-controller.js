@@ -312,9 +312,37 @@ class MediaMessageChannel {
 class MediaController {
 
     constructor(id) {
-        this.video = document.getElementById(id);
+        this.videoID = id;
+        this.video = null;
         this.autoPlay = true;
         this.channel = new MediaMessageChannel(this);
+        this.__playerBuilt = false;
+    }
+
+    buildPlayer(autoplay=true, vrBtn=true, iosPerm=true, video_src=null) {
+        const _ascene = `
+        <a-scene 
+            loading-screen="dotsColor: white; backgroundColor: black" 
+            vr-mode-ui="enabled: ${vrBtn}" 
+            ar-mode-ui="enabled: false" 
+            id="scene_id"
+            device-orientation-permission-ui="enabled: ${iosPerm}"
+        >
+            <a-entity camera="user-height: 1.6;" touch-look-controls></a-entity>
+            <a-assets>
+                <video 
+                src="${video_src}"
+                id="video_player_id" autoplay="${autoplay}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
+            </a-assets>
+            <a-videosphere src="#video_player_id" width="16" height="9" position="0 0 0">
+            </a-videosphere>
+        </a-scene>`;
+
+
+        if (!this.__playerBuilt) {
+            $("body").append(_ascene);
+            this.video = document.getElementById(this.videoID);
+        }
     }
 
     setLoader(value, error=false) {
@@ -482,6 +510,11 @@ function processParams() {
     const autoPlay = getUrlParameter('autoPlay');
     const loop = getUrlParameter('loop');
     const debug = getUrlParameter('debug');
+    const iosPermissions = getUrlParameter('iosPerm');
+
+    if (iosPermissions === 'false') {
+        $('a-scene').attr("device-orientation-permission-ui", "enabled: false");
+    }
 
 
     if (debug !== 'true') {
@@ -505,7 +538,12 @@ function processParams() {
     window.mediaFilter = new MediaColorFilter('scene_id');
 
     if (url !== null) {
-        mediaController.video.src = url;
+        mediaController.buildPlayer(
+            autoplay= autoPlay !== 'false', 
+            vrBtn= VRBtn === 'false', 
+            iosPerm=iosPermissions !== 'false', 
+            video_src=url,
+        );
         playlist.streams[0] = url;
         // init(true)
 
@@ -515,7 +553,7 @@ function processParams() {
         } else {
             mediaController.autoPlay = false;
             mediaController.channel.subscribeToBufferingEvents();
-            mediaController.pause();
+            // mediaController.pause();
         }
 
         if (loop === 'true') {
