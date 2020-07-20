@@ -549,7 +549,7 @@ function processParams() {
     if (url !== null) {
         mediaController.buildPlayer(
             autoplay= autoPlay !== 'false', 
-            vrBtn= VRBtn === 'false', 
+            vrBtn= VRBtn !== 'false', 
             iosPerm=iosPermissions !== 'false', 
             video_src=url,
         );

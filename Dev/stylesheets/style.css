@@ -30,12 +30,27 @@ a {
     display: none !important;
 }
 
+.a-enter-ar,
+.a-enter-vr {
+    font-family: sans-serif, monospace;
+    font-size: 13px;
+    width: 100%;
+    height: 20px;
+    font-weight: 200;
+    line-height: 16px;
+    position: absolute;
+    right: 20px;
+    bottom: 172px;
+}
+
 .balance {
     -webkit-filter: url(#_color);
     filter: url(#_color);
 }
 
-.a-enter-ar { display: none !important;}
+.a-enter-ar {
+    display: none !important;
+}
 
 .loader {
     border: 4px solid rgba(0, 255, 98, 0.250);
