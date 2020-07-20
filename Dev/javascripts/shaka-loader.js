@@ -14,7 +14,7 @@ function init(passIf) {
 function setupShakaEvents(player) {
   player.addEventListener('loaded', ()=>mediaController.setLoader(false));
   player.addEventListener('loading', ()=>mediaController.setLoader(true));
-  player.addEventListener('buffering', (_)=>mediaController.setLoader(_['buffering']));
+  player.addEventListener('buffering', (_)=>mediaController.setLoader(_['buffering'], false, true));
 }
 
 function initApp() {

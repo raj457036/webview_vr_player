@@ -59,7 +59,7 @@ class MediaMessageChannel {
     }
 
     onVideoPlaybackWaiting() {
-        this.controller.setLoader(true);
+        this.controller.setLoader(true, false, true);
     }
 
     subscribe(code, self = this) {
@@ -348,7 +348,7 @@ class MediaController {
         }
     }
 
-    setLoader(value, error=false) {
+    setLoader(value, error=false, buffering=false) {
         const spinner = $("#spinner");
 
         if (value === true)
@@ -360,6 +360,12 @@ class MediaController {
             spinner.addClass('error');
         } else {
             spinner.removeClass('error');
+        }
+
+        if (buffering) {
+            spinner.addClass('buffering');
+        } else {
+            spinner.removeClass('buffering');
         }
     }
     
