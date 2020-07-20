@@ -1,49 +1,63 @@
 .debugger {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 300px;
-    background-color: white;
-    overflow-y: auto;
-    padding-bottom: 30px;
-  }
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 300px;
+  background-color: white;
+  overflow-y: auto;
+  padding-bottom: 60px;
+  z-index: 10000;
+}
 
-  .inlog {
-    position: fixed;
-    bottom: 0;
-    z-index: 1000;
-    left: 0;
-    right: 0;
-  }
+.inlog {
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+  left: 0;
+  right: 0;
+}
 
-  .inlog input {
-    width: 80%;
+.inlog input {
+  width: 80%;
 
-  }
+}
 
-  .log-box {
-    border-bottom: 1px solid #eeeeee;
-    padding: 6px;
-    margin: 0;
-  }
+.log-box {
+  border-bottom: 1px solid #eeeeee;
+  padding: 6px;
+  margin: 0;
+}
 
-  .debugger .logs .error {
-    color: red;
-    background-color: rgba(255, 0, 0, 0.2);
-  }
+.debugger .logs .error {
+  color: red;
+  background-color: rgba(255, 0, 0, 0.2);
+}
 
-  .debugger .logs .log {
-    color: black;
-  }
+.debugger .logs .log {
+  color: black;
+}
 
-  .debugger .logs .info {
-    color: skyblue;
-    background-color: rgba(135, 207, 235, 0.2);
+.debugger .logs .info {
+  color: skyblue;
+  background-color: rgba(135, 207, 235, 0.2);
 
-  }
+}
 
-  .debugger .logs .warn {
-    color: orange;
-    background-color: rgba(255, 166, 0, 0.2);
-  }
+.debugger .logs .warn {
+  color: orange;
+  background-color: rgba(255, 166, 0, 0.2);
+}
+
+.inlog {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.inlog textarea {
+  width: 100%;
+}

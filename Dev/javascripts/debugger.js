@@ -57,6 +57,6 @@ function setupDebugger() {
 }
 
 function execute() {
-    const value = document.querySelector(".inlog input").value;
+    const value = document.querySelector("#consoleEditor").value;
     console.log(JSON.stringify(eval(value), null, 1));
 }
