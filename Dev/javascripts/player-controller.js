@@ -340,8 +340,11 @@ class MediaController {
 
 
         if (!this.__playerBuilt) {
+            this.__playerBuilt = true;
             $("body").append(_ascene);
             this.video = document.getElementById(this.videoID);
+        } else {
+            console.log('Player already built!!');
         }
     }
 
