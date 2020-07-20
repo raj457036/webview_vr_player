@@ -2,42 +2,45 @@
 <html>
 
 <head>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    
-    <title>360 VR Player</title>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
 
-    <script src="javascripts/aframe.min.js"></script>
-    <script src="javascripts/jquery.min.js"></script>
-    <script src="javascripts/mux.min.js"></script>
-    <script src="javascripts/hls.min.js"></script>
-    <script src="javascripts/shaka-player.compiled.min.js"></script>
-    <script src="javascripts/shaka-loader.min.js"></script>
-    <script src="javascripts/touch-support.min.js"></script>
-    <script src="javascripts/color-filter-controller.min.js"></script>
-    <script src="javascripts/player-controller.min.js"></script>
-    <script src="javascripts/debugger.min.js"></script>
+  <title>360 VR Player</title>
 
-    <link rel="stylesheet" href="stylesheets/style.css" />
-    <link rel="stylesheet" href="stylesheets/filters.css">
-    <link rel="stylesheet" href="stylesheets/debugger.css">
+  <script src="javascripts/aframe.min.js"></script>
+  <script src="javascripts/jquery.min.js"></script>
+  <script src="javascripts/mux.min.js"></script>
+  <script src="javascripts/hls.min.js"></script>
+  <script src="javascripts/shaka-player.compiled.min.js"></script>
+  <script src="javascripts/shaka-loader.min.js"></script>
+  <script src="javascripts/touch-support.min.js"></script>
+  <script src="javascripts/color-filter-controller.min.js"></script>
+  <script src="javascripts/player-controller.min.js"></script>
+  <script src="javascripts/debugger.min.js"></script>
+
+  <link rel="stylesheet" href="stylesheets/style.css" />
+  <link rel="stylesheet" href="stylesheets/filters.css">
+  <link rel="stylesheet" href="stylesheets/debugger.css">
 </head>
 
 <body>
 
-    <div class="debugger">
-      <div class="logs">
-      </div>
-      <div class="inlog">
-        <textarea id="consoleEditor"></textarea>
+  <div class="debugger">
+    <div class="logs">
+    </div>
+    <div class="inlog">
+      <textarea id="consoleEditor"></textarea>
+      <div class="btn-holder">
         <button onclick="execute()">Execute</button>
         <button onclick="mediaController.play()">play</button>
+        <button onclick="subscribeToAllEvents()">Subscribe All Events</button>
       </div>
     </div>
+  </div>
 
-    <div class="loader" id='spinner'></div>
+  <div class="loader" id='spinner'></div>
 
-    <svg>
+  <svg>
     <filter id="_color">
       <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0" />
     </filter>

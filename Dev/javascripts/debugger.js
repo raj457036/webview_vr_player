@@ -60,3 +60,8 @@ function execute() {
     const value = document.querySelector("#consoleEditor").value;
     console.log(JSON.stringify(eval(value), null, 1));
 }
+
+function subscribeToAllEvents() {
+    mediaController.channel.useConsoleForMessage = true;
+    mediaController.subscribeToAllEvents();
+}
