@@ -46,8 +46,10 @@ class MediaMessage {
 
 class MediaMessageChannel {
 
-    constructor(controller) {
+    constructor(controller,  useConsoleForMessage=false) {
         this.controller = controller;
+        this.useConsoleForMessage = useConsoleForMessage;
+        this.errorDisplayed = false;
     }
 
     onVideoPlaybackFailure() {
@@ -60,6 +62,16 @@ class MediaMessageChannel {
 
     onVideoPlaybackWaiting() {
         this.controller.setLoader(true, false, true);
+    }
+
+    onVideoEvents() {
+        const readyState = this.controller.video.readyState;
+
+        if (readyState === 4) {
+            this.onVideoPlaybackSuccess();
+        } else {
+            this.onVideoPlaybackWaiting();
+        }
     }
 
     subscribe(code, self = this) {
@@ -140,12 +152,14 @@ class MediaMessageChannel {
 
         if (code == MediaEvent.PLAYING) {
             vid.onplaying = function() {
+                this.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.PLAYING);
             };
         }
 
         if (code == MediaEvent.PROGRESS) {
             vid.onprogress = function() {
+                self.onVideoEvents();
                 self.sendMessage(MediaEvent.PROGRESS);
             };
         }
@@ -296,8 +310,15 @@ class MediaMessageChannel {
             this._postMessage(mediaMessage.getMessage());
             return true;
         } catch (error) {
-            console.warn("postMessage is not defined. Setting : MediaMessageChannel.postMessage = console.log");
-            MediaMessageChannel.postMessage = console.log;
+            if (this.useConsoleForMessage) {
+                console.warn("postMessage is not defined. Setting : MediaMessageChannel.postMessage = console.log");
+                MediaMessageChannel.postMessage = console.log;
+            }
+
+            else if (!this.errorDisplayed) {
+                console.warn("postMessage is not defined. Set : MediaMessageChannel.postMessage = someFunction");
+                this.errorDisplayed = true;
+            }
         }
 
         return false;
@@ -315,7 +336,7 @@ class MediaController {
         this.videoID = id;
         this.video = null;
         this.autoPlay = true;
-        this.channel = new MediaMessageChannel(this);
+        this.channel = new MediaMessageChannel(this, true);
         this.__playerBuilt = false;
     }
 
@@ -388,7 +409,7 @@ class MediaController {
             // Automatic playback started!
             console.log('playing...');
           }).catch(function(error) {
-            console.log("Native Decoder Failed: " ,JSON.stringify({
+            console.log("PlayBack Failed: " + JSON.stringify({
                 'code': error.code,
                 'message': error.message,
                 'name': error.name,
@@ -554,6 +575,19 @@ function processParams() {
             video_src=url,
         );
         playlist.streams[0] = url;
+
+        mediaController.subscribe(
+            MediaEvent.ABORTED,
+            MediaEvent.CAN_PLAY,
+            MediaEvent.CAN_PLAY_THROUGH,
+            MediaEvent.ERROR,
+            MediaEvent.LOADED_DATA,
+            MediaEvent.LOAD_START,
+            MediaEvent.PLAYING,
+            MediaEvent.STALLED,
+            MediaEvent.WAITING,
+            MediaEvent.PROGRESS,
+        );
         // init(true)
 
 
@@ -561,8 +595,6 @@ function processParams() {
             mediaController.play()
         } else {
             mediaController.autoPlay = false;
-            mediaController.channel.subscribeToBufferingEvents();
-            // mediaController.pause();
         }
 
         if (loop === 'true') {
@@ -579,11 +611,10 @@ function processParams() {
     } else {
         mediaController.setLoader(true, true);
     }
-
     
 }
 window.addEventListener('error', function(e) {
-    console.log("error detected: ", e);
+    console.log("Error Detected: " + JSON.stringify(e));
 });
 
 document.title = "";
