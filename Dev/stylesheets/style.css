@@ -4,6 +4,8 @@ body {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     background: #000000;
     overflow: hidden;
+    height: 100vh;
+    width: 100vw;
 }
 
 img {
@@ -28,19 +30,6 @@ a {
 
 ::-webkit-media-controls {
     display: none !important;
-}
-
-.a-enter-ar,
-.a-enter-vr {
-    font-family: sans-serif, monospace;
-    font-size: 13px;
-    width: 100%;
-    height: 20px;
-    font-weight: 200;
-    line-height: 16px;
-    position: absolute;
-    right: 20px;
-    bottom: 172px;
 }
 
 .balance {

@@ -46,7 +46,7 @@ class MediaMessage {
 
 class MediaMessageChannel {
 
-    constructor(controller,  useConsoleForMessage=false) {
+    constructor(controller, useConsoleForMessage = false) {
         this.controller = controller;
         this.useConsoleForMessage = useConsoleForMessage;
         this.errorDisplayed = false;
@@ -78,138 +78,137 @@ class MediaMessageChannel {
         const vid = this.controller.video;
 
         if (code == MediaEvent.ABORTED) {
-            vid.onabort = function() {
-                this.onVideoPlaybackSuccess();
+            vid.onabort = function () {
+                self.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.ABORTED);
             };
         }
 
         if (code == MediaEvent.CAN_PLAY) {
-            vid.oncanplay = function() {
-                this.onVideoPlaybackSuccess();
+            vid.oncanplay = function () {
+                self.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.CAN_PLAY);
             };
         }
 
         if (code == MediaEvent.CAN_PLAY_THROUGH) {
-
-            vid.oncanplaythrough = function() {
-                this.onVideoPlaybackSuccess();
+            vid.oncanplaythrough = function () {
+                self.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.CAN_PLAY_THROUGH);
             };
         }
 
         if (code == MediaEvent.DURATION_CHANGE) {
-            vid.ondurationchange = function() {
+            vid.ondurationchange = function () {
                 self.sendMessage(MediaEvent.DURATION_CHANGE);
             };
         }
 
         if (code == MediaEvent.ENDED) {
-            vid.onended = function() {
+            vid.onended = function () {
                 self.sendMessage(MediaEvent.ENDED);
             };
         }
 
         if (code == MediaEvent.ERROR) {
-            vid.onerror = function() {
-                this.onVideoPlaybackFailure();
+            vid.onerror = function () {
+                self.onVideoPlaybackFailure();
                 self.sendMessage(MediaEvent.ERROR);
             };
         }
 
         if (code == MediaEvent.LOADED_DATA) {
-            vid.onloadeddata = function() {
-                this.onVideoPlaybackSuccess();
+            vid.onloadeddata = function () {
+                self.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.LOADED_DATA);
             };
         }
 
         if (code == MediaEvent.LOADED_META_DATA) {
-            vid.onloadedmetadata = function() {
+            vid.onloadedmetadata = function () {
                 self.sendMessage(MediaEvent.LOADED_META_DATA);
             };
         }
 
         if (code == MediaEvent.LOAD_START) {
-            vid.onloadstart = function() {
-                this.onVideoPlaybackWaiting();
+            vid.onloadstart = function () {
+                self.onVideoPlaybackWaiting();
                 self.sendMessage(MediaEvent.LOAD_START);
             };
         }
 
         if (code == MediaEvent.PAUSE) {
-            vid.onpause = function() {
+            vid.onpause = function () {
                 self.sendMessage(MediaEvent.PAUSE);
             };
         }
 
         if (code == MediaEvent.PLAY) {
-            vid.onplay = function() {
+            vid.onplay = function () {
                 self.sendMessage(MediaEvent.PLAY);
             };
         }
 
         if (code == MediaEvent.PLAYING) {
-            vid.onplaying = function() {
-                this.onVideoPlaybackSuccess();
+            vid.onplaying = function () {
+                self.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.PLAYING);
             };
         }
 
         if (code == MediaEvent.PROGRESS) {
-            vid.onprogress = function() {
+            vid.onprogress = function () {
                 self.onVideoEvents();
                 self.sendMessage(MediaEvent.PROGRESS);
             };
         }
 
         if (code == MediaEvent.RATE_CHANGE) {
-            vid.onratechange = function() {
+            vid.onratechange = function () {
                 self.sendMessage(MediaEvent.RATE_CHANGE);
             }
         }
 
         if (code == MediaEvent.SEEKED) {
-            vid.onseeked = function() {
+            vid.onseeked = function () {
                 self.sendMessage(MediaEvent.SEEKED);
             };
         }
 
         if (code == MediaEvent.SEEKING) {
-            vid.onseeking = function() {
+            vid.onseeking = function () {
                 self.sendMessage(MediaEvent.SEEKING);
             };
         }
 
         if (code == MediaEvent.STALLED) {
-            vid.onstalled = function() {
-                this.onVideoPlaybackFailure();
+            vid.onstalled = function () {
+                self.onVideoPlaybackFailure();
                 self.sendMessage(MediaEvent.STALLED);
             };
         }
 
         if (code == MediaEvent.SUSPEND) {
-            vid.onsuspend = function() {
+            vid.onsuspend = function () {
                 self.sendMessage(MediaEvent.SUSPEND);
             };
         }
 
         if (code == MediaEvent.TIME_UPDATE) {
-            vid.ontimeupdate = function() {
+            vid.ontimeupdate = function () {
                 self.sendMessage(MediaEvent.TIME_UPDATE);
             };
         }
 
         if (code == MediaEvent.VOLUME_CHANGE) {
-            vid.onvolumechange = function() {
+            vid.onvolumechange = function () {
                 self.sendMessage(MediaEvent.VOLUME_CHANGE);
             };
         }
 
         if (code == MediaEvent.WAITING) {
-            vid.onwaiting = function() {
-                this.onVideoPlaybackWaiting();
+            vid.onwaiting = function () {
+                self.onVideoPlaybackWaiting();
                 self.sendMessage(MediaEvent.WAITING);
             };
         }
@@ -313,9 +312,7 @@ class MediaMessageChannel {
             if (this.useConsoleForMessage) {
                 console.warn("postMessage is not defined. Setting : MediaMessageChannel.postMessage = console.log");
                 MediaMessageChannel.postMessage = console.log;
-            }
-
-            else if (!this.errorDisplayed) {
+            } else if (!this.errorDisplayed) {
                 console.warn("postMessage is not defined. Set : MediaMessageChannel.postMessage = someFunction");
                 this.errorDisplayed = true;
             }
@@ -336,11 +333,11 @@ class MediaController {
         this.videoID = id;
         this.video = null;
         this.autoPlay = true;
-        this.channel = new MediaMessageChannel(this, true);
+        this.channel = new MediaMessageChannel(this);
         this.__playerBuilt = false;
     }
 
-    buildPlayer(autoplay=true, vrBtn=true, iosPerm=true, video_src=null) {
+    buildPlayer(autoplay = true, vrBtn = true, iosPerm = true, video_src = null) {
         const _ascene = `
         <a-scene 
             loading-screen="dotsColor: white; backgroundColor: black" 
@@ -362,14 +359,14 @@ class MediaController {
 
         if (!this.__playerBuilt) {
             this.__playerBuilt = true;
-            $("body").append(_ascene);
+            $("body").prepend(_ascene);
             this.video = document.getElementById(this.videoID);
         } else {
             console.log('Player already built!!');
         }
     }
 
-    setLoader(value, error=false, buffering=false) {
+    setLoader(value, error = false, buffering = false) {
         const spinner = $("#spinner");
 
         if (value === true)
@@ -389,7 +386,7 @@ class MediaController {
             spinner.removeClass('buffering');
         }
     }
-    
+
     // Methods
 
     seek(by_time) {
@@ -405,10 +402,10 @@ class MediaController {
     }
 
     play(time) {
-        this.video.play().then(function() {
+        this.video.play().then(function () {
             // Automatic playback started!
-            console.log('playing...');
-          }).catch(function(error) {
+            console.log('playing...'); 
+        }).catch(function (error) {
             console.log("PlayBack Failed: " + JSON.stringify({
                 'code': error.code,
                 'message': error.message,
@@ -416,8 +413,8 @@ class MediaController {
             }));
             if (error.code === 9) {
                 hlsLoad();
-            } 
-          });
+            }
+        });
 
         if (time) {
             this.video.currentTime = time;
@@ -552,44 +549,31 @@ function processParams() {
 
         const errorMsg = console.error;
 
-        console.error = function(msg) {
+        console.error = function (msg) {
             if (msg.toString() === "THREE.WebGLState:") {
                 init();
             }
             errorMsg(msg);
         }
 
-    } else {{
-        window.Hls.DefaultConfig['debug'] = true;
-        setupDebugger();
-    }}
+    } else {
+        {
+            window.Hls.DefaultConfig['debug'] = true;
+            setupDebugger();
+        }
+    }
 
     window.mediaController = new MediaController('video_player_id');
     window.mediaFilter = new MediaColorFilter('scene_id');
-
+    mediaController.buildPlayer(
+        autoplay = autoPlay !== 'false',
+        vrBtn = VRBtn !== 'false',
+        iosPerm = iosPermissions !== 'false',
+        video_src = url,
+    );
     if (url !== null) {
-        mediaController.buildPlayer(
-            autoplay= autoPlay !== 'false', 
-            vrBtn= VRBtn !== 'false', 
-            iosPerm=iosPermissions !== 'false', 
-            video_src=url,
-        );
         playlist.streams[0] = url;
-
-        mediaController.subscribe(
-            MediaEvent.ABORTED,
-            MediaEvent.CAN_PLAY,
-            MediaEvent.CAN_PLAY_THROUGH,
-            MediaEvent.ERROR,
-            MediaEvent.LOADED_DATA,
-            MediaEvent.LOAD_START,
-            MediaEvent.PLAYING,
-            MediaEvent.STALLED,
-            MediaEvent.WAITING,
-            MediaEvent.PROGRESS,
-        );
         // init(true)
-
 
         if (autoPlay !== 'false') {
             mediaController.play()
@@ -611,9 +595,21 @@ function processParams() {
     } else {
         mediaController.setLoader(true, true);
     }
-    
+
+    mediaController.subscribe(
+        MediaEvent.ABORTED,
+        MediaEvent.CAN_PLAY,
+        MediaEvent.CAN_PLAY_THROUGH,
+        MediaEvent.ERROR,
+        MediaEvent.LOADED_DATA,
+        MediaEvent.LOAD_START,
+        MediaEvent.PLAYING,
+        MediaEvent.STALLED,
+        MediaEvent.WAITING,
+        MediaEvent.PROGRESS,
+    );
 }
-window.addEventListener('error', function(e) {
+window.addEventListener('error', function (e) {
     console.log("Error Detected: " + JSON.stringify(e));
 });
 
