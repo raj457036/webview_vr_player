@@ -43,6 +43,7 @@ function initPlayer() {
 function doPlay(player, src) {
   player.load(src.manifest).then(function () {
     console.log("Manifest Loaded Successfully");
+    mediaController.play();
   }).catch(onError);
 }
 
@@ -172,6 +173,7 @@ function configPlayer() {
 }
 
 function hlsLoad(stream) {
+  mediaController.setLoader(true);
   console.log('Native Player Failed... Switching to Decoder 1');
 
   if (Hls.isSupported()) {
@@ -184,6 +186,7 @@ function hlsLoad(stream) {
     hls.attachMedia(video);
     hls.on(Hls.Events.MANIFEST_PARSED, function () {
       console.log("MANIFEST_PARSED");
+      video.play();
     });
     hls.on(Hls.Events.ERROR, (event, data) => onHlsError(hls, event, data));
     setupEvents(hls);
