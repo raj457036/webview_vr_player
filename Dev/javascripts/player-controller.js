@@ -183,7 +183,7 @@ class MediaMessageChannel {
 
         if (code == MediaEvent.STALLED) {
             vid.onstalled = function () {
-                self.onVideoPlaybackFailure();
+                self.onVideoPlaybackWaiting();
                 self.sendMessage(MediaEvent.STALLED);
             };
         }
