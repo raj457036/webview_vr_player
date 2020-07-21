@@ -624,9 +624,9 @@ function processParams() {
         MediaEvent.PROGRESS,
     );
 }
-window.addEventListener('error', function (e) {
-    console.log("Error Detected: " + JSON.stringify(e));
-});
+// window.addEventListener('error', function (e) {
+//     console.log("Error Detected: " + JSON.stringify(e));
+// });
 
 document.title = "";
 document.addEventListener('DOMContentLoaded', processParams);
