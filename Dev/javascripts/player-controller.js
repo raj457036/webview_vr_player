@@ -574,7 +574,6 @@ function processParams() {
     } else {
         window.Hls.DefaultConfig['debug'] = true;
         setupDebugger();
-        subscribeToAllEvents();
     }
 
     window.mediaController = new MediaController('video_player_id');
@@ -622,6 +621,10 @@ function processParams() {
         MediaEvent.WAITING,
         MediaEvent.PROGRESS,
     );
+
+    if (debug === 'true') {
+        subscribeToAllEvents();
+    }
 }
 // window.addEventListener('error', function (e) {
 //     console.log("Error Detected: " + JSON.stringify(e));
