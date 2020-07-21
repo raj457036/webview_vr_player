@@ -196,6 +196,7 @@ class MediaMessageChannel {
 
         if (code == MediaEvent.TIME_UPDATE) {
             vid.ontimeupdate = function () {
+                self.onVideoEvents();
                 self.sendMessage(MediaEvent.TIME_UPDATE);
             };
         }
@@ -266,7 +267,7 @@ class MediaMessageChannel {
         }
 
         if (code == MediaEvent.PROGRESS) {
-            vid.onprogress = null;
+            vid.onprogress = this.onVideoEvents();
         }
 
         if (code == MediaEvent.RATE_CHANGE) {
@@ -290,7 +291,7 @@ class MediaMessageChannel {
         }
 
         if (code == MediaEvent.TIME_UPDATE) {
-            vid.ontimeupdate = null;
+            vid.ontimeupdate = this.onVideoEvents();
         }
 
         if (code == MediaEvent.VOLUME_CHANGE) {
