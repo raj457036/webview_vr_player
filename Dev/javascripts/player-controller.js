@@ -421,6 +421,7 @@ class MediaController {
             // Automatic playback started!
             console.log('playing...'); 
         }).catch(function (error) {
+            mediaController.setLoader(true);
             console.log("PlayBack Failed: " + JSON.stringify({
                 'code': error.code,
                 'message': error.message,

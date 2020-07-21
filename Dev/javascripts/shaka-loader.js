@@ -173,7 +173,6 @@ function configPlayer() {
 }
 
 function hlsLoad(stream) {
-  mediaController.setLoader(true);
   console.log('Native Player Failed... Switching to Decoder 1');
 
   if (Hls.isSupported()) {
