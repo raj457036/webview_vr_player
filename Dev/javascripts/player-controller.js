@@ -70,10 +70,11 @@ class MediaMessageChannel {
     }
 
     retryPlay() {
+        self = this;
         if (this._timeout) clearTimeout(this._timeout);
         this._timeout = setTimeout(() => {
-            this.controller.video.load();
-            this.controller.play();
+            self.controller.video.load();
+            self.controller.play();
         }, 3000);
     }
 
