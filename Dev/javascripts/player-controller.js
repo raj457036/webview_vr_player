@@ -572,10 +572,9 @@ function processParams() {
         }
 
     } else {
-        {
-            window.Hls.DefaultConfig['debug'] = true;
-            setupDebugger();
-        }
+        window.Hls.DefaultConfig['debug'] = true;
+        setupDebugger();
+        subscribeToAllEvents();
     }
 
     window.mediaController = new MediaController('video_player_id');
