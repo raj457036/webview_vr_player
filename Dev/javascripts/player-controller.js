@@ -352,7 +352,7 @@ class MediaController {
         this.__playerBuilt = false;
     }
 
-    buildPlayer(autoplay = true, vrBtn = true, iosPerm = true, video_src = null) {
+    buildPlayer(autoplay = true, vrBtn = true, iosPerm = true, video_src = null, muted=true) {
         const _ascene = `
         <a-scene 
             loading-screen="dotsColor: white; backgroundColor: black" 
@@ -365,7 +365,7 @@ class MediaController {
             <a-assets>
                 <video 
                 src="${video_src}"
-                id="video_player_id" autoplay="${autoplay}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
+                id="video_player_id" autoplay="${autoplay}" muted="${muted}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
             </a-assets>
             <a-videosphere src="#video_player_id" width="16" height="9" position="0 0 0">
             </a-videosphere>
@@ -513,6 +513,16 @@ class MediaController {
         for (var code of codes) {
             this.channel.unsubscribe(code);
         }
+        return "";
+    }
+
+    mute() {
+        this.video.muted = true;
+        return "";
+    }
+
+    unmute() {
+        this.video.muted = false;
         return "";
     }
 
