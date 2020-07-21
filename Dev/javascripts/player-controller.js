@@ -50,6 +50,7 @@ class MediaMessageChannel {
         this.controller = controller;
         this.useConsoleForMessage = useConsoleForMessage;
         this.errorDisplayed = false;
+        this._timeout = null;
     }
 
     onVideoPlaybackFailure() {
@@ -60,8 +61,20 @@ class MediaMessageChannel {
         this.controller.setLoader(false);
     }
 
-    onVideoPlaybackWaiting() {
+    onVideoPlaybackWaiting(stalled=true) {
         this.controller.setLoader(true, false, true);
+
+        if(stalled) {
+            retryPlay();
+        }
+    }
+
+    retryPlay() {
+        if (this._timeout) clearTimeout(this._timeout);
+        this._timeout = setTimeout(() => {
+            this.controller.video.load();
+            this.controller.play();
+        }, 3000);
     }
 
     onVideoEvents() {
@@ -183,7 +196,7 @@ class MediaMessageChannel {
 
         if (code == MediaEvent.STALLED) {
             vid.onstalled = function () {
-                self.onVideoPlaybackWaiting();
+                self.onVideoPlaybackWaiting(stalled=true);
                 self.sendMessage(MediaEvent.STALLED);
             };
         }
