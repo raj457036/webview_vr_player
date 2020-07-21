@@ -65,7 +65,7 @@ class MediaMessageChannel {
         this.controller.setLoader(true, false, true);
 
         if(stalled) {
-            retryPlay();
+            this.retryPlay();
         }
     }
 
