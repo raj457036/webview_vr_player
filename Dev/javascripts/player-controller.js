@@ -426,7 +426,7 @@ class MediaController {
                 'message': error.message,
                 'name': error.name,
             }));
-            if (error.code === 9) {
+            if (error.message === "Failed to load because no supported source was found.") {
                 hlsLoad();
             }
         });
