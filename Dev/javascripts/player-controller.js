@@ -61,7 +61,7 @@ class MediaMessageChannel {
         this.controller.setLoader(false);
     }
 
-    onVideoPlaybackWaiting(stalled=true) {
+    onVideoPlaybackWaiting(stalled=false) {
         this.controller.setLoader(true, false, true);
 
         if(stalled) {
