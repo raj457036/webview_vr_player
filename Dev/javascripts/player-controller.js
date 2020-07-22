@@ -427,7 +427,8 @@ class MediaController {
                 'message': error.message,
                 'name': error.name,
             }));
-            if (error.message === "Failed to load because no supported source was found.") {
+            if (error.message === "Failed to load because no supported source was found."
+             || error.message == "The element has no supported sources.") {
                 hlsLoad();
             }
         });
@@ -599,8 +600,10 @@ function processParams() {
         playlist.streams[0] = url;
         // init(true)
 
-        if (autoPlay !== 'false') {
-            mediaController.play()
+        if (autoPlay !== 'false' && mediaController.paused) {
+            setTimeout(() => {
+                mediaController.play();
+            }, 3000);
         } else {
             mediaController.autoPlay = false;
         }
