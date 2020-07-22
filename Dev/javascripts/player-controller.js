@@ -600,9 +600,9 @@ function processParams() {
         playlist.streams[0] = url;
         // init(true)
 
-        if (autoPlay !== 'false' && mediaController.paused) {
+        if (autoPlay !== 'false') {
             setTimeout(() => {
-                mediaController.play();
+                if(mediaController.currentTime() < 1.0) mediaController.play();
             }, 3000);
         } else {
             mediaController.autoPlay = false;
