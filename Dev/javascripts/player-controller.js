@@ -409,6 +409,8 @@ class MediaController {
 
             if (fullscreen) this.switchToFullScreen();
         }
+
+        return "";
     }
 
     switchToFullScreen(out = false) {
@@ -417,6 +419,8 @@ class MediaController {
         } else {
             $(".flat-video").removeClass("full-screen-video");
         }
+
+        return "";
     }
     
     viewInMono() {
@@ -432,6 +436,8 @@ class MediaController {
             this.video.load();
             this.play();
         }
+
+        return "";
     }
 
     setLoader(value, error = false, buffering = false) {
