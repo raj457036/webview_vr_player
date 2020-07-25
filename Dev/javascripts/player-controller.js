@@ -383,6 +383,10 @@ class MediaController {
         }
     }
 
+    get isFlat() {
+        return !this.__playerBuilt;
+    }
+
     viewInFlat(fullscreen=false) {
         if(this.__playerBuilt) {
             this.setLoader(true);
