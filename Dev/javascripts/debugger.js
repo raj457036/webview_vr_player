@@ -56,6 +56,13 @@ function setupDebugger() {
     console.dirxml = logMessage;
 }
 
+function destroyDebugger() {
+     console.error = console.errorLog;
+     console.log = console.norLog;
+     console.info = console.infoLog;
+     console.warn = console.warnLog;
+}
+
 function execute() {
     const value = document.querySelector("#consoleEditor").value;
     console.log(JSON.stringify(eval(value), null, 1));

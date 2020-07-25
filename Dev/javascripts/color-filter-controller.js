@@ -33,13 +33,13 @@ Object.freeze(ColorFilter);
 
 
 class MediaColorFilter {
-    constructor(elm_id) {
-        this.elm_id = elm_id;
+    constructor(elm_class) {
+        this.elm_class = elm_class;
     }
 
     applyFilter(colorFilterCode) {
 
-        const elm = document.querySelector(`#${this.elm_id}`);
+        const elm = document.querySelector(`.${this.elm_class}`);
         elm.style.filter = "";
         elm.style.webkitFilter = "";
         elm.className = `${colorFilterCode}`;

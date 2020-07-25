@@ -350,15 +350,17 @@ class MediaController {
         this.autoPlay = true;
         this.channel = new MediaMessageChannel(this);
         this.__playerBuilt = false;
+        this.src = null;
     }
 
-    buildPlayer(autoplay = true, vrBtn = true, iosPerm = true, video_src = null, muted=true) {
+    build360Player(autoplay = true, vrBtn = true, iosPerm = true, video_src = null, muted=true) {
         const _ascene = `
         <a-scene 
             loading-screen="dotsColor: white; backgroundColor: black" 
             vr-mode-ui="enabled: ${vrBtn}" 
             ar-mode-ui="enabled: false" 
             id="scene_id"
+            class="player"
             device-orientation-permission-ui="enabled: ${iosPerm}"
         >
             <a-entity camera="user-height: 1.6;" touch-look-controls></a-entity>
@@ -367,17 +369,68 @@ class MediaController {
                 src="${video_src}"
                 id="video_player_id" autoplay="${autoplay}" muted="${muted}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
             </a-assets>
-            <a-videosphere src="#video_player_id" width="16" height="9" position="0 0 0">
-            </a-videosphere>
+            <a-videosphere id="videosphere" src="#video_player_id"></a-videosphere>
         </a-scene>`;
 
 
         if (!this.__playerBuilt) {
             this.__playerBuilt = true;
+            this.src = video_src;
             $("body").prepend(_ascene);
             this.video = document.getElementById(this.videoID);
         } else {
             console.log('Player already built!!');
+        }
+    }
+
+    viewInFlat(fullscreen=false) {
+        if(this.__playerBuilt) {
+            this.setLoader(true);
+            let self = this;
+            this.__playerBuilt = false;
+            this.video.pause();
+            this.video.src = "";
+            $("#scene_id").replaceWith(`
+            <video 
+                id="${self.videoID}" 
+                class="flat-video player" 
+                src="${self.src}" 
+                autoplay="true" 
+                muted="true" 
+                playsinline 
+                webkit-playsinline 
+                preload="auto" 
+                crossorigin="anonymous"></video>
+            `);
+            this.video = document.getElementById(this.videoID);
+            this.video.src = this.src;
+            this.video.load();
+            this.play();
+
+            if (fullscreen) this.switchToFullScreen();
+        }
+    }
+
+    switchToFullScreen(out = false) {
+        if(!this.__playerBuilt && !out) {
+            $(".flat-video").addClass("full-screen-video");
+        } else {
+            $(".flat-video").removeClass("full-screen-video");
+        }
+    }
+    
+    viewInMono() {
+        if (!this.__playerBuilt) {
+            this.setLoader(true);
+            let self = this;
+            this.video.pause();
+            this.video.src = "";
+            $("#video_player_id").remove();
+            this.build360Player();
+            this.video = document.getElementById(this.videoID);
+            this.video.src = this.src;
+            this.video.load();
+            this.play();
         }
     }
 
@@ -417,6 +470,7 @@ class MediaController {
     }
 
     play(time) {
+        this.subscribeToBufferingEvents();
         this.video.play().then(function () {
             // Automatic playback started!
             console.log('playing...'); 
@@ -528,6 +582,21 @@ class MediaController {
         return "";
     }
 
+    subscribeToBufferingEvents() {
+        this.subscribe(
+            MediaEvent.ABORTED,
+            MediaEvent.CAN_PLAY,
+            MediaEvent.CAN_PLAY_THROUGH,
+            MediaEvent.ERROR,
+            MediaEvent.LOADED_DATA,
+            MediaEvent.LOAD_START,
+            MediaEvent.PLAYING,
+            MediaEvent.STALLED,
+            MediaEvent.WAITING,
+            MediaEvent.PROGRESS,
+        );
+    }
+
     // getters
     get state() {
         return this.video.readyState;
@@ -564,7 +633,9 @@ function processParams() {
     const autoPlay = getUrlParameter('autoPlay');
     const loop = getUrlParameter('loop');
     const debug = getUrlParameter('debug');
+    const debugConsole = getUrlParameter('console');
     const iosPermissions = getUrlParameter('iosPerm');
+
 
     if (iosPermissions === 'false') {
         $('a-scene').attr("device-orientation-permission-ui", "enabled: false");
@@ -585,12 +656,16 @@ function processParams() {
 
     } else {
         window.Hls.DefaultConfig['debug'] = true;
-        setupDebugger();
+        if (debugConsole === 'false') {
+            $('.debugger').hide();
+        } else {
+            setupDebugger();
+        }
     }
 
     window.mediaController = new MediaController('video_player_id');
-    window.mediaFilter = new MediaColorFilter('scene_id');
-    mediaController.buildPlayer(
+    window.mediaFilter = new MediaColorFilter('player');
+    mediaController.build360Player(
         autoplay = autoPlay !== 'false',
         vrBtn = VRBtn !== 'false',
         iosPerm = iosPermissions !== 'false',
@@ -623,18 +698,7 @@ function processParams() {
         mediaController.setLoader(true, true);
     }
 
-    mediaController.subscribe(
-        MediaEvent.ABORTED,
-        MediaEvent.CAN_PLAY,
-        MediaEvent.CAN_PLAY_THROUGH,
-        MediaEvent.ERROR,
-        MediaEvent.LOADED_DATA,
-        MediaEvent.LOAD_START,
-        MediaEvent.PLAYING,
-        MediaEvent.STALLED,
-        MediaEvent.WAITING,
-        MediaEvent.PROGRESS,
-    );
+    mediaController.subscribeToBufferingEvents();
 
     if (debug === 'true') {
         subscribeToAllEvents();

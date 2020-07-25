@@ -1,4 +1,4 @@
-body {
+body, #_frame {
     padding: 0;
     margin: 0;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -73,3 +73,15 @@ a {
         transform: rotate(360deg);
     }
 }
+
+.full-screen-video {
+    transform: rotate(90deg);
+    transform-origin: bottom left;
+    width: 100vh;
+    height: 100vw;
+    margin-top: -100vw;
+    object-fit: cover;
+    z-index: 4;
+    visibility: visible;
+}
+
