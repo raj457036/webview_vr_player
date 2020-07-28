@@ -379,16 +379,15 @@ class MediaController {
         if (flat) {
             this.resetCamera();
             videosphere.setAttribute("geometry", 'primitive', 'plane');     
-            videosphere.setAttribute("position", "0 1.6 -0.599");
+            videosphere.setAttribute("position", "0 1.6 -1.185");
             videosphere.setAttribute("rotation", `0 180 ${rotation || 0}`);
             videosphere.setAttribute("geometry","width", aspectRatio);
             setTimeout(()=>this.toggleTouch(false), 100);
         } else {
             videosphere.setAttribute("geometry", 'primitive', 'sphere');
             videosphere.setAttribute("position", "0 1.6 0");
-            videosphere.removeAttribute("height");
-            videosphere.removeAttribute("width");
-            videosphere.setAttribute("rotation", '0 0 0');
+            videosphere.setAttribute("height", window.innerHeight);
+            videosphere.setAttribute("width", window.innerWidth);
             setTimeout(()=>this.toggleTouch(true), 100);
         }
     }
@@ -409,7 +408,7 @@ class MediaController {
                 id="${this.videoID}" autoplay="${autoplay}" muted="${muted}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
             </a-assets>
             <a-entity id="camera" camera="active: true" position="0 1.6 0" touch-look-controls></a-entity>
-            <a-videosphere id="videosphere" src="#${this.videoID}" geometry="radius:50" rotation="0 0 0" position="0 1.6 0"></a-videosphere>
+            <a-videosphere id="videosphere" src="#${this.videoID}"></a-videosphere>
 
         </a-scene>`;
 
