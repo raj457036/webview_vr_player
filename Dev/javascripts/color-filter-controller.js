@@ -49,8 +49,7 @@ class MediaColorFilter {
 
 
     filter(sepia, saturation, brightness, contrast, hue) {
-        const elm = document.querySelector(`#${this.elm_id}`);
-        console.log(elm);
+        const elm = document.querySelector(`.${this.elm_class}`);
         let filter = `sepia(${sepia || 0}) saturate(${saturation || 100}%) brightness(${brightness || 1}) contrast(${contrast || 1}) hue-rotate(${hue || 0}deg)`;
         elm.style.filter = filter;
         elm.style.webkitFilter = filter;
