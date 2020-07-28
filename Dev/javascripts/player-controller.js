@@ -344,9 +344,8 @@ class MediaMessageChannel {
 
 class MediaController {
 
-    constructor(id, flatId) {
+    constructor(id) {
         this.videoID = id;
-        this.videoFlatId = flatId;
         this.video = null;
         this.autoPlay = true;
         this.channel = new MediaMessageChannel(this);
@@ -672,14 +671,15 @@ function processParams() {
         }
     }
 
-    window.mediaController = new MediaController('video_player_id', 'flat_video_player_id');
-    window.mediaFilter = new MediaColorFilter('player');
+    window.mediaController = new MediaController('video_player_id');
+    
     mediaController.build360Player(
         autoplay = autoPlay !== 'false',
         vrBtn = VRBtn !== 'false',
         iosPerm = iosPermissions !== 'false',
         video_src = url,
     );
+    
     if (url !== null) {
         playlist.streams[0] = url;
         // init(true)
@@ -712,6 +712,8 @@ function processParams() {
     if (debug === 'true') {
         subscribeToAllEvents();
     }
+
+    window.mediaFilter = new MediaColorFilter('player');
 }
 // window.addEventListener('error', function (e) {
 //     console.log("Error Detected: " + JSON.stringify(e));
