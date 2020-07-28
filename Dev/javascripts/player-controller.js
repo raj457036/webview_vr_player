@@ -411,7 +411,7 @@ class MediaController {
             <a-assets>
                 <video 
                 src="${video_src}"
-                id="${this.videoID}" ${autoplay ? 'autoplay': ''} muted="${muted}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
+                id="${this.videoID}" autoplay="${autoplay}" muted="${muted}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
             </a-assets>
             <a-entity id="camera" camera="active: true" position="0 1.6 0" touch-look-controls></a-entity>
             <a-videosphere id="videosphere" src="#${this.videoID}"></a-videosphere>
@@ -425,10 +425,6 @@ class MediaController {
             $("body").prepend(_ascene);
             this.video = document.getElementById(this.videoID);
             this.cam = document.querySelector("#camera");
-            
-            if(autoplay) {
-                this.play();
-            }
         } else {
             console.log('Player already built!!');
         }
