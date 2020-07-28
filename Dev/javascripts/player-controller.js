@@ -390,7 +390,7 @@ class MediaController {
             setTimeout(()=>this.toggleTouch(false), 100);
         } else {
             videosphere.setAttribute("geometry", 'primitive', 'sphere');
-            videosphere.setAttribute("position", "0 1.6 0");
+            videosphere.setAttribute("position", "0 0 0");
             videosphere.setAttribute("rotation", `0 0 0`);
             videosphere.setAttribute("height", window.innerHeight);
             videosphere.setAttribute("width", window.innerWidth);
@@ -411,7 +411,7 @@ class MediaController {
             <a-assets>
                 <video 
                 src="${video_src}"
-                id="${this.videoID}" autoplay="${autoplay}" muted="${muted}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
+                id="${this.videoID}" muted="${muted}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
             </a-assets>
             <a-entity id="camera" camera="active: true" position="0 1.6 0" touch-look-controls></a-entity>
             <a-videosphere id="videosphere" src="#${this.videoID}"></a-videosphere>
@@ -425,6 +425,10 @@ class MediaController {
             $("body").prepend(_ascene);
             this.video = document.getElementById(this.videoID);
             this.cam = document.querySelector("#camera");
+            
+            if(autoplay) {
+                this.play();
+            }
         } else {
             console.log('Player already built!!');
         }
@@ -492,21 +496,28 @@ class MediaController {
 
     play(time) {
         this.subscribeToBufferingEvents();
-        this.video.play().then(function () {
-            // Automatic playback started!
-            console.log('playing...'); 
-        }).catch(function (error) {
-            mediaController.setLoader(true);
-            console.log("PlayBack Failed: " + JSON.stringify({
-                'code': error.code,
-                'message': error.message,
-                'name': error.name,
-            }));
-            if (error.message === "Failed to load because no supported source was found."
-             || error.message == "The element has no supported sources.") {
-                hlsLoad();
-            }
-        });
+        const scene = document.querySelector("#scene_id");
+
+        if (scene.isMobile && !scene.isIOS) {
+            hlsLoad();
+        } 
+        else {
+            this.video.play().then(function () {
+                // Automatic playback started!
+                console.log('playing...'); 
+            }).catch(function (error) {
+                mediaController.setLoader(true);
+                console.log("PlayBack Failed: " + JSON.stringify({
+                    'code': error.code,
+                    'message': error.message,
+                    'name': error.name,
+                }));
+                if (error.message === "Failed to load because no supported source was found."
+                 || error.message == "The element has no supported sources.") {
+                    hlsLoad();
+                }
+            });
+        }
 
         if (time) {
             this.video.currentTime = time;
