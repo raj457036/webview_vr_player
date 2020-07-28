@@ -497,27 +497,22 @@ class MediaController {
     play(time) {
         this.subscribeToBufferingEvents();
         const scene = document.querySelector("#scene_id");
-
-        if (scene.isMobile && !scene.isIOS) {
-            hlsLoad();
-        } 
-        else {
-            this.video.play().then(function () {
-                // Automatic playback started!
-                console.log('playing...'); 
-            }).catch(function (error) {
-                mediaController.setLoader(true);
-                console.log("PlayBack Failed: " + JSON.stringify({
-                    'code': error.code,
-                    'message': error.message,
-                    'name': error.name,
-                }));
-                if (error.message === "Failed to load because no supported source was found."
-                 || error.message == "The element has no supported sources.") {
-                    hlsLoad();
-                }
-            });
-        }
+        mediaController.setLoader(true);
+        this.video.play().then(function () {
+            // Automatic playback started!
+            console.log('playing...'); 
+        }).catch(function (error) {
+            mediaController.setLoader(true);
+            console.log("PlayBack Failed: " + JSON.stringify({
+                'code': error.code,
+                'message': error.message,
+                'name': error.name,
+            }));
+            if (error.message === "Failed to load because no supported source was found."
+             || error.message == "The element has no supported sources.") {
+                hlsLoad();
+            }
+        });
 
         if (time) {
             this.video.currentTime = time;
