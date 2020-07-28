@@ -424,7 +424,6 @@ class MediaController {
         if(this.__playerBuilt) {
 
             const ar = aspectRatio || (fullscreen ? window.innerHeight/window.innerWidth : window.innerWidth/window.innerHeight);
-            this.setLoader(true);
 
             if (fullscreen) this.togglePlayer(true, ar, 90);
             else this.togglePlayer(true, ar);
@@ -435,7 +434,6 @@ class MediaController {
     
     viewInMono() {
         if (this.__playerBuilt) {
-            this.setLoader(true);
             this.togglePlayer(false);
         }
 
