@@ -411,7 +411,7 @@ class MediaController {
             <a-assets>
                 <video 
                 src="${video_src}"
-                id="${this.videoID}" muted="${muted}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
+                id="${this.videoID}" ${autoplay ? 'autoplay': ''} muted="${muted}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
             </a-assets>
             <a-entity id="camera" camera="active: true" position="0 1.6 0" touch-look-controls></a-entity>
             <a-videosphere id="videosphere" src="#${this.videoID}"></a-videosphere>
@@ -496,7 +496,6 @@ class MediaController {
 
     play(time) {
         this.subscribeToBufferingEvents();
-        const scene = document.querySelector("#scene_id");
         mediaController.setLoader(true);
         this.video.play().then(function () {
             // Automatic playback started!
