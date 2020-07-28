@@ -113,7 +113,12 @@ class MediaMessageChannel {
                 self.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.CAN_PLAY);
             };
-            vid.addEventListener("canplay", self.videoHackListener);
+            
+            const scene = document.querySelector("#scene_id");
+
+            if (scene.isIOS) {
+                vid.addEventListener("canplay", self.videoHackListener);
+            }
         }
 
         if (code == MediaEvent.CAN_PLAY_THROUGH) {
@@ -386,6 +391,7 @@ class MediaController {
         } else {
             videosphere.setAttribute("geometry", 'primitive', 'sphere');
             videosphere.setAttribute("position", "0 1.6 0");
+            videosphere.setAttribute("rotation", `0 0 0`);
             videosphere.setAttribute("height", window.innerHeight);
             videosphere.setAttribute("width", window.innerWidth);
             setTimeout(()=>this.toggleTouch(true), 100);
