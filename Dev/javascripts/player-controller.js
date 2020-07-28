@@ -53,6 +53,16 @@ class MediaMessageChannel {
         this._timeout = null;
     }
 
+    videoHackListener () {
+        const vid = document.querySelector("video");
+        console.log("resized");
+        setTimeout(function () {
+            const scene = document.querySelector("#scene_id");
+            scene.renderer.setSize(scene.canvas.width, scene.canvas.height);
+        }, 500); // ugly but aframe's 100ms was not enough in my testing
+        vid.removeEventListener('canplay', this.videoHackListener);
+    }
+
     onVideoPlaybackFailure() {
         this.controller.setLoader(true, true);
     }
@@ -103,6 +113,7 @@ class MediaMessageChannel {
                 self.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.CAN_PLAY);
             };
+            vid.addEventListener("canplay", self.videoHackListener);
         }
 
         if (code == MediaEvent.CAN_PLAY_THROUGH) {
@@ -378,7 +389,6 @@ class MediaController {
             videosphere.removeAttribute("height");
             videosphere.removeAttribute("width");
             videosphere.setAttribute("rotation", '0 0 0');
-            videosphere.setAttribute("geometry", 'radius', 50);
             setTimeout(()=>this.toggleTouch(true), 100);
         }
     }
@@ -601,6 +611,7 @@ class MediaController {
             MediaEvent.WAITING,
             MediaEvent.PROGRESS,
         );
+
     }
 
     // getters
