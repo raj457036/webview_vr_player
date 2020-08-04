@@ -59,7 +59,7 @@ class MediaMessageChannel {
         setTimeout(function () {
             const scene = document.querySelector("#scene_id");
             scene.renderer.setSize(scene.canvas.width, scene.canvas.height);
-        }, 500); // ugly but aframe's 100ms was not enough in my testing
+        }, 500);
         vid.removeEventListener('canplay', this.videoHackListener);
     }
 
@@ -368,6 +368,7 @@ class MediaController {
         this.__playerBuilt = false;
         this.src = null;
         this.cam = null;
+        this._flat = false;
     }
 
     resetCamera() { 
@@ -383,17 +384,21 @@ class MediaController {
         const videosphere = document.querySelector("#videosphere");
         if (flat) {
             this.resetCamera();
+            videosphere.removeAttribute("geometry","radius");
             videosphere.setAttribute("geometry", 'primitive', 'plane');     
-            videosphere.setAttribute("position", "0 1.6 -1.185");
-            videosphere.setAttribute("rotation", `0 180 ${rotation || 0}`);
             videosphere.setAttribute("geometry","width", aspectRatio);
+            videosphere.object3D.rotation.y = Math.PI;
+            videosphere.object3D.rotation.z = (Math.PI/180) * rotation;
+            videosphere.object3D.position.y = 1.6;
+            videosphere.object3D.position.z = -1.0;
             setTimeout(()=>this.toggleTouch(false), 100);
         } else {
+            videosphere.removeAttribute("geometry","width");
             videosphere.setAttribute("geometry", 'primitive', 'sphere');
-            videosphere.setAttribute("position", "0 0 0");
-            videosphere.setAttribute("rotation", `0 0 0`);
-            videosphere.setAttribute("height", window.innerHeight);
-            videosphere.setAttribute("width", window.innerWidth);
+            videosphere.object3D.rotation.y = 0;
+            videosphere.object3D.rotation.z = 0;
+            videosphere.object3D.position.y = 1.6;
+            videosphere.object3D.position.z = 0;
             setTimeout(()=>this.toggleTouch(true), 100);
         }
     }
@@ -411,7 +416,7 @@ class MediaController {
             <a-assets>
                 <video 
                 src="${video_src}"
-                id="${this.videoID}" ${autoplay ? 'autoplay': ''} muted="${muted}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
+                id="${this.videoID}" autoplay="${autoplay}" muted="${muted}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
             </a-assets>
             <a-entity id="camera" camera="active: true" position="0 1.6 0" touch-look-controls></a-entity>
             <a-videosphere id="videosphere" src="#${this.videoID}"></a-videosphere>
@@ -425,10 +430,6 @@ class MediaController {
             $("body").prepend(_ascene);
             this.video = document.getElementById(this.videoID);
             this.cam = document.querySelector("#camera");
-            
-            if(autoplay) {
-                this.play();
-            }
         } else {
             console.log('Player already built!!');
         }
@@ -436,12 +437,12 @@ class MediaController {
 
 
     get isFlat() {
-        return !this.__playerBuilt;
+        return this._flat;
     }
 
-    viewInFlat(fullscreen=false, aspectRatio=null) {
-        if(this.__playerBuilt) {
-
+    viewInFlat(fullscreen=true, aspectRatio=null) {
+        if(this.__playerBuilt && !this._flat) {
+            this._flat = true;
             const ar = aspectRatio || (fullscreen ? window.innerHeight/window.innerWidth : window.innerWidth/window.innerHeight);
 
             if (fullscreen) this.togglePlayer(true, ar, 90);
@@ -452,7 +453,8 @@ class MediaController {
     }
     
     viewInMono() {
-        if (this.__playerBuilt) {
+        if (this.__playerBuilt && this._flat) {
+            this._flat = false;
             this.togglePlayer(false);
         }
 
