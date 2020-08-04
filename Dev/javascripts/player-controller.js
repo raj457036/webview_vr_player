@@ -59,7 +59,7 @@ class MediaMessageChannel {
         setTimeout(function () {
             const scene = document.querySelector("#scene_id");
             scene.renderer.setSize(scene.canvas.width, scene.canvas.height);
-        }, 500); // ugly but aframe's 100ms was not enough in my testing
+        }, 500);
         vid.removeEventListener('canplay', this.videoHackListener);
     }
 
@@ -368,6 +368,7 @@ class MediaController {
         this.__playerBuilt = false;
         this.src = null;
         this.cam = null;
+        this._flat = false;
     }
 
     resetCamera() { 
@@ -384,16 +385,19 @@ class MediaController {
         if (flat) {
             this.resetCamera();
             videosphere.setAttribute("geometry", 'primitive', 'plane');     
-            videosphere.setAttribute("position", "0 1.6 -1.185");
-            videosphere.setAttribute("rotation", `0 180 ${rotation || 0}`);
             videosphere.setAttribute("geometry","width", aspectRatio);
+            videosphere.object3D.rotation.y = Math.PI;
+            videosphere.object3D.rotation.z = (Math.PI/180) * rotation;
+            videosphere.object3D.position.y = 1.6;
+            videosphere.object3D.position.z = -1.0;
             setTimeout(()=>this.toggleTouch(false), 100);
         } else {
             videosphere.setAttribute("geometry", 'primitive', 'sphere');
-            videosphere.setAttribute("position", "0 0 0");
-            videosphere.setAttribute("rotation", `0 0 0`);
-            videosphere.setAttribute("height", window.innerHeight);
-            videosphere.setAttribute("width", window.innerWidth);
+            videosphere.setAttribute("geometry","width", 1);
+            videosphere.object3D.rotation.y = 0;
+            videosphere.object3D.rotation.z = 0;
+            videosphere.object3D.position.y = 1.6;
+            videosphere.object3D.position.z = 0;
             setTimeout(()=>this.toggleTouch(true), 100);
         }
     }
@@ -432,12 +436,12 @@ class MediaController {
 
 
     get isFlat() {
-        return !this.__playerBuilt;
+        return this._flat;
     }
 
-    viewInFlat(fullscreen=false, aspectRatio=null) {
+    viewInFlat(fullscreen=true, aspectRatio=null) {
         if(this.__playerBuilt) {
-
+            this._flat = true;
             const ar = aspectRatio || (fullscreen ? window.innerHeight/window.innerWidth : window.innerWidth/window.innerHeight);
 
             if (fullscreen) this.togglePlayer(true, ar, 90);
@@ -449,6 +453,7 @@ class MediaController {
     
     viewInMono() {
         if (this.__playerBuilt) {
+            this._flat = false;
             this.togglePlayer(false);
         }
 

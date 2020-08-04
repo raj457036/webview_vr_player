@@ -39,7 +39,7 @@ class MediaColorFilter {
 
     applyFilter(colorFilterCode) {
 
-        const elm = document.querySelector(`.${this.elm_class}`);
+        const elm = document.querySelector(`canvas`);
         elm.style.filter = "";
         elm.style.webkitFilter = "";
         elm.className = `${colorFilterCode}`;
@@ -49,10 +49,16 @@ class MediaColorFilter {
 
 
     filter(sepia, saturation, brightness, contrast, hue) {
-        const elm = document.querySelector(`.${this.elm_class}`);
-        let filter = `sepia(${sepia || 0}) saturate(${saturation || 100}%) brightness(${brightness || 1}) contrast(${contrast || 1}) hue-rotate(${hue || 0}deg)`;
-        elm.style.filter = filter;
-        elm.style.webkitFilter = filter;
+        const elm = document.querySelector(`canvas`);
+
+        if (sepia == 0 && saturation == 100 && brightness == 1.0 && contrast == 1.0 && hue == 0) {
+            elm.style.filter = "";
+            elm.style.webkitFilter = "";
+        } else {
+            let filter = `sepia(${sepia || 0}) saturate(${saturation || 100}%) brightness(${brightness || 1}) contrast(${contrast || 1}) hue-rotate(${hue || 0}deg)`;
+            elm.style.filter = filter;
+            elm.style.webkitFilter = filter;
+        }
         return "";
     }
 
