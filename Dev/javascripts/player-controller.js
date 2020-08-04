@@ -53,7 +53,7 @@ class MediaMessageChannel {
         this._timeout = null;
     }
 
-    videoHackListener () {
+    videoHackListener() {
         const vid = document.querySelector("video");
         console.log("resized");
         setTimeout(function () {
@@ -71,10 +71,10 @@ class MediaMessageChannel {
         this.controller.setLoader(false);
     }
 
-    onVideoPlaybackWaiting(stalled=false) {
+    onVideoPlaybackWaiting(stalled = false) {
         this.controller.setLoader(true, false, true);
 
-        if(stalled) {
+        if (stalled) {
             this.retryPlay();
         }
     }
@@ -113,9 +113,8 @@ class MediaMessageChannel {
                 self.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.CAN_PLAY);
             };
-            
-            const scene = document.querySelector("#scene_id");
 
+            const scene = document.querySelector("#scene_id");
             if (scene.isIOS) {
                 vid.addEventListener("canplay", self.videoHackListener);
             }
@@ -371,39 +370,39 @@ class MediaController {
         this._flat = false;
     }
 
-    resetCamera() { 
+    resetCamera() {
         this.cam.components['touch-look-controls'].yawObject.rotation.set(0, 0, 0);
         this.cam.components['touch-look-controls'].pitchObject.rotation.set(0, 0, 0);
     }
 
-    toggleTouch(enabled=true) {
+    toggleTouch(enabled = true) {
         this.cam.components['touch-look-controls'].data.enabled = enabled;
     }
 
-    togglePlayer(flat=true, aspectRatio=16/9, rotation=0) {
+    togglePlayer(flat = true, aspectRatio = 16 / 9, rotation = 0) {
         const videosphere = document.querySelector("#videosphere");
         if (flat) {
             this.resetCamera();
-            videosphere.removeAttribute("geometry","radius");
-            videosphere.setAttribute("geometry", 'primitive', 'plane');     
-            videosphere.setAttribute("geometry","width", aspectRatio);
+            videosphere.removeAttribute("geometry", "radius");
+            videosphere.setAttribute("geometry", 'primitive', 'plane');
+            videosphere.setAttribute("geometry", "width", aspectRatio);
             videosphere.object3D.rotation.y = Math.PI;
-            videosphere.object3D.rotation.z = (Math.PI/180) * rotation;
+            videosphere.object3D.rotation.z = (Math.PI / 180) * rotation;
             videosphere.object3D.position.y = 1.6;
             videosphere.object3D.position.z = -1.0;
-            setTimeout(()=>this.toggleTouch(false), 100);
+            setTimeout(() => this.toggleTouch(false), 100);
         } else {
-            videosphere.removeAttribute("geometry","width");
+            videosphere.removeAttribute("geometry", "width");
             videosphere.setAttribute("geometry", 'primitive', 'sphere');
             videosphere.object3D.rotation.y = 0;
             videosphere.object3D.rotation.z = 0;
             videosphere.object3D.position.y = 1.6;
             videosphere.object3D.position.z = 0;
-            setTimeout(()=>this.toggleTouch(true), 100);
+            setTimeout(() => this.toggleTouch(true), 100);
         }
     }
 
-    build360Player(autoplay = true, vrBtn = true, iosPerm = true, video_src = null, muted=true) {
+    build360Player(autoplay = true, vrBtn = true, iosPerm = true, video_src = null, muted = true) {
         const _ascene = `
         <a-scene 
             loading-screen="dotsColor: white; backgroundColor: black" 
@@ -440,10 +439,10 @@ class MediaController {
         return this._flat;
     }
 
-    viewInFlat(fullscreen=true, aspectRatio=null) {
-        if(this.__playerBuilt && !this._flat) {
+    viewInFlat(fullscreen = true, aspectRatio = null) {
+        if (this.__playerBuilt && !this._flat) {
             this._flat = true;
-            const ar = aspectRatio || (fullscreen ? window.innerHeight/window.innerWidth : window.innerWidth/window.innerHeight);
+            const ar = aspectRatio || (fullscreen ? window.innerHeight / window.innerWidth : window.innerWidth / window.innerHeight);
 
             if (fullscreen) this.togglePlayer(true, ar, 90);
             else this.togglePlayer(true, ar);
@@ -451,7 +450,7 @@ class MediaController {
 
         return "";
     }
-    
+
     viewInMono() {
         if (this.__playerBuilt && this._flat) {
             this._flat = false;
@@ -501,7 +500,7 @@ class MediaController {
         mediaController.setLoader(true);
         this.video.play().then(function () {
             // Automatic playback started!
-            console.log('playing...'); 
+            console.log('playing...');
         }).catch(function (error) {
             mediaController.setLoader(true);
             console.log("PlayBack Failed: " + JSON.stringify({
@@ -509,8 +508,8 @@ class MediaController {
                 'message': error.message,
                 'name': error.name,
             }));
-            if (error.message === "Failed to load because no supported source was found."
-             || error.message == "The element has no supported sources.") {
+            if (error.message === "Failed to load because no supported source was found." ||
+                error.message == "The element has no supported sources.") {
                 hlsLoad();
             }
         });
@@ -693,21 +692,21 @@ function processParams() {
     }
 
     window.mediaController = new MediaController('video_player_id');
-    
+
     mediaController.build360Player(
         autoplay = autoPlay !== 'false',
         vrBtn = VRBtn !== 'false',
         iosPerm = iosPermissions !== 'false',
         video_src = url,
     );
-    
+
     if (url !== null) {
         playlist.streams[0] = url;
         // init(true)
 
         if (autoPlay !== 'false') {
             setTimeout(() => {
-                if(mediaController.currentTime() < 1.0) mediaController.play();
+                if (mediaController.currentTime() < 1.0) mediaController.play();
             }, 3000);
         } else {
             mediaController.autoPlay = false;
