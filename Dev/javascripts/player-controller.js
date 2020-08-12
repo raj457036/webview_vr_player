@@ -53,9 +53,9 @@ class MediaMessageChannel {
         this._timeout = null;
     }
 
+    // To prevent BLACK Screen on IOS devices
     videoHackListener() {
         const vid = document.querySelector("video");
-        console.log("resized");
         setTimeout(function () {
             const scene = document.querySelector("#scene_id");
             scene.renderer.setSize(scene.canvas.width, scene.canvas.height);
@@ -114,10 +114,10 @@ class MediaMessageChannel {
                 self.sendMessage(MediaEvent.CAN_PLAY);
             };
 
-            const scene = document.querySelector("#scene_id");
-            if (scene.isIOS) {
-                vid.addEventListener("canplay", self.videoHackListener);
-            }
+            // const scene = document.querySelector("#scene_id");
+            // if (scene.isIOS) {
+            //     vid.addEventListener("canplay", self.videoHackListener);
+            // }
         }
 
         if (code == MediaEvent.CAN_PLAY_THROUGH) {
@@ -380,7 +380,7 @@ class MediaController {
     }
 
     togglePlayer(flat = true, aspectRatio = 16 / 9, rotation = 0) {
-        const videosphere = document.querySelector("#videosphere");
+        var videosphere = document.querySelector("#videosphere");
         if (flat) {
             this.resetCamera();
             videosphere.removeAttribute("geometry", "radius");
@@ -400,7 +400,18 @@ class MediaController {
             videosphere.object3D.position.z = 0;
             setTimeout(() => this.toggleTouch(true), 100);
         }
+
+        if (videosphere.getAttribute("material")['shader'] != 'flat') {
+            this.resetShader();
+        }
     }
+
+    resetShader() {
+        var vs = document.querySelector("#videosphere");
+        vs.setAttribute('material', 'shader', 'flat');
+    }
+
+
 
     build360Player(autoplay = true, vrBtn = true, iosPerm = true, video_src = null, muted = true) {
         const _ascene = `
@@ -429,6 +440,8 @@ class MediaController {
             $("body").prepend(_ascene);
             this.video = document.getElementById(this.videoID);
             this.cam = document.querySelector("#camera");
+            var videosphere = document.querySelector("#videosphere");
+            videosphere.addEventListener("materialvideoloadeddata", this.resetShader);
         } else {
             console.log('Player already built!!');
         }
@@ -706,7 +719,7 @@ function processParams() {
 
         if (autoPlay !== 'false') {
             setTimeout(() => {
-                if (mediaController.currentTime() < 1.0) mediaController.play();
+                if (!(mediaController.currentTime() > 0.0)) mediaController.play();
             }, 3000);
         } else {
             mediaController.autoPlay = false;
@@ -735,9 +748,6 @@ function processParams() {
 
     window.mediaFilter = new MediaColorFilter('player');
 }
-// window.addEventListener('error', function (e) {
-//     console.log("Error Detected: " + JSON.stringify(e));
-// });
 
 document.title = "";
 document.addEventListener('DOMContentLoaded', processParams);
