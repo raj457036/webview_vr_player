@@ -51,6 +51,7 @@ class MediaMessageChannel {
         this.useConsoleForMessage = useConsoleForMessage;
         this.errorDisplayed = false;
         this._timeout = null;
+        this._stalled = false;
     }
 
     // To prevent BLACK Screen on IOS devices
@@ -68,6 +69,8 @@ class MediaMessageChannel {
     }
 
     onVideoPlaybackSuccess() {
+        this._stalled = false;
+        if (this._timeout) clearTimeout(this._timeout);
         this.controller.setLoader(false);
     }
 
@@ -75,6 +78,7 @@ class MediaMessageChannel {
         this.controller.setLoader(true, false, true);
 
         if (stalled) {
+            this._stalled = true;
             this.retryPlay();
         }
     }
@@ -83,9 +87,13 @@ class MediaMessageChannel {
         self = this;
         if (this._timeout) clearTimeout(this._timeout);
         this._timeout = setTimeout(() => {
-            self.controller.video.load();
-            self.controller.play();
-        }, 3000);
+            console.log(`player Stalled ${this._stalled}`);
+            if (this._stalled) {
+                this.controller.video.load();
+                this.controller.play();
+                this._stalled = false;
+            }
+        }, 10000);
     }
 
     onVideoEvents() {
