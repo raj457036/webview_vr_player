@@ -122,10 +122,10 @@ class MediaMessageChannel {
                 self.sendMessage(MediaEvent.CAN_PLAY);
             };
 
-            // const scene = document.querySelector("#scene_id");
-            // if (scene.isIOS) {
-            //     vid.addEventListener("canplay", self.videoHackListener);
-            // }
+            const scene = document.querySelector("#scene_id");
+            if (scene.isIOS) {
+                vid.addEventListener("canplay", self.videoHackListener);
+            }
         }
 
         if (code == MediaEvent.CAN_PLAY_THROUGH) {
