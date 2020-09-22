@@ -90,7 +90,7 @@ class MediaMessageChannel {
             console.log(`player Stalled ${this._stalled}`);
             if (this._stalled) {
                 this.controller.video.load();
-                this.controller.play();
+                this.controller.play(this.controller.currentTime);
                 this._stalled = false;
             }
         }, 10000);
@@ -123,7 +123,7 @@ class MediaMessageChannel {
             };
 
             const scene = document.querySelector("#scene_id");
-            if (scene.isIOS) {
+            if (scene && scene.isIOS) {
                 vid.addEventListener("canplay", self.videoHackListener);
             }
         }
@@ -376,6 +376,7 @@ class MediaController {
         this.src = null;
         this.cam = null;
         this._flat = false;
+        this._iosVersion = this.iOSversion()[0];
     }
 
     resetCamera() {
@@ -411,6 +412,7 @@ class MediaController {
 
         if (videosphere.getAttribute("material")['shader'] != 'flat') {
             this.resetShader();
+            this.unmute();
         }
     }
 
@@ -419,10 +421,20 @@ class MediaController {
         vs.setAttribute('material', 'shader', 'flat');
     }
 
+    iOSversion() {
+        if (/iP(hone|od|ad)/.test(navigator.platform)) {
+            // supports iOS 2.0 and later: <http://bit.ly/TJjs1V>
+            var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+            return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
+        }
+
+        return navigator.platform;
+    }
 
 
     build360Player(autoplay = true, vrBtn = true, iosPerm = true, video_src = null, muted = true) {
         const _ascene = `
+
         <a-scene 
             loading-screen="dotsColor: white; backgroundColor: black" 
             vr-mode-ui="enabled: ${vrBtn}" 
@@ -431,25 +443,42 @@ class MediaController {
             class="player"
             device-orientation-permission-ui="enabled: ${iosPerm}"
         >
-            <a-assets>
+            <a-assets timeout="10000">
                 <video 
                 src="${video_src}"
-                id="${this.videoID}" autoplay="${autoplay}" muted="${muted}" playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
+                id="${this.videoID}" autoplay="${autoplay}"  playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
             </a-assets>
             <a-entity id="camera" camera="active: true" position="0 1.6 0" touch-look-controls></a-entity>
             <a-videosphere id="videosphere" src="#${this.videoID}"></a-videosphere>
 
-        </a-scene>`;
+        </a-scene>        
+        `;
+
+        const _video = `
+            <div class="video_frame"> 
+                <video 
+                    src="${video_src}"
+                    id="${this.videoID}" autoplay="${autoplay}" muted="${muted}"  playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
+            </div>
+        `;
 
 
         if (!this.__playerBuilt) {
+
             this.__playerBuilt = true;
             this.src = video_src;
-            $("body").prepend(_ascene);
+
+
+            if (/m3u8/.test(video_src) && this._iosVersion >= 14.0) {
+                $("body").prepend(_video);
+            } else {
+                $("body").prepend(_ascene);
+                this.cam = document.querySelector("#camera");
+                var videosphere = document.querySelector("#videosphere");
+                videosphere.addEventListener("materialvideoloadeddata", this.resetShader);
+            }
+
             this.video = document.getElementById(this.videoID);
-            this.cam = document.querySelector("#camera");
-            var videosphere = document.querySelector("#videosphere");
-            videosphere.addEventListener("materialvideoloadeddata", this.resetShader);
         } else {
             console.log('Player already built!!');
         }
@@ -698,6 +727,7 @@ function processParams() {
 
         console.error = function (msg) {
             if (msg.toString() === "THREE.WebGLState:") {
+                alert('hello word');
                 init();
             }
             errorMsg(msg);
