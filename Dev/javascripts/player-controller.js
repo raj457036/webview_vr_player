@@ -92,6 +92,7 @@ class MediaMessageChannel {
                 this.controller.video.load();
                 this.controller.play(this.controller.currentTime);
                 this._stalled = false;
+                canvasRenderForIOS14();
             }
         }, 10000);
     }
