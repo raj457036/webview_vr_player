@@ -760,7 +760,6 @@ function processParams() {
 
         console.error = function (msg) {
             if (msg.toString() === "THREE.WebGLState:") {
-                alert('hello word');
                 init();
             }
             errorMsg(msg);
