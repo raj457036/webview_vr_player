@@ -377,6 +377,9 @@ class MediaController {
         this.cam = null;
         this._flat = false;
         this._iosVersion = this.iOSversion()[0];
+        this.ios14 = null;
+        this.canvas = null;
+        this.ctx = null;
     }
 
     resetCamera() {
@@ -433,8 +436,10 @@ class MediaController {
 
 
     build360Player(autoplay = true, vrBtn = true, iosPerm = true, video_src = null, muted = true) {
-        const _ascene = `
 
+        this.ios14 = /m3u8/.test(video_src) && this._iosVersion >= 14.0;
+
+        const _ascene = `
         <a-scene 
             loading-screen="dotsColor: white; backgroundColor: black" 
             vr-mode-ui="enabled: ${vrBtn}" 
@@ -443,13 +448,21 @@ class MediaController {
             class="player"
             device-orientation-permission-ui="enabled: ${iosPerm}"
         >
-            <a-assets timeout="10000">
+            <a-assets>
                 <video 
-                src="${video_src}"
-                id="${this.videoID}" autoplay="${autoplay}"  playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
+                    src="${video_src}"
+                    id="${this.videoID}" 
+                    autoplay="${autoplay}" 
+                    playsinline 
+                    webkit-playsinline 
+                    preload="auto" 
+                    crossorigin="anonymous"
+                    ${muted ? 'muted': ''}
+                ></video>
+                <canvas id="${this.videoID}-canvas" style="display: none;"></canvas>
             </a-assets>
             <a-entity id="camera" camera="active: true" position="0 1.6 0" touch-look-controls></a-entity>
-            <a-videosphere id="videosphere" src="#${this.videoID}"></a-videosphere>
+            <a-videosphere id="videosphere" src="#${this.ios14 ? this.videoID + '-canvas' : this.videoID}" ${this.ios14 ? "canvas-updater" : ""} material="shader:flat;"></a-videosphere>
 
         </a-scene>        
         `;
@@ -469,20 +482,40 @@ class MediaController {
             this.src = video_src;
 
 
-            if (/m3u8/.test(video_src) && this._iosVersion >= 14.0) {
-                $("body").prepend(_video);
-            } else {
-                $("body").prepend(_ascene);
-                this.cam = document.querySelector("#camera");
-                var videosphere = document.querySelector("#videosphere");
-                videosphere.addEventListener("materialvideoloadeddata", this.resetShader);
-            }
+            // if (/m3u8/.test(video_src) && this._iosVersion >= 14.0) {
+            //     $("body").prepend(_video);
+            // } else {
+            //     $("body").prepend(_ascene);
+            //     this.cam = document.querySelector("#camera");
+            //     var videosphere = document.querySelector("#videosphere");
+            //     videosphere.addEventListener("materialvideoloadeddata", this.resetShader);
+            // }
+
+
+            $("body").prepend(_ascene);
+            this.cam = document.querySelector("#camera");
+            var videosphere = document.querySelector("#videosphere");
+            videosphere.addEventListener("materialvideoloadeddata", this.resetShader);
 
             this.video = document.getElementById(this.videoID);
+
+            this.canvas = document.getElementById(`${this.videoID}-canvas`);
+            this.ctx = this.canvas.getContext('2d');
+
+            if (this.ios14) {
+                self = this;
+                this.video.addEventListener("playing", () => {
+                    self.canvas.height = self.video.videoHeight;
+                    self.canvas.width = self.video.videoWidth;
+                });
+                canvasRenderForIOS14();
+            }
         } else {
             console.log('Player already built!!');
         }
     }
+
+
 
 
     get isFlat() {
@@ -785,6 +818,14 @@ function processParams() {
     }
 
     window.mediaFilter = new MediaColorFilter('player');
+}
+
+function canvasRenderForIOS14() {
+    if (mediaController.video && mediaController.video.readyState === mediaController.video.HAVE_ENOUGH_DATA) {
+        mediaController.ctx.clearRect(0, 0, mediaController.canvas.width, mediaController.canvas.height);
+        mediaController.ctx.drawImage(mediaController.video, 0, 0, mediaController.canvas.width, mediaController.canvas.height);
+    }
+    requestAnimationFrame(canvasRenderForIOS14);
 }
 
 document.title = "";
