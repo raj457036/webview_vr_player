@@ -39,7 +39,7 @@ class MediaColorFilter {
 
     applyFilter(colorFilterCode) {
 
-        const elm = document.querySelector(`canvas`) || document.querySelector('video');
+        const elm = document.querySelector(`a-scene`) || document.querySelector('video');
         elm.style.filter = "";
         elm.style.webkitFilter = "";
         elm.className = `${colorFilterCode}`;
@@ -49,7 +49,7 @@ class MediaColorFilter {
 
 
     filter(sepia, saturation, brightness, contrast, hue) {
-        const elm = document.querySelector(`canvas`) || document.querySelector('video');
+        const elm = document.querySelector(`a-scene`) || document.querySelector('video');
 
         if (sepia == 0 && saturation == 100 && brightness == 1.0 && contrast == 1.0 && hue == 0) {
             elm.style.filter = "";
