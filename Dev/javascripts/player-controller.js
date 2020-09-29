@@ -754,7 +754,7 @@ function processParams() {
     }
 
 
-    if (false && debug !== 'true') {
+    if (debug !== 'true') {
         $('.debugger').hide();
 
         const errorMsg = console.error;
