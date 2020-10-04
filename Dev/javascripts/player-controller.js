@@ -85,16 +85,20 @@ class MediaMessageChannel {
 
     retryPlay() {
         self = this;
+        tolerance
         if (this._timeout) clearTimeout(this._timeout);
+
         this._timeout = setTimeout(() => {
             console.log(`player Stalled ${this._stalled}`);
+
             if (this._stalled) {
                 this.controller.video.load();
                 this.controller.play(this.controller.currentTime);
                 this._stalled = false;
                 canvasRenderForIOS14();
             }
-        }, 10000);
+
+        }, 65000);
     }
 
     onVideoEvents() {
@@ -803,7 +807,6 @@ function processParams() {
         if (VRBtn === 'false') {
             var h = document.getElementsByTagName('head').item(0);
             var s = document.createElement("style");
-            s.type = "text/css";
             s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
             h.appendChild(s);
         }
