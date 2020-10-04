@@ -85,7 +85,7 @@ class MediaMessageChannel {
 
     retryPlay() {
         self = this;
-        tolerance
+
         if (this._timeout) clearTimeout(this._timeout);
 
         this._timeout = setTimeout(() => {
