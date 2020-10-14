@@ -445,12 +445,14 @@ class MediaController {
         this.ios14 = /m3u8/.test(video_src) && this._iosVersion >= 14.0;
 
         const _ascene = `
+        
         <a-scene 
             loading-screen="dotsColor: white; backgroundColor: black" 
             vr-mode-ui="enabled: ${vrBtn}" 
             ar-mode-ui="enabled: false" 
             id="scene_id"
             class="player"
+            embedded
             device-orientation-permission-ui="enabled: ${iosPerm}"
         >
             <a-assets>
@@ -472,14 +474,6 @@ class MediaController {
         </a-scene>        
         `;
 
-        const _video = `
-            <div class="video_frame"> 
-                <video 
-                    src="${video_src}"
-                    id="${this.videoID}" autoplay="${autoplay}" muted="${muted}"  playsinline webkit-playsinline preload="auto" crossorigin="anonymous"></video>
-            </div>
-        `;
-
 
         if (!this.__playerBuilt) {
 
@@ -497,7 +491,7 @@ class MediaController {
             // }
 
 
-            $("body").prepend(_ascene);
+            document.querySelector("body").innerHTML += _ascene;
             this.cam = document.querySelector("#camera");
             var videosphere = document.querySelector("#videosphere");
             videosphere.addEventListener("materialvideoloadeddata", this.resetShader);
@@ -510,8 +504,9 @@ class MediaController {
             if (this.ios14) {
                 self = this;
                 this.video.addEventListener("playing", () => {
-                    self.canvas.height = self.video.videoHeight;
-                    self.canvas.width = self.video.videoWidth;
+                    console.log(self.video.videoHeight);
+                    self.canvas.height = 640;
+                    self.canvas.width = 1280;
                 });
                 canvasRenderForIOS14();
             }
