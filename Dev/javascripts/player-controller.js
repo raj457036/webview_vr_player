@@ -452,7 +452,6 @@ class MediaController {
             ar-mode-ui="enabled: false" 
             id="scene_id"
             class="player"
-            embedded
             device-orientation-permission-ui="enabled: ${iosPerm}"
         >
             <a-assets>
@@ -503,9 +502,14 @@ class MediaController {
 
             if (this.ios14) {
                 self = this;
+
                 this.video.addEventListener("playing", () => {
-                    self.canvas.height = self.video.videoHeight * 2;
-                    self.canvas.width = self.video.videoWidth * 2;
+                    console.log(`${self.video.videoHeight} x ${self.video.videoWidth}`);
+                    self.canvas.height = self.video.videoHeight;
+                    self.canvas.width = self.video.videoWidth;
+
+                    console.log(`${self.canvas.height} x ${self.canvas.width}`);
+
                 });
                 canvasRenderForIOS14();
             }
