@@ -504,9 +504,8 @@ class MediaController {
             if (this.ios14) {
                 self = this;
                 this.video.addEventListener("playing", () => {
-                    console.log(self.video.videoHeight);
-                    self.canvas.height = 640;
-                    self.canvas.width = 1280;
+                    self.canvas.height = self.video.videoHeight * 2;
+                    self.canvas.width = self.video.videoWidth * 2;
                 });
                 canvasRenderForIOS14();
             }
