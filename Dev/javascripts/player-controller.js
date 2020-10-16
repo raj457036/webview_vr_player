@@ -503,13 +503,19 @@ class MediaController {
             if (this.ios14) {
                 self = this;
 
-                this.video.addEventListener("playing", () => {
-                    console.log(`${self.video.videoHeight} x ${self.video.videoWidth}`);
-                    self.canvas.height = self.video.videoHeight;
-                    self.canvas.width = self.video.videoWidth;
+                this.video.addEventListener("playing", (e) => {
+                    self.canvas.height = e.video.videoHeight;
+                    self.canvas.width = e.video.videoWidth;
 
                     console.log(`${self.canvas.height} x ${self.canvas.width}`);
 
+                });
+
+                this.video.addEventListener('resize', (e) => {
+                    self.canvas.height = e.target.videoHeight;
+                    self.canvas.width = e.target.videoWidth;
+
+                    console.log(`${self.canvas.height} x ${self.canvas.width}`);
                 });
                 canvasRenderForIOS14();
             }
