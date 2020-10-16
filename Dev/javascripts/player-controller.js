@@ -906,6 +906,8 @@ function buildPlayer(url, vr_btn = false, auto_play = true, loop = false, debug 
     }
 
     window.mediaFilter = new MediaColorFilter('player');
+
+    return "";
 }
 
 document.title = "";
