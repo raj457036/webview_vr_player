@@ -440,12 +440,11 @@ class MediaController {
     }
 
 
-    build360Player(autoplay = true, vrBtn = true, iosPerm = true, video_src = null, muted = true) {
+    build360Player(autoplay = true, vrBtn = true, iosPerm = true, video_src = null, muted = true, force = false) {
 
         this.ios14 = /m3u8/.test(video_src) && this._iosVersion >= 14.0;
 
         const _ascene = `
-        
         <a-scene 
             loading-screen="dotsColor: white; backgroundColor: black" 
             vr-mode-ui="enabled: ${vrBtn}" 
@@ -469,26 +468,24 @@ class MediaController {
             </a-assets>
             <a-entity id="camera" camera="active: true" position="0 1.6 0" touch-look-controls></a-entity>
             <a-videosphere id="videosphere" src="#${this.ios14 ? this.videoID + '-canvas' : this.videoID}" ${this.ios14 ? "canvas-updater" : ""} material="shader:flat;"></a-videosphere>
-
         </a-scene>        
         `;
+
+
+        if (force) {
+            const _ = document.getElementById("scene_id");
+            if (_) {
+                _.remove();
+                this.__playerBuilt = false;
+                alert("dsfadsfadsfa");
+            }
+        }
 
 
         if (!this.__playerBuilt) {
 
             this.__playerBuilt = true;
             this.src = video_src;
-
-
-            // if (/m3u8/.test(video_src) && this._iosVersion >= 14.0) {
-            //     $("body").prepend(_video);
-            // } else {
-            //     $("body").prepend(_ascene);
-            //     this.cam = document.querySelector("#camera");
-            //     var videosphere = document.querySelector("#videosphere");
-            //     videosphere.addEventListener("materialvideoloadeddata", this.resetShader);
-            // }
-
 
             document.querySelector("body").innerHTML += _ascene;
             this.cam = document.querySelector("#camera");
@@ -503,19 +500,27 @@ class MediaController {
             if (this.ios14) {
                 self = this;
 
-                this.video.addEventListener("playing", () => {
-                    console.log(`${self.video.videoHeight} x ${self.video.videoWidth}`);
-                    self.canvas.height = self.video.videoHeight;
-                    self.canvas.width = self.video.videoWidth;
+                this.video.addEventListener("playing", (e) => {
+                    self.canvas.height = e.video.videoHeight;
+                    self.canvas.width = e.video.videoWidth;
 
                     console.log(`${self.canvas.height} x ${self.canvas.width}`);
 
+                });
+
+                this.video.addEventListener('resize', (e) => {
+                    self.canvas.height = e.target.videoHeight;
+                    self.canvas.width = e.target.videoWidth;
+
+                    console.log(`${self.canvas.height} x ${self.canvas.width}`);
                 });
                 canvasRenderForIOS14();
             }
         } else {
             console.log('Player already built!!');
         }
+
+        this.subscribeToBufferingEvents();
     }
 
 
@@ -779,12 +784,7 @@ function processParams() {
 
     window.mediaController = new MediaController('video_player_id');
 
-    mediaController.build360Player(
-        autoplay = autoPlay !== 'false',
-        vrBtn = VRBtn !== 'false',
-        iosPerm = iosPermissions !== 'false',
-        video_src = url,
-    );
+
 
     if (url !== null) {
         playlist.streams[0] = url;
@@ -808,11 +808,16 @@ function processParams() {
             s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
             h.appendChild(s);
         }
+        mediaController.build360Player(
+            autoplay = autoPlay !== 'false',
+            vrBtn = VRBtn !== 'false',
+            iosPerm = iosPermissions !== 'false',
+            video_src = url,
+        );
     } else {
-        mediaController.setLoader(true, true);
+        mediaController.setLoader(false);
     }
 
-    mediaController.subscribeToBufferingEvents();
 
     if (debug === 'true') {
         subscribeToAllEvents();
@@ -827,6 +832,80 @@ function canvasRenderForIOS14() {
         mediaController.ctx.drawImage(mediaController.video, 0, 0, mediaController.canvas.width, mediaController.canvas.height);
     }
     requestAnimationFrame(canvasRenderForIOS14);
+}
+
+function buildPlayer(url, vr_btn = false, auto_play = true, loop = false, debug = false, muted = true, debug_console = false, ios_perm = false) {
+
+    if (ios_perm === 'false') {
+        $('a-scene').attr("device-orientation-permission-ui", "enabled: false");
+    }
+
+
+    if (debug !== 'true') {
+        $('.debugger').hide();
+
+        const errorMsg = console.error;
+
+        console.error = function (msg) {
+            if (msg.toString() === "THREE.WebGLState:") {
+                init();
+            }
+            errorMsg(msg);
+        }
+
+    } else {
+        window.Hls.DefaultConfig['debug'] = true;
+        if (debugConsole === 'false') {
+            $('.debugger').hide();
+        } else {
+            setupDebugger();
+        }
+    }
+
+    window.mediaController = new MediaController('video_player_id');
+
+
+
+    if (url !== null) {
+        playlist.streams[0] = url;
+        // init(true)
+
+        if (auto_play !== 'false') {
+            setTimeout(() => {
+                if (!(mediaController.currentTime() > 0.0)) mediaController.play();
+            }, 3000);
+        } else {
+            mediaController.autoPlay = false;
+        }
+
+        if (loop === 'true') {
+            mediaController.video.loop = true;
+        }
+
+        if (vr_btn === 'false') {
+            var h = document.getElementsByTagName('head').item(0);
+            var s = document.createElement("style");
+            s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
+            h.appendChild(s);
+        }
+        mediaController.build360Player(
+            autoplay = auto_play,
+            vrBtn = vr_btn,
+            iosPerm = ios_perm,
+            video_src = url,
+            muted = muted,
+            force = true,
+        );
+    } else {
+        mediaController.setLoader(false);
+    }
+
+
+    if (debug === 'true') {
+        subscribeToAllEvents();
+    }
+
+    window.mediaFilter = new MediaColorFilter('player');
 }
 
 document.title = "";
