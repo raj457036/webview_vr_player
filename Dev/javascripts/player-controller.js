@@ -477,7 +477,6 @@ class MediaController {
             if (_) {
                 _.remove();
                 this.__playerBuilt = false;
-                alert("dsfadsfadsfa");
             }
         }
 
@@ -841,7 +840,7 @@ function buildPlayer(url, vr_btn = false, auto_play = true, loop = false, debug 
     }
 
 
-    if (debug !== 'true') {
+    if (debug !== true) {
         $('.debugger').hide();
 
         const errorMsg = console.error;
@@ -855,7 +854,7 @@ function buildPlayer(url, vr_btn = false, auto_play = true, loop = false, debug 
 
     } else {
         window.Hls.DefaultConfig['debug'] = true;
-        if (debugConsole === 'false') {
+        if (debug_console === 'false') {
             $('.debugger').hide();
         } else {
             setupDebugger();
