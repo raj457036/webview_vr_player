@@ -871,7 +871,6 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
         if (!debug_console) {
             $('.debugger').hide();
         } else {
-            alert("hsdjhfkasd");
             setupDebugger();
             $('.debugger').show();
         }
