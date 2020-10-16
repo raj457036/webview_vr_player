@@ -167,14 +167,26 @@ AFRAME.registerComponent('touch-look-controls', {
         }
 
         // Mouse events.
-        canvasEl.addEventListener('mousedown', this.onMouseDown, false);
-        window.addEventListener('mousemove', this.onMouseMove, false);
-        window.addEventListener('mouseup', this.onMouseUp, false);
+        canvasEl.addEventListener('mousedown', this.onMouseDown, {
+            passive: true
+        });
+        window.addEventListener('mousemove', this.onMouseMove, {
+            passive: true
+        });
+        window.addEventListener('mouseup', this.onMouseUp, {
+            passive: true
+        });
 
         // Touch events.
-        canvasEl.addEventListener('touchstart', this.onTouchStart);
-        window.addEventListener('touchmove', this.onTouchMove);
-        window.addEventListener('touchend', this.onTouchEnd);
+        canvasEl.addEventListener('touchstart', this.onTouchStart, {
+            passive: true
+        });
+        window.addEventListener('touchmove', this.onTouchMove, {
+            passive: true
+        });
+        window.addEventListener('touchend', this.onTouchEnd, {
+            passive: true
+        });
 
         // sceneEl events.
         sceneEl.addEventListener('enter-vr', this.onEnterVR);
