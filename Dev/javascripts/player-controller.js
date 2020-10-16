@@ -787,6 +787,12 @@ function processParams() {
 
     if (url !== null) {
         playlist.streams[0] = url;
+        mediaController.build360Player(
+            autoplay = autoPlay !== 'false',
+            vrBtn = VRBtn !== 'false',
+            iosPerm = iosPermissions !== 'false',
+            video_src = url,
+        );
         // init(true)
 
         if (autoPlay !== 'false') {
@@ -807,12 +813,7 @@ function processParams() {
             s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
             h.appendChild(s);
         }
-        mediaController.build360Player(
-            autoplay = autoPlay !== 'false',
-            vrBtn = VRBtn !== 'false',
-            iosPerm = iosPermissions !== 'false',
-            video_src = url,
-        );
+
     } else {
         mediaController.setLoader(false);
     }
@@ -833,14 +834,27 @@ function canvasRenderForIOS14() {
     requestAnimationFrame(canvasRenderForIOS14);
 }
 
-function buildPlayer(url, vr_btn = false, auto_play = true, loop = false, debug = false, muted = true, debug_console = false, ios_perm = false) {
+function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, ios_perm) {
+
+    vr_btn = vr_btn ? vr_btn : false;
+    auto_play = auto_play ? auto_play : true;
+    loop = loop ? loop : false;
+    debug = debug ? debug : false;
+    muted = muted ? muted : true;
+    debug_console = debug_console ? debug_console : true;
+    ios_perm = ios_perm ? ios_perm : false;
+
+    if (!url) {
+        console.error("URL is required.");
+        return '';
+    };
 
     if (ios_perm === 'false') {
         $('a-scene').attr("device-orientation-permission-ui", "enabled: false");
     }
 
+    if (!debug) {
 
-    if (debug !== true) {
         $('.debugger').hide();
 
         const errorMsg = console.error;
@@ -854,39 +868,19 @@ function buildPlayer(url, vr_btn = false, auto_play = true, loop = false, debug 
 
     } else {
         window.Hls.DefaultConfig['debug'] = true;
-        if (debug_console === 'false') {
+        if (!debug_console) {
             $('.debugger').hide();
         } else {
+            alert("hsdjhfkasd");
             setupDebugger();
+            $('.debugger').show();
         }
     }
 
     window.mediaController = new MediaController('video_player_id');
 
-
-
     if (url !== null) {
         playlist.streams[0] = url;
-        // init(true)
-
-        if (auto_play !== 'false') {
-            setTimeout(() => {
-                if (!(mediaController.currentTime() > 0.0)) mediaController.play();
-            }, 3000);
-        } else {
-            mediaController.autoPlay = false;
-        }
-
-        if (loop === 'true') {
-            mediaController.video.loop = true;
-        }
-
-        if (vr_btn === 'false') {
-            var h = document.getElementsByTagName('head').item(0);
-            var s = document.createElement("style");
-            s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
-            h.appendChild(s);
-        }
         mediaController.build360Player(
             autoplay = auto_play,
             vrBtn = vr_btn,
@@ -895,12 +889,32 @@ function buildPlayer(url, vr_btn = false, auto_play = true, loop = false, debug 
             muted = muted,
             force = true,
         );
+        // init(true)
+
+        if (auto_play) {
+            setTimeout(() => {
+                if (!(mediaController.currentTime() > 0.0)) mediaController.play();
+            }, 3000);
+        } else {
+            mediaController.autoPlay = false;
+        }
+
+        if (loop) {
+            mediaController.video.loop = true;
+        }
+
+        if (!vr_btn) {
+            var h = document.getElementsByTagName('head').item(0);
+            var s = document.createElement("style");
+            s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
+            h.appendChild(s);
+        }
     } else {
         mediaController.setLoader(false);
     }
 
 
-    if (debug === 'true') {
+    if (debug) {
         subscribeToAllEvents();
     }
 
