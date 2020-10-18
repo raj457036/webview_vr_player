@@ -844,7 +844,7 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
     _debug_console = debug_console ? debug_console : false;
     _ios_perm = ios_perm ? ios_perm : false;
 
-    if (!_url) {
+    if (!url) {
         console.error("URL is required.");
         return '';
     };
@@ -878,14 +878,14 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
 
     window.mediaController = new MediaController('video_player_id');
 
-    if (_url !== null) {
+    if (url !== null) {
         playlist.streams[0] = url;
         mediaController.build360Player(
-            autoplay = auto_play,
-            vrBtn = vr_btn,
-            iosPerm = ios_perm,
+            autoplay = _auto_play,
+            vrBtn = _vr_btn,
+            iosPerm = _ios_perm,
             video_src = url,
-            muted = muted,
+            muted = _muted,
             force = true,
         );
         // init(true)
