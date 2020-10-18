@@ -836,24 +836,24 @@ function canvasRenderForIOS14() {
 
 function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, ios_perm) {
 
-    vr_btn = vr_btn ? vr_btn : false;
-    auto_play = auto_play ? auto_play : true;
-    loop = loop ? loop : false;
-    debug = debug ? debug : false;
-    muted = muted ? muted : true;
-    debug_console = debug_console ? debug_console : true;
-    ios_perm = ios_perm ? ios_perm : false;
+    _vr_btn = vr_btn ? vr_btn : false;
+    _auto_play = auto_play ? auto_play : true;
+    _loop = loop ? loop : false;
+    _debug = debug ? debug : false;
+    _muted = muted ? muted : true;
+    _debug_console = debug_console ? debug_console : false;
+    _ios_perm = ios_perm ? ios_perm : false;
 
-    if (!url) {
+    if (!_url) {
         console.error("URL is required.");
         return '';
     };
 
-    if (ios_perm === 'false') {
+    if (_ios_perm === 'false') {
         $('a-scene').attr("device-orientation-permission-ui", "enabled: false");
     }
 
-    if (!debug) {
+    if (!_debug) {
 
         $('.debugger').hide();
 
@@ -868,7 +868,7 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
 
     } else {
         window.Hls.DefaultConfig['debug'] = true;
-        if (!debug_console) {
+        if (!_debug_console) {
             $('.debugger').hide();
         } else {
             setupDebugger();
@@ -878,7 +878,7 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
 
     window.mediaController = new MediaController('video_player_id');
 
-    if (url !== null) {
+    if (_url !== null) {
         playlist.streams[0] = url;
         mediaController.build360Player(
             autoplay = auto_play,
@@ -890,7 +890,7 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
         );
         // init(true)
 
-        if (auto_play) {
+        if (_auto_play) {
             setTimeout(() => {
                 if (!(mediaController.currentTime() > 0.0)) mediaController.play();
             }, 3000);
@@ -898,11 +898,11 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
             mediaController.autoPlay = false;
         }
 
-        if (loop) {
+        if (_loop) {
             mediaController.video.loop = true;
         }
 
-        if (!vr_btn) {
+        if (!_vr_btn) {
             var h = document.getElementsByTagName('head').item(0);
             var s = document.createElement("style");
             s.appendChild(document.createTextNode(".a-enter-vr-button {display: none;}"));
@@ -913,7 +913,7 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
     }
 
 
-    if (debug) {
+    if (_debug) {
         subscribeToAllEvents();
     }
 
