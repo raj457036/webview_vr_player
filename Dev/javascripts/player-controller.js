@@ -406,7 +406,7 @@ class MediaController {
         this.cam.components['touch-look-controls'].data.enabled = enabled;
     }
 
-    togglePlayer(flat = true, aspectRatio, rotation, turn, fill) {
+    togglePlayer(flat = true, turn, fill) {
         var videosphere = document.querySelector("#videosphere");
         turn = turn || 0;
 
