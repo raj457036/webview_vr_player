@@ -15,6 +15,10 @@ function bind(fn, ctx /* , arg1, arg2 */ ) {
     })(Array.prototype.slice.call(arguments, 2));
 };
 
+function clamp(num, min, max) {
+    return num <= min ? min : num >= max ? max : num;
+}
+
 function PolyfillControls(object) {
     var frameData;
     if (window.VRFrameData) {
@@ -151,6 +155,7 @@ AFRAME.registerComponent('touch-look-controls', {
         this.yawObject = new THREE.Object3D();
         this.yawObject.position.y = 10;
         this.yawObject.add(this.pitchObject);
+        this.updatedPosition = new THREE.Vector3();
     },
 
     /**
@@ -241,21 +246,28 @@ AFRAME.registerComponent('touch-look-controls', {
         var yawObject = this.yawObject;
         var sceneEl = this.el.sceneEl;
         var rotation = this.rotation;
+        var updatedPosition = this.updatedPosition;
+        var position = this.el.object3D.position;
 
         // In VR mode, THREE is in charge of updating the camera rotation.
         if (sceneEl.is('vr-mode') && sceneEl.checkHeadsetConnected()) {
             return;
         }
 
-        // Calculate polyfilled HMD quaternion.
-        this.polyfillControls.update();
-        hmdEuler.setFromQuaternion(this.polyfillObject.quaternion, 'YXZ');
-        // On mobile, do camera rotation with touch events and sensors.
-        rotation.x = radToDeg(hmdEuler.x) + radToDeg(pitchObject.rotation.x);
-        rotation.y = radToDeg(hmdEuler.y) + radToDeg(yawObject.rotation.y);
-        rotation.z = 0;
 
-        this.el.setAttribute('rotation', rotation);
+        if (mediaController.isFlat) {
+            if (mediaController.isFlatScrollable)
+                position.x = updatedPosition.x;
+        } else {
+            // Calculate polyfilled HMD quaternion.
+            this.polyfillControls.update();
+            hmdEuler.setFromQuaternion(this.polyfillObject.quaternion, 'YXZ');
+            // On mobile, do camera rotation with touch events and sensors.
+            rotation.x = radToDeg(hmdEuler.x) + radToDeg(pitchObject.rotation.x);
+            rotation.y = radToDeg(hmdEuler.y) + radToDeg(yawObject.rotation.y);
+            rotation.z = 0;
+            this.el.setAttribute('rotation', rotation);
+        }
     },
 
     /**
@@ -268,6 +280,7 @@ AFRAME.registerComponent('touch-look-controls', {
         var pitchObject = this.pitchObject;
         var yawObject = this.yawObject;
         var previousMouseEvent = this.previousMouseEvent;
+        var updatedPosition = new THREE.Vector3();
         var movementX;
         var movementY;
 
@@ -285,10 +298,15 @@ AFRAME.registerComponent('touch-look-controls', {
         }
         this.previousMouseEvent = event;
 
-        // Calculate rotation.
-        yawObject.rotation.y -= movementX * 0.002;
-        pitchObject.rotation.x -= movementY * 0.002;
-        pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
+        if (mediaController.isFlat) {
+            if (mediaController.isFlatScrollable)
+                updatedPosition.x = clamp(0.5 - event.screenX, -0.5, 0.5);
+        } else {
+            // Calculate rotation.
+            yawObject.rotation.y -= movementX * 0.002;
+            pitchObject.rotation.x -= movementY * 0.002;
+            pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
+        }
     },
 
     /**
@@ -349,22 +367,31 @@ AFRAME.registerComponent('touch-look-controls', {
         var deltaX, deltaY;
         var pitchObject = this.pitchObject;
         var yawObject = this.yawObject;
+        var updatedPosition = this.updatedPosition;
 
         if (!this.touchStarted || !this.data.touchEnabled) {
             return;
         }
 
-        deltaY = 2 * Math.PI * (evt.touches[0].pageX - this.touchStart.x) / canvas.clientWidth;
-        deltaX = 2 * Math.PI * (evt.touches[0].pageY - this.touchStart.y) / canvas.clientHeight;
 
-        // Allow touch orientaion to to x and y
-        yawObject.rotation.y -= deltaY * 0.5;
-        pitchObject.rotation.x -= deltaX * 0.5;
-        pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
+        if (mediaController.isFlat) {
+            let offset = mediaController.fillScale / 3;
+            if (mediaController.isFlatScrollable)
+                updatedPosition.x = clamp(offset / 2 - evt.touches[0].pageX / canvas.clientWidth, -offset / 2, offset / 2);
+
+        } else {
+            deltaY = 2 * Math.PI * (evt.touches[0].pageX - this.touchStart.x) / canvas.clientWidth;
+            deltaX = 2 * Math.PI * (evt.touches[0].pageY - this.touchStart.y) / canvas.clientHeight;
+            // Allow touch orientaion to to x and y
+            yawObject.rotation.y -= deltaY * 0.5;
+            pitchObject.rotation.x -= deltaX * 0.5;
+            pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
+        }
         this.touchStart = {
             x: evt.touches[0].pageX,
             y: evt.touches[0].pageY
         };
+
     },
 
     /**
