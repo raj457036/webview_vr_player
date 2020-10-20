@@ -381,6 +381,8 @@ class MediaController {
         this.src = null;
         this.cam = null;
         this._flat = false;
+        this._flatScroll = false;
+        this._fillScale = 1.0;
         this._iosVersion = this.iOSversion()[0];
         this.ios14 = null;
         this.canvas = null;
@@ -388,34 +390,64 @@ class MediaController {
     }
 
     resetCamera() {
-        this.cam.components['touch-look-controls'].yawObject.rotation.set(0, 0, 0);
-        this.cam.components['touch-look-controls'].pitchObject.rotation.set(0, 0, 0);
+        this.cam.components['touch-look-controls'].el.setAttribute("rotation", {
+            x: 0,
+            y: 0,
+            z: 0
+        });
+        this.cam.components['touch-look-controls'].el.setAttribute("position", {
+            x: 0,
+            y: 1.6,
+            z: 0
+        });
     }
 
     toggleTouch(enabled = true) {
         this.cam.components['touch-look-controls'].data.enabled = enabled;
     }
 
-    togglePlayer(flat = true, aspectRatio = 16 / 9, rotation = 0) {
+    togglePlayer(flat = true, aspectRatio, rotation, turn, fill) {
         var videosphere = document.querySelector("#videosphere");
+        turn = turn || 0;
+
+        let isEven = turn % 2 === 0;
+
+        let scale = isEven ? 0.94 : 1.7;
+
+        if (!isEven || !fill) {
+            this._flatScroll = false;
+        } else {
+            this._flatScroll = true;
+        }
+
         if (flat) {
-            this.resetCamera();
+            this._flat = true;
+            let aspectRatio = Math.max(innerWidth, innerHeight) / Math.min(innerWidth, innerHeight);
+
+            let elHeight = innerWidth / aspectRatio;
+            let fillScale = innerHeight / elHeight;
+            this._fillScale = fillScale;
+
             videosphere.removeAttribute("geometry", "radius");
             videosphere.setAttribute("geometry", 'primitive', 'plane');
             videosphere.setAttribute("geometry", "width", aspectRatio);
             videosphere.object3D.rotation.y = Math.PI;
-            videosphere.object3D.rotation.z = (Math.PI / 180) * rotation;
+            videosphere.object3D.rotation.z = (Math.PI / 180) * turn * 90;
             videosphere.object3D.position.y = 1.6;
-            videosphere.object3D.position.z = -1.0;
-            setTimeout(() => this.toggleTouch(false), 100);
+            videosphere.object3D.position.z = (-window.innerHeight / window.innerWidth) / (fill ? fillScale : scale);
+            if (!fill) videosphere.object3D.position.x = 0;
+            this.resetCamera();
+            // if (isEven) setTimeout(() => this.toggleTouch(false), 100);
+            // else setTimeout(() => this.toggleTouch(true), 100);
         } else {
+            this._flat = false;
             videosphere.removeAttribute("geometry", "width");
             videosphere.setAttribute("geometry", 'primitive', 'sphere');
             videosphere.object3D.rotation.y = 0;
             videosphere.object3D.rotation.z = 0;
             videosphere.object3D.position.y = 1.6;
             videosphere.object3D.position.z = 0;
-            setTimeout(() => this.toggleTouch(true), 100);
+            // setTimeout(() => this.toggleTouch(true), 100);
         }
 
         if (videosphere.getAttribute("material")['shader'] != 'flat') {
@@ -527,6 +559,14 @@ class MediaController {
 
     get isFlat() {
         return this._flat;
+    }
+
+    get isFlatScrollable() {
+        return this._flatScroll;
+    }
+
+    get fillScale() {
+        return this._fillScale;
     }
 
     viewInFlat(fullscreen = true, aspectRatio = null) {
