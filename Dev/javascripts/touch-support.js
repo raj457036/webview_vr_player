@@ -368,6 +368,7 @@ AFRAME.registerComponent('touch-look-controls', {
         var pitchObject = this.pitchObject;
         var yawObject = this.yawObject;
         var updatedPosition = this.updatedPosition;
+        var position = this.el.object3D.position;
 
         if (!this.touchStarted || !this.data.touchEnabled) {
             return;
@@ -376,8 +377,10 @@ AFRAME.registerComponent('touch-look-controls', {
 
         if (mediaController.isFlat) {
             let offset = mediaController.fillScale / 3;
-            if (mediaController.isFlatScrollable)
-                updatedPosition.x = clamp(offset / 2 - evt.touches[0].pageX / canvas.clientWidth, -offset / 2, offset / 2);
+            if (mediaController.isFlatScrollable) {
+                updatedPosition.x -= (evt.touches[0].pageX - this.touchStart.x) / canvas.clientWidth;
+                updatedPosition.x = clamp(updatedPosition.x, -offset / 2, offset / 2);
+            }
 
         } else {
             deltaY = 2 * Math.PI * (evt.touches[0].pageX - this.touchStart.x) / canvas.clientWidth;
