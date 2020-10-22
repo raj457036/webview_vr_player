@@ -574,8 +574,8 @@ class MediaController {
             this._flat = true;
             const ar = aspectRatio || (fullscreen ? window.innerHeight / window.innerWidth : window.innerWidth / window.innerHeight);
 
-            if (fullscreen) this.togglePlayer(true, ar, 90);
-            else this.togglePlayer(true, ar);
+            if (fullscreen) this.togglePlayer(true, 1, false);
+            else this.togglePlayer(true, 0, false);
         }
 
         return "";
