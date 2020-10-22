@@ -570,9 +570,8 @@ class MediaController {
     }
 
     viewInFlat(fullscreen = true, aspectRatio = null) {
-        if (this.__playerBuilt && !this._flat) {
+        if (this.__playerBuilt) {
             this._flat = true;
-            const ar = aspectRatio || (fullscreen ? window.innerHeight / window.innerWidth : window.innerWidth / window.innerHeight);
 
             if (fullscreen) this.togglePlayer(true, 1, false);
             else this.togglePlayer(true, 0, false);
