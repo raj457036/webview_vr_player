@@ -32,7 +32,7 @@ const ColorFilter = {
     Ashby: "ashby",
     Charmes: "charmes",
     Crema: "crema",
-    Dogpathc: "dogpathc",
+    Dogpatch: "dogpatch",
     Ginza: "ginza",
     Hefe: "hefe",
     Helena: "helena",
