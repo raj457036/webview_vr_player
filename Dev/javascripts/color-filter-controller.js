@@ -41,7 +41,6 @@ const ColorFilter = {
     Poprocket: "poprocket",
     Sierra: "sierra",
     Skyline: "skyline",
-    Stinson: "stinson",
     Sutro: "sutro",
     Vesper: "vesper",
 }
