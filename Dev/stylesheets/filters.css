@@ -269,6 +269,183 @@
     opacity: .5
 }
 
+
+.amaro {
+    -webkit-filter: sepia(.35) contrast(1.1) brightness(1.2) saturate(1.3);
+    filter: sepia(.35) contrast(1.1) brightness(1.2) saturate(1.3);
+}
+
+.amaro::before {
+    background: rgba(125, 105, 24, .2);
+    content: "";
+    mix-blend-mode: overlay;
+}
+
+.ashby {
+    -webkit-filter: sepia(.5) contrast(1.2) saturate(1.8);
+    filter: sepia(.5) contrast(1.2) saturate(1.8);
+}
+
+.ashby::before {
+    background: rgba(125, 105, 24, .35);
+    content: "";
+    mix-blend-mode: lighten;
+}
+
+.charmes {
+    -webkit-filter: sepia(.25) contrast(1.25) brightness(1.25) saturate(1.35) hue-rotate(-5deg);
+    filter: sepia(.25) contrast(1.25) brightness(1.25) saturate(1.35) hue-rotate(-5deg);
+}
+
+.charmes::before {
+    background: rgba(125, 105, 24, .25);
+    content: "";
+    mix-blend-mode: darken;
+}
+
+.crema {
+    -webkit-filter: sepia(.5) contrast(1.25) brightness(1.15) saturate(.9) hue-rotate(-2deg);
+    filter: sepia(.5) contrast(1.25) brightness(1.15) saturate(.9) hue-rotate(-2deg);
+}
+
+.crema::before {
+    background: rgba(125, 105, 24, .2);
+    content: "";
+    mix-blend-mode: multiply;
+}
+
+.dogpatch {
+    -webkit-filter: sepia(.35) saturate(1.1) contrast(1.5);
+    filter: sepia(.35) saturate(1.1) contrast(1.5);
+}
+
+.ginza {
+    -webkit-filter: sepia(.25) contrast(1.15) brightness(1.2) saturate(1.35) hue-rotate(-5deg);
+    filter: sepia(.25) contrast(1.15) brightness(1.2) saturate(1.35) hue-rotate(-5deg);
+}
+
+.ginza::before {
+    background: rgba(125, 105, 24, .15);
+    content: "";
+    mix-blend-mode: darken;
+}
+
+.hefe {
+    -webkit-filter: sepia(.4) contrast(1.5) brightness(1.2) saturate(1.4) hue-rotate(-10deg);
+    filter: sepia(.4) contrast(1.5) brightness(1.2) saturate(1.4) hue-rotate(-10deg);
+}
+
+.hefe::before {
+    background: radial-gradient(circle closest-corner, transparent 0, rgba(0, 0, 0, .25) 100%);
+    background: -o-radial-gradient(circle closest-corner, transparent 0, rgba(0, 0, 0, .25) 100%);
+    background: -moz-radial-gradient(circle closest-corner, transparent 0, rgba(0, 0, 0, .25) 100%);
+    background: -webkit-radial-gradient(circle closest-corner, transparent 0, rgba(0, 0, 0, .25) 100%);
+    content: "";
+    mix-blend-mode: multiply;
+}
+
+.helena {
+    -webkit-filter: sepia(.5) contrast(1.05) brightness(1.05) saturate(1.35);
+    filter: sepia(.5) contrast(1.05) brightness(1.05) saturate(1.35);
+}
+
+.helena::before {
+    background: rgba(158, 175, 30, .25);
+    content: "";
+    mix-blend-mode: overlay;
+}
+
+.juno {
+    -webkit-filter: sepia(.35) contrast(1.15) brightness(1.15) saturate(1.8);
+    filter: sepia(.35) contrast(1.15) brightness(1.15) saturate(1.8);
+}
+
+.juno::before {
+    background: rgba(127, 187, 227, .2);
+    content: "";
+    mix-blend-mode: overlay;
+}
+
+.ludwig {
+    -webkit-filter: sepia(.25) contrast(1.05) brightness(1.05) saturate(2);
+    filter: sepia(.25) contrast(1.05) brightness(1.05) saturate(2);
+}
+
+.ludwig::before {
+    background: rgba(125, 105, 24, .1);
+    content: "";
+    mix-blend-mode: overlay;
+}
+
+.poprocket {
+    -webkit-filter: sepia(.15) brightness(1.2);
+    filter: sepia(.15) brightness(1.2);
+}
+
+.poprocket::before {
+    background: radial-gradient(circle closest-corner, rgba(206, 39, 70, .75) 40%, black 80%);
+    background: -o-radial-gradient(circle closest-corner, rgba(206, 39, 70, .75) 40%, black 80%);
+    background: -moz-radial-gradient(circle closest-corner, rgba(206, 39, 70, .75) 40%, black 80%);
+    background: -webkit-radial-gradient(circle closest-corner, rgba(206, 39, 70, .75) 40%, black 80%);
+    content: "";
+    mix-blend-mode: screen;
+}
+
+.sierra {
+    -webkit-filter: sepia(.25) contrast(1.5) brightness(.9) hue-rotate(-15deg);
+    filter: sepia(.25) contrast(1.5) brightness(.9) hue-rotate(-15deg);
+}
+
+.sierra::before {
+    background: radial-gradient(circle closest-corner, rgba(128, 78, 15, .5) 0, rgba(0, 0, 0, .65) 100%);
+    background: -o-radial-gradient(circle closest-corner, rgba(128, 78, 15, .5) 0, rgba(0, 0, 0, .65) 100%);
+    background: -moz-radial-gradient(circle closest-corner, rgba(128, 78, 15, .5) 0, rgba(0, 0, 0, .65) 100%);
+    background: -webkit-radial-gradient(circle closest-corner, rgba(128, 78, 15, .5) 0, rgba(0, 0, 0, .65) 100%);
+    content: "";
+    mix-blend-mode: screen;
+}
+
+.skyline {
+    -webkit-filter: sepia(.15) contrast(1.25) brightness(1.25) saturate(1.2);
+    filter: sepia(.15) contrast(1.25) brightness(1.25) saturate(1.2);
+}
+
+.stinson {
+    -webkit-filter: sepia(.35) contrast(1.25) brightness(1.1) saturate(1.25);
+    filter: sepia(.35) contrast(1.25) brightness(1.1) saturate(1.25);
+}
+
+.stinson::before {
+    background: rgba(125, 105, 24, .45);
+    content: "";
+    mix-blend-mode: lighten;
+}
+
+.sutro {
+    -webkit-filter: sepia(.4) contrast(1.2) brightness(.9) saturate(1.4) hue-rotate(-10deg);
+    filter: sepia(.4) contrast(1.2) brightness(.9) saturate(1.4) hue-rotate(-10deg);
+}
+
+.sutro::before {
+    background: radial-gradient(circle closest-corner, transparent 50%, rgba(0, 0, 0, .5) 90%);
+    background: -o-radial-gradient(circle closest-corner, transparent 50%, rgba(0, 0, 0, .5) 90%);
+    background: -moz-radial-gradient(circle closest-corner, transparent 50%, rgba(0, 0, 0, .5) 90%);
+    background: -webkit-radial-gradient(circle closest-corner, transparent 50%, rgba(0, 0, 0, .5) 90%);
+    content: "";
+    mix-blend-mode: darken;
+}
+
+.vesper {
+    -webkit-filter: sepia(.35) contrast(1.15) brightness(1.2) saturate(1.3);
+    filter: sepia(.35) contrast(1.15) brightness(1.2) saturate(1.3);
+}
+
+.vesper::before {
+    background: rgba(125, 105, 24, .25);
+    content: "";
+    mix-blend-mode: overlay;
+}
+
 ._1977:after,
 ._1977:before,
 .aden:after,
@@ -318,7 +495,39 @@
 .xpro2:after,
 .xpro2:before,
 .balance:after,
-.balance:before {
+.balance:before,
+.amaro:before,
+.amaro:after,
+.ashby:before,
+.ashby:after,
+.charmes:before,
+.charmes:after,
+.crema:before,
+.crema:after,
+.dogpatch:before,
+.dogpatch:after,
+.ginza:before,
+.ginza:after,
+.hefe:before,
+.hefe:after,
+.helena:before,
+.helena:after,
+.juno:before,
+.juno:after,
+.ludwig:before,
+.ludwig:after,
+.poprocket:before,
+.poprocket:after,
+.sierra:before,
+.sierra:after,
+.skyline:before,
+.skyline:after,
+.stinson:before,
+.stinson:after,
+.sutro:before,
+.sutro:after,
+.vesper:before,
+.vesper:after {
     content: '';
     display: block;
     height: 100%;
@@ -326,7 +535,8 @@
     top: 0;
     left: 0;
     position: absolute;
-    pointer-events: none
+    pointer-events: none;
+    font-size: 0px;
 }
 
 ._1977,
@@ -353,8 +563,25 @@
 .walden,
 .willow,
 .xpro2,
-.balance {
-    position: relative
+.balance,
+.amaro,
+.ashby,
+.charmes,
+.crema,
+.dogpatch,
+.ginza,
+.hefe,
+.helena,
+.juno,
+.ludwig,
+.poprocket,
+.sierra,
+.skyline,
+.stinson,
+.sutro,
+.vesper {
+    position: relative,
+
 }
 
 ._1977 img,
@@ -381,9 +608,26 @@
 .walden img,
 .willow img,
 .xpro2 img,
-.balance image {
+.balance img,
+.amaro img,
+.ashby img,
+.charmes img,
+.crema img,
+.dogpatch img,
+.ginza img,
+.hefe img,
+.helena img,
+.juno img,
+.ludwig img,
+.poprocket img,
+.sierra img,
+.skyline img,
+.stinson img,
+.sutro img,
+.vesper img {
     width: 100%;
-    z-index: 1
+    z-index: 1,
+
 }
 
 ._1977:before,
@@ -410,7 +654,23 @@
 .walden:before,
 .willow:before,
 .xpro2:before,
-.balance:before {
+.balance:before,
+.amaro:before,
+.ashby:before,
+.charmes:before,
+.crema:before,
+.dogpatch:before,
+.ginza:before,
+.hefe:before,
+.helena:before,
+.juno:before,
+.ludwig:before,
+.poprocket:before,
+.sierra:before,
+.skyline:before,
+.stinson:before,
+.sutro:before,
+.vesper:before {
     z-index: 2
 }
 
@@ -438,7 +698,23 @@
 .walden:after,
 .willow:after,
 .xpro2:after,
-.balance:after {
+.balance:after,
+.amaro:after,
+.ashby:after,
+.charmes:after,
+.crema:after,
+.dogpatch:after,
+.ginza:after,
+.hefe:after,
+.helena:after,
+.juno:after,
+.ludwig:after,
+.poprocket:after,
+.sierra:after,
+.skyline:after,
+.stinson:after,
+.sutro:after,
+.vesper:after {
     z-index: 3
 }
 

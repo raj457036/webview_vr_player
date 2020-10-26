@@ -8,6 +8,7 @@
   overflow-y: auto;
   padding-bottom: 120px;
   z-index: 10000;
+  font: 14px "Arial";
 }
 
 .inlog input {

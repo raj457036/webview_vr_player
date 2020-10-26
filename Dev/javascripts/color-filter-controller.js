@@ -27,6 +27,22 @@ const ColorFilter = {
     Willow: "willow",
     XproII: "xpro2",
     Balance: "balance",
+    // new filters
+    Amaro: "amaro",
+    Ashby: "ashby",
+    Charmes: "charmes",
+    Crema: "crema",
+    Dogpatch: "dogpatch",
+    Ginza: "ginza",
+    Hefe: "hefe",
+    Helena: "helena",
+    Juno: "juno",
+    Ludwig: "ludwig",
+    Poprocket: "poprocket",
+    Sierra: "sierra",
+    Skyline: "skyline",
+    Sutro: "sutro",
+    Vesper: "vesper",
 }
 
 Object.freeze(ColorFilter);
