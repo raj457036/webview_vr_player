@@ -1,29 +1,29 @@
 const ColorFilter = {
-    NoFilter: "", //
-    f1977: "_1977", //
-    Aden: "aden", //
-    Brannan: "brannan", //
-    Brooklyn: "brooklyn", //
-    Clarendon: "clarendon", //
-    Earlybird: "earlybird", //
-    Gingham: "gingham", //
-    Hudson: "hudson", //
-    Inkwell: "inkwell", //
-    Kelvin: "kelvin", //
-    Lark: "lark", //
-    LoFi: "lofi", //
-    Maven: "maven", //
-    Mayfair: "mayfair", //
-    Moon: "moon", //
-    Nashville: "nashville", //
-    Perpetua: "perpetua", //
-    Reyes: "reyes", //
-    Rise: "rise", //
-    Slumber: "slumber", //
-    Stinson: "stinson", //
-    Toaster: "toaster", //
-    Valencia: "valencia", //
-    Walden: "walden", //
+    NoFilter: "",
+    f1977: "_1977",
+    Aden: "aden",
+    Brannan: "brannan",
+    Brooklyn: "brooklyn",
+    Clarendon: "clarendon",
+    Earlybird: "earlybird",
+    Gingham: "gingham",
+    Hudson: "hudson",
+    Inkwell: "inkwell",
+    Kelvin: "kelvin",
+    Lark: "lark",
+    LoFi: "lofi",
+    Maven: "maven",
+    Mayfair: "mayfair",
+    Moon: "moon",
+    Nashville: "nashville",
+    Perpetua: "perpetua",
+    Reyes: "reyes",
+    Rise: "rise",
+    Slumber: "slumber",
+    Stinson: "stinson",
+    Toaster: "toaster",
+    Valencia: "valencia",
+    Walden: "walden",
     Willow: "willow",
     XproII: "xpro2",
     Balance: "balance",
