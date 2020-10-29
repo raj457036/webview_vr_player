@@ -536,7 +536,7 @@ class MediaController {
             this.ctx = this.canvas.getContext('2d');
 
             if (this.ios14) {
-                $("#text").show();
+                // $("#text").show();
                 canvasRenderForIOS14();
             }
         } else {
@@ -858,8 +858,6 @@ function processParams() {
 
     window.mediaFilter = new MediaColorFilter('player');
     $("#text").click((_) => $("#text").hide());
-
-
 }
 
 function canvasRenderForIOS14() {
@@ -870,7 +868,7 @@ function canvasRenderForIOS14() {
         mediaController.canvas.width = width;
 
         // console.log(`${self.canvas.height} x ${self.canvas.width}`);
-        $("#text").text(` ${mediaController.video.currentTime} || ${height}x${width}`);
+        // $("#text").text(` ${mediaController.video.currentTime} || ${height}x${width}`);
 
         mediaController.ctx.clearRect(0, 0, width, height);
         mediaController.ctx.drawImage(mediaController.video, 0, 0, width, height);
