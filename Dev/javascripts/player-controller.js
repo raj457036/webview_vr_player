@@ -452,6 +452,8 @@ class MediaController {
             this.resetShader();
             this.unmute();
         }
+
+        alert("VIEW CHANGED");
     }
 
     resetShader() {
