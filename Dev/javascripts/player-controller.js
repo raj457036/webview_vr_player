@@ -88,7 +88,7 @@ class MediaMessageChannel {
         if (this._timeout) clearTimeout(this._timeout);
 
         this._timeout = setTimeout(() => {
-            alert(`player Stalled ${_self._stalled}`);
+            alert(`player Stalled (Bad Internet Connectivity!)`);
 
             if (_self._stalled == _self.controller.video.currentTime) {
                 buildPlayer(this.controller.video.src);
@@ -510,12 +510,10 @@ class MediaController {
 
 
 
-        if (force || true) {
-            const _ = document.getElementById("scene_id");
-            if (_) {
-                _.remove();
-                this.__playerBuilt = false;
-            }
+        const _ = document.getElementById("scene_id");
+        if (_) {
+            _.remove();
+            this.__playerBuilt = false;
         }
 
         alert(`Waiting for inital Buffer...`);
