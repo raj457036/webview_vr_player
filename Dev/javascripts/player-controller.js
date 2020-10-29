@@ -541,13 +541,14 @@ class MediaController {
                 this.video.addEventListener('progress', (e) => {
 
                     if (self.canvas.height * self.canvas.width != e.target.videoHeight * e.target.videoWidth) {
-                        alert("Bandwidth Changed");
+                        alert(`Bandwidth Changed\n${self.canvas.height} x ${self.canvas.width}\n${e.target.videoHeight} x ${e.target.videoWidth}`);
                     }
 
                     self.canvas.height = e.target.videoHeight;
                     self.canvas.width = e.target.videoWidth;
 
-                    console.log(`${self.canvas.height} x ${self.canvas.width}`);
+                    // console.log(`${self.canvas.height} x ${self.canvas.width}`);
+                    $("#text").text(e.target.currentTime);
                 });
                 canvasRenderForIOS14();
             }

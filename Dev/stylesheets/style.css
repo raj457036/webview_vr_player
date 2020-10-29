@@ -119,3 +119,12 @@ a {
     background: transparent;
     color: inherit;
 }
+
+#text {
+    position: fixed;
+    top: 100px;
+    left: 50px;
+    color: white;
+    background-color: black;
+    z-index: 10000;
+}
