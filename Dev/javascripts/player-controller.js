@@ -505,7 +505,7 @@ class MediaController {
 
 
 
-        if (force) {
+        if (force || true) {
             const _ = document.getElementById("scene_id");
             if (_) {
                 _.remove();
