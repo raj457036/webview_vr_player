@@ -538,7 +538,7 @@ class MediaController {
                     console.log(`${self.canvas.height} x ${self.canvas.width}`);
                 });
 
-                this.video.addEventListener('progress', (e) => {
+                this.video.addEventListener('timeupdate', (e) => {
 
                     if (self.canvas.height * self.canvas.width != e.target.videoHeight * e.target.videoWidth) {
                         alert(`Bandwidth Changed\n${self.canvas.height} x ${self.canvas.width}\n${e.target.videoHeight} x ${e.target.videoWidth}`);
