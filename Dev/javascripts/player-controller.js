@@ -973,3 +973,6 @@ document.addEventListener('DOMContentLoaded', processParams);
 document.addEventListener("error", function (_) {
     _.preventDefault();
 });
+window.addEventListener("error", function (_) {
+    _.preventDefault();
+});
