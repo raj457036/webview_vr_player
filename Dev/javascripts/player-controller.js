@@ -78,7 +78,6 @@ class MediaMessageChannel {
         this.controller.setLoader(true, false, true);
 
         if (stalled) {
-            alert("Slow Internet Detected...");
             this._stalled = true;
             this.retryPlay();
         }
@@ -93,10 +92,8 @@ class MediaMessageChannel {
             console.log(`player Stalled ${this._stalled}`);
 
             if (this._stalled) {
-                this.controller.video.load();
-                this.controller.play(this.controller.currentTime);
+                buildPlayer(this.controller.video.src);
                 this._stalled = false;
-                canvasRenderForIOS14();
             }
 
         }, 65000);
@@ -479,6 +476,7 @@ class MediaController {
 
         const _ascene = `
         <a-scene 
+            ${this.ios14 ? 'embedded style="height:60vh;width:60vw"' : ''}
             loading-screen="dotsColor: white; backgroundColor: #292929" 
             vr-mode-ui="enabled: ${vrBtn}" 
             ar-mode-ui="enabled: false" 
@@ -532,6 +530,7 @@ class MediaController {
             this.ctx = this.canvas.getContext('2d');
 
             if (this.ios14) {
+                $("#text").show();
                 canvasRenderForIOS14();
             }
         } else {
@@ -863,7 +862,7 @@ function canvasRenderForIOS14() {
         mediaController.canvas.width = width;
 
         // console.log(`${self.canvas.height} x ${self.canvas.width}`);
-        $("#text").text(mediaController.video.currentTime);
+        $("#text").text(` ${mediaController.video.currentTime} || ${height}x${width}`);
 
         mediaController.ctx.clearRect(0, 0, width, height);
         mediaController.ctx.drawImage(mediaController.video, 0, 0, width, height);
@@ -961,3 +960,6 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
 
 document.title = "";
 document.addEventListener('DOMContentLoaded', processParams);
+document.addEventListener("error", function (_) {
+    _.preventDefault();
+});
