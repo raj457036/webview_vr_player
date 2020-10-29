@@ -478,7 +478,7 @@ class MediaController {
 
         const _ascene = `
         <a-scene 
-            loading-screen="dotsColor: white; backgroundColor: black" 
+            loading-screen="dotsColor: white; backgroundColor: pink" 
             vr-mode-ui="enabled: ${vrBtn}" 
             ar-mode-ui="enabled: false" 
             id="scene_id"
