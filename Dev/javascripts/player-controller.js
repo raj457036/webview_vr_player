@@ -78,6 +78,7 @@ class MediaMessageChannel {
         this.controller.setLoader(true, false, true);
 
         if (stalled) {
+            alert("Slow Internet Detected...");
             this._stalled = true;
             this.retryPlay();
         }
