@@ -504,6 +504,7 @@ class MediaController {
         `;
 
 
+
         if (force) {
             const _ = document.getElementById("scene_id");
             if (_) {
@@ -512,6 +513,7 @@ class MediaController {
             }
         }
 
+        alert(`Player Ready ${this.__playerBuilt}`);
 
         if (!this.__playerBuilt) {
 

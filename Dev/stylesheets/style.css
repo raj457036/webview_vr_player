@@ -129,3 +129,10 @@ a {
     z-index: 10000;
     font-size: 16px;
 }
+
+#text::after {
+    content: "Ticks";
+    color: white;
+    background-color: yellowgreen;
+    font-size: 18px;
+}
