@@ -51,7 +51,7 @@ class MediaMessageChannel {
         this.useConsoleForMessage = useConsoleForMessage;
         this.errorDisplayed = false;
         this._timeout = null;
-        this._stalled = false;
+        this._stalled = 0;
     }
 
     // To prevent BLACK Screen on IOS devices
@@ -69,7 +69,6 @@ class MediaMessageChannel {
     }
 
     onVideoPlaybackSuccess() {
-        this._stalled = false;
         if (this._timeout) clearTimeout(this._timeout);
         this.controller.setLoader(false);
     }
@@ -78,25 +77,25 @@ class MediaMessageChannel {
         this.controller.setLoader(true, false, true);
 
         if (stalled) {
-            this._stalled = true;
+            this._stalled = this.controller.video.currentTime;
             this.retryPlay();
         }
     }
 
     retryPlay() {
-        self = this;
+        var _self = this;
 
         if (this._timeout) clearTimeout(this._timeout);
 
         this._timeout = setTimeout(() => {
-            alert(`player Stalled ${this._stalled}`);
+            alert(`player Stalled ${_self._stalled}`);
 
-            if (this._stalled) {
+            if (_self._stalled == _self.controller.video.currentTime) {
                 buildPlayer(this.controller.video.src);
-                this._stalled = false;
             }
-
         }, 65000);
+
+        return "";
     }
 
     onVideoEvents() {
@@ -107,6 +106,8 @@ class MediaMessageChannel {
         } else {
             this.onVideoPlaybackWaiting();
         }
+
+        return "";
     }
 
     subscribe(code, self = this) {
@@ -253,6 +254,8 @@ class MediaMessageChannel {
                 self.sendMessage(MediaEvent.WAITING);
             };
         }
+
+        return "";
     }
 
     unsubscribe(code) {
@@ -341,6 +344,8 @@ class MediaMessageChannel {
         if (code == MediaEvent.WAITING) {
             vid.onwaiting = this.onVideoPlaybackWaiting;
         }
+
+        return "";
     }
 
     sendMessage(event, message = "") {
@@ -359,11 +364,12 @@ class MediaMessageChannel {
             }
         }
 
-        return false;
+        return "";
     }
 
     _postMessage(message) {
         MediaMessageChannel.postMessage(message);
+        return "";
     }
 }
 
@@ -454,6 +460,7 @@ class MediaController {
         }
 
         alert("VIEW CHANGED");
+        return "";
     }
 
     resetShader() {
@@ -539,6 +546,8 @@ class MediaController {
         }
 
         this.subscribeToBufferingEvents();
+
+        return "";
     }
 
 
