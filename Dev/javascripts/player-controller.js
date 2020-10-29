@@ -89,7 +89,7 @@ class MediaMessageChannel {
         if (this._timeout) clearTimeout(this._timeout);
 
         this._timeout = setTimeout(() => {
-            console.log(`player Stalled ${this._stalled}`);
+            alert(`player Stalled ${this._stalled}`);
 
             if (this._stalled) {
                 buildPlayer(this.controller.video.src);
