@@ -513,7 +513,7 @@ class MediaController {
             }
         }
 
-        alert(`Player Ready ${this.__playerBuilt}`);
+        alert(`Waiting for inital Buffer...`);
 
         if (!this.__playerBuilt) {
 
