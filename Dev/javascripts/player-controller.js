@@ -479,7 +479,7 @@ class MediaController {
 
         const _ascene = `
         <a-scene 
-            loading-screen="dotsColor: white; backgroundColor: black" 
+            loading-screen="dotsColor: white; backgroundColor: #292929" 
             vr-mode-ui="enabled: ${vrBtn}" 
             ar-mode-ui="enabled: false" 
             id="scene_id"
@@ -850,6 +850,9 @@ function processParams() {
     }
 
     window.mediaFilter = new MediaColorFilter('player');
+    $("#text").click((_) => $("#text").hide());
+
+
 }
 
 function canvasRenderForIOS14() {
