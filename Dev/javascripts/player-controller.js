@@ -537,8 +537,6 @@ class MediaController {
                 // $("#text").show();
                 canvasRenderForIOS14();
             }
-        } else {
-            console.log('Player already built!!');
         }
 
         this.subscribeToBufferingEvents();
