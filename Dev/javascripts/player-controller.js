@@ -970,9 +970,11 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
 
 document.title = "";
 document.addEventListener('DOMContentLoaded', processParams);
-document.addEventListener("error", function (_) {
-    _.preventDefault();
-});
-window.addEventListener("error", function (_) {
-    _.preventDefault();
-});
+
+function _noError(_) {
+    _.preventDefault()
+    alert(_);
+    return true;
+};
+document.onerror = _noError;
+window.onerror = _noError;
