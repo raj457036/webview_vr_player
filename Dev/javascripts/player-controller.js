@@ -476,7 +476,6 @@ class MediaController {
 
         const _ascene = `
         <a-scene 
-            ${this.ios14 ? 'embedded style="height:60vh;width:60vw"' : ''}
             loading-screen="dotsColor: white; backgroundColor: #292929" 
             vr-mode-ui="enabled: ${vrBtn}" 
             ar-mode-ui="enabled: false" 
