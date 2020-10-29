@@ -531,15 +531,6 @@ class MediaController {
             this.ctx = this.canvas.getContext('2d');
 
             if (this.ios14) {
-                self = this;
-
-                this.video.addEventListener("playing", (e) => {
-                    self.canvas.height = e.video.videoHeight;
-                    self.canvas.width = e.video.videoWidth;
-
-                    console.log(`${self.canvas.height} x ${self.canvas.width}`);
-                });
-
                 canvasRenderForIOS14();
             }
         } else {
