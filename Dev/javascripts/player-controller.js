@@ -478,7 +478,7 @@ class MediaController {
 
         const _ascene = `
         <a-scene 
-            loading-screen="dotsColor: white; backgroundColor: pink" 
+            loading-screen="dotsColor: white; backgroundColor: black" 
             vr-mode-ui="enabled: ${vrBtn}" 
             ar-mode-ui="enabled: false" 
             id="scene_id"
@@ -540,18 +540,6 @@ class MediaController {
                     console.log(`${self.canvas.height} x ${self.canvas.width}`);
                 });
 
-                this.video.addEventListener('timeupdate', (e) => {
-
-                    if (self.canvas.height * self.canvas.width != e.target.videoHeight * e.target.videoWidth) {
-                        alert(`Bandwidth Changed\n${self.canvas.height} x ${self.canvas.width}\n${e.target.videoHeight} x ${e.target.videoWidth}`);
-                    }
-
-                    self.canvas.height = e.target.videoHeight;
-                    self.canvas.width = e.target.videoWidth;
-
-                    // console.log(`${self.canvas.height} x ${self.canvas.width}`);
-                    $("#text").text(e.target.currentTime);
-                });
                 canvasRenderForIOS14();
             }
         } else {
@@ -874,8 +862,16 @@ function processParams() {
 
 function canvasRenderForIOS14() {
     if (mediaController.video && mediaController.video.readyState === mediaController.video.HAVE_ENOUGH_DATA) {
-        mediaController.ctx.clearRect(0, 0, mediaController.canvas.width, mediaController.canvas.height);
-        mediaController.ctx.drawImage(mediaController.video, 0, 0, mediaController.canvas.width, mediaController.canvas.height);
+        var height = mediaController.video.videoHeight;
+        var width = mediaController.video.videoWidth;
+        mediaController.canvas.height = height;
+        mediaController.canvas.width = width;
+
+        // console.log(`${self.canvas.height} x ${self.canvas.width}`);
+        $("#text").text(mediaController.video.currentTime);
+
+        mediaController.ctx.clearRect(0, 0, width, height);
+        mediaController.ctx.drawImage(mediaController.video, 0, 0, width, height);
     }
     requestAnimationFrame(canvasRenderForIOS14);
 }
@@ -939,7 +935,7 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
         if (_auto_play) {
             setTimeout(() => {
                 if (!(mediaController.currentTime() > 0.0)) mediaController.play();
-            }, 3000);
+            }, 1000);
         } else {
             mediaController.autoPlay = false;
         }
