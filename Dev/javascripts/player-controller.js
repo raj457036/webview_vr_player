@@ -440,7 +440,7 @@ class MediaController {
             videosphere.object3D.position.y = 1.6;
             videosphere.object3D.position.z = (-window.innerHeight / window.innerWidth) / (fill ? fillScale : scale);
             if (!fill) videosphere.object3D.position.x = 0;
-            this.resetCamera();
+            this.resetCamera(true);
             // if (isEven) setTimeout(() => this.toggleTouch(false), 100);
             // else setTimeout(() => this.toggleTouch(true), 100);
         } else {
