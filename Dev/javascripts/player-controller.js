@@ -516,7 +516,7 @@ class MediaController {
             this.__playerBuilt = false;
         }
 
-        alert(`Waiting for inital Buffer...`);
+        // alert(`Waiting for inital Buffer...`);
 
         if (!this.__playerBuilt) {
 
@@ -965,7 +965,7 @@ document.addEventListener('DOMContentLoaded', processParams);
 
 function _noError(_) {
     _.preventDefault()
-    alert(_);
+    // alert(_);
     return true;
 };
 document.onerror = _noError;
