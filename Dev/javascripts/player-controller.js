@@ -395,7 +395,8 @@ class MediaMessageChannel {
     }
 
     _postMessage(message) {
-        if (message) {
+        const _type = typeof(message);
+        if (_type === "string" || _type === "boolean" || _type === "number") {
             MediaMessageChannel.postMessage(message);
         }
         return "";
