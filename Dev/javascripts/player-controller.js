@@ -421,19 +421,21 @@ class MediaController {
     }
 
     resetCamera() {
-        const ele = this.cam.components['touch-look-controls'].el;
-        if (ele) {
-            ele.setAttribute("rotation", {
-                x: 0,
-                y: 0,
-                z: 0
-            });
-            ele.setAttribute("position", {
-                x: 0,
-                y: 1.6,
-                z: 0
-            });
-        }
+        try {
+            const ele = this.cam.components['touch-look-controls'].el;
+            if (ele) {
+                ele.setAttribute("rotation", {
+                    x: 0,
+                    y: 0,
+                    z: 0
+                });
+                ele.setAttribute("position", {
+                    x: 0,
+                    y: 1.6,
+                    z: 0
+                });
+            }
+        } catch (error) {}
         return "";
     }
 
@@ -493,6 +495,10 @@ class MediaController {
             }
         } catch (error) {
             alert(error);
+            setTimeout(() => {
+                this.togglePlayer(flat, turn, fill);
+                return "";
+            }, 1500);
         }
         
         return "";
