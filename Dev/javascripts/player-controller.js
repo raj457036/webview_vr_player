@@ -395,7 +395,9 @@ class MediaMessageChannel {
     }
 
     _postMessage(message) {
-        MediaMessageChannel.postMessage(`${message}`);
+        if (message) {
+            MediaMessageChannel.postMessage(message);
+        }
         return "";
     }
 }
@@ -494,7 +496,7 @@ class MediaController {
                 this.unmute();
             }
         } catch (error) {
-            alert(error);
+            // alert(error);
             setTimeout(() => {
                 this.togglePlayer(flat, turn, fill);
                 return "";
