@@ -62,15 +62,18 @@ class MediaMessageChannel {
             scene.renderer.setSize(scene.canvas.width, scene.canvas.height);
         }, 500);
         vid.removeEventListener('canplay', this.videoHackListener);
+        return "";
     }
 
     onVideoPlaybackFailure() {
         this.controller.setLoader(true, true);
+        return "";
     }
 
     onVideoPlaybackSuccess() {
         if (this._timeout) clearTimeout(this._timeout);
         this.controller.setLoader(false);
+        return "";
     }
 
     onVideoPlaybackWaiting(stalled = false) {
@@ -80,6 +83,7 @@ class MediaMessageChannel {
             this._stalled = this.controller.video.currentTime;
             this.retryPlay();
         }
+        return "";
     }
 
     retryPlay() {
@@ -88,11 +92,12 @@ class MediaMessageChannel {
         if (this._timeout) clearTimeout(this._timeout);
 
         this._timeout = setTimeout(() => {
-            alert(`player Stalled (Bad Internet Connectivity!)`);
+            alert('Video Stalled');
 
             if (_self._stalled == _self.controller.video.currentTime) {
                 buildPlayer(this.controller.video.src);
             }
+            return "";
         }, 65000);
 
         return "";
@@ -117,6 +122,7 @@ class MediaMessageChannel {
             vid.onabort = function () {
                 self.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.ABORTED);
+                return "";
             };
         }
 
@@ -124,6 +130,7 @@ class MediaMessageChannel {
             vid.oncanplay = function () {
                 self.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.CAN_PLAY);
+                return "";
             };
 
             const scene = document.querySelector("#scene_id");
@@ -136,18 +143,21 @@ class MediaMessageChannel {
             vid.oncanplaythrough = function () {
                 self.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.CAN_PLAY_THROUGH);
+                return "";
             };
         }
 
         if (code == MediaEvent.DURATION_CHANGE) {
             vid.ondurationchange = function () {
                 self.sendMessage(MediaEvent.DURATION_CHANGE);
+                return "";
             };
         }
 
         if (code == MediaEvent.ENDED) {
             vid.onended = function () {
                 self.sendMessage(MediaEvent.ENDED);
+                return "";
             };
         }
 
@@ -155,6 +165,7 @@ class MediaMessageChannel {
             vid.onerror = function () {
                 self.onVideoPlaybackFailure();
                 self.sendMessage(MediaEvent.ERROR);
+                return "";
             };
         }
 
@@ -162,12 +173,14 @@ class MediaMessageChannel {
             vid.onloadeddata = function () {
                 self.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.LOADED_DATA);
+                return "";
             };
         }
 
         if (code == MediaEvent.LOADED_META_DATA) {
             vid.onloadedmetadata = function () {
                 self.sendMessage(MediaEvent.LOADED_META_DATA);
+                return "";
             };
         }
 
@@ -175,18 +188,21 @@ class MediaMessageChannel {
             vid.onloadstart = function () {
                 self.onVideoPlaybackWaiting();
                 self.sendMessage(MediaEvent.LOAD_START);
+                return "";
             };
         }
 
         if (code == MediaEvent.PAUSE) {
             vid.onpause = function () {
                 self.sendMessage(MediaEvent.PAUSE);
+                return "";
             };
         }
 
         if (code == MediaEvent.PLAY) {
             vid.onplay = function () {
                 self.sendMessage(MediaEvent.PLAY);
+                return "";
             };
         }
 
@@ -194,6 +210,7 @@ class MediaMessageChannel {
             vid.onplaying = function () {
                 self.onVideoPlaybackSuccess();
                 self.sendMessage(MediaEvent.PLAYING);
+                return "";
             };
         }
 
@@ -201,24 +218,28 @@ class MediaMessageChannel {
             vid.onprogress = function () {
                 self.onVideoEvents();
                 self.sendMessage(MediaEvent.PROGRESS);
+                return "";
             };
         }
 
         if (code == MediaEvent.RATE_CHANGE) {
             vid.onratechange = function () {
                 self.sendMessage(MediaEvent.RATE_CHANGE);
+                return "";
             }
         }
 
         if (code == MediaEvent.SEEKED) {
             vid.onseeked = function () {
                 self.sendMessage(MediaEvent.SEEKED);
+                return "";
             };
         }
 
         if (code == MediaEvent.SEEKING) {
             vid.onseeking = function () {
                 self.sendMessage(MediaEvent.SEEKING);
+                return "";
             };
         }
 
@@ -226,12 +247,14 @@ class MediaMessageChannel {
             vid.onstalled = function () {
                 self.onVideoPlaybackWaiting(true);
                 self.sendMessage(MediaEvent.STALLED);
+                return "";
             };
         }
 
         if (code == MediaEvent.SUSPEND) {
             vid.onsuspend = function () {
                 self.sendMessage(MediaEvent.SUSPEND);
+                return "";
             };
         }
 
@@ -239,12 +262,14 @@ class MediaMessageChannel {
             vid.ontimeupdate = function () {
                 self.onVideoEvents();
                 self.sendMessage(MediaEvent.TIME_UPDATE);
+                return "";
             };
         }
 
         if (code == MediaEvent.VOLUME_CHANGE) {
             vid.onvolumechange = function () {
                 self.sendMessage(MediaEvent.VOLUME_CHANGE);
+                return "";
             };
         }
 
@@ -252,6 +277,7 @@ class MediaMessageChannel {
             vid.onwaiting = function () {
                 self.onVideoPlaybackWaiting();
                 self.sendMessage(MediaEvent.WAITING);
+                return "";
             };
         }
 
@@ -394,70 +420,80 @@ class MediaController {
     }
 
     resetCamera() {
-        this.cam.components['touch-look-controls'].el.setAttribute("rotation", {
-            x: 0,
-            y: 0,
-            z: 0
-        });
-        this.cam.components['touch-look-controls'].el.setAttribute("position", {
-            x: 0,
-            y: 1.6,
-            z: 0
-        });
+        const ele = this.cam.components['touch-look-controls'].el;
+        if (ele) {
+            ele.setAttribute("rotation", {
+                x: 0,
+                y: 0,
+                z: 0
+            });
+            ele.setAttribute("position", {
+                x: 0,
+                y: 1.6,
+                z: 0
+            });
+        }
+        return "";
     }
 
     toggleTouch(enabled = true) {
         this.cam.components['touch-look-controls'].data.enabled = enabled;
+        return "";
     }
 
     togglePlayer(flat = true, turn, fill) {
-        var videosphere = document.querySelector("#videosphere");
-        turn = turn || 0;
+        try {
+            var videosphere = document.querySelector("#videosphere");
+            turn = turn || 0;
 
-        let isEven = turn % 2 === 0;
+            let isEven = turn % 2 === 0;
 
-        let scale = isEven ? 0.94 : 1.7;
+            let scale = isEven ? 0.94 : 1.7;
 
-        if (!isEven || !fill) {
-            this._flatScroll = false;
-        } else {
-            this._flatScroll = true;
+            if (!isEven || !fill) {
+                this._flatScroll = false;
+            } else {
+                this._flatScroll = true;
+            }
+
+            if (flat) {
+                this._flat = true;
+                let aspectRatio = Math.max(innerWidth, innerHeight) / Math.min(innerWidth, innerHeight);
+
+                let elHeight = innerWidth / aspectRatio;
+                let fillScale = innerHeight / elHeight;
+                this._fillScale = fillScale;
+
+                videosphere.removeAttribute("geometry", "radius");
+                videosphere.setAttribute("geometry", 'primitive', 'plane');
+                videosphere.setAttribute("geometry", "width", aspectRatio);
+                videosphere.object3D.rotation.y = Math.PI;
+                videosphere.object3D.rotation.z = (Math.PI / 180) * turn * 90;
+                videosphere.object3D.position.y = 1.6;
+                videosphere.object3D.position.z = (-window.innerHeight / window.innerWidth) / (fill ? fillScale : scale);
+                if (!fill) videosphere.object3D.position.x = 0;
+                this.resetCamera(true);
+                // if (isEven) setTimeout(() => this.toggleTouch(false), 100);
+                // else setTimeout(() => this.toggleTouch(true), 100);
+            } else {
+                this._flat = false;
+                videosphere.removeAttribute("geometry", "width");
+                videosphere.setAttribute("geometry", 'primitive', 'sphere');
+                videosphere.object3D.rotation.y = 0;
+                videosphere.object3D.rotation.z = 0;
+                videosphere.object3D.position.y = 1.6;
+                videosphere.object3D.position.z = 0;
+                // setTimeout(() => this.toggleTouch(true), 100);
+            }
+
+            if (videosphere.getAttribute("material")['shader'] != 'flat') {
+                this.resetShader();
+                this.unmute();
+            }
+        } catch (error) {
+            alert(error);
         }
-
-        if (flat) {
-            this._flat = true;
-            let aspectRatio = Math.max(innerWidth, innerHeight) / Math.min(innerWidth, innerHeight);
-
-            let elHeight = innerWidth / aspectRatio;
-            let fillScale = innerHeight / elHeight;
-            this._fillScale = fillScale;
-
-            videosphere.removeAttribute("geometry", "radius");
-            videosphere.setAttribute("geometry", 'primitive', 'plane');
-            videosphere.setAttribute("geometry", "width", aspectRatio);
-            videosphere.object3D.rotation.y = Math.PI;
-            videosphere.object3D.rotation.z = (Math.PI / 180) * turn * 90;
-            videosphere.object3D.position.y = 1.6;
-            videosphere.object3D.position.z = (-window.innerHeight / window.innerWidth) / (fill ? fillScale : scale);
-            if (!fill) videosphere.object3D.position.x = 0;
-            this.resetCamera(true);
-            // if (isEven) setTimeout(() => this.toggleTouch(false), 100);
-            // else setTimeout(() => this.toggleTouch(true), 100);
-        } else {
-            this._flat = false;
-            videosphere.removeAttribute("geometry", "width");
-            videosphere.setAttribute("geometry", 'primitive', 'sphere');
-            videosphere.object3D.rotation.y = 0;
-            videosphere.object3D.rotation.z = 0;
-            videosphere.object3D.position.y = 1.6;
-            videosphere.object3D.position.z = 0;
-            // setTimeout(() => this.toggleTouch(true), 100);
-        }
-
-        if (videosphere.getAttribute("material")['shader'] != 'flat') {
-            this.resetShader();
-            this.unmute();
-        }
+        
         return "";
     }
 
@@ -544,9 +580,6 @@ class MediaController {
         return "";
     }
 
-
-
-
     get isFlat() {
         return this._flat;
     }
@@ -598,6 +631,7 @@ class MediaController {
         } else {
             spinner.removeClass('buffering');
         }
+        return "";
     }
 
     // Methods
