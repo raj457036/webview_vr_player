@@ -394,7 +394,7 @@ class MediaMessageChannel {
     }
 
     _postMessage(message) {
-        MediaMessageChannel.postMessage(message);
+        MediaMessageChannel.postMessage(`${message}`);
         return "";
     }
 }
