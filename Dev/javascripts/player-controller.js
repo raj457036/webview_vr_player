@@ -92,9 +92,9 @@ class MediaMessageChannel {
         if (this._timeout) clearTimeout(this._timeout);
 
         this._timeout = setTimeout(() => {
-            alert('Video Stalled');
-
+            
             if (_self._stalled == _self.controller.video.currentTime) {
+                alert('Video Stalled');
                 buildPlayer(this.controller.video.src);
             }
             return "";
