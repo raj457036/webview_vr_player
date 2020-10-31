@@ -156,6 +156,7 @@ AFRAME.registerComponent('touch-look-controls', {
         this.yawObject.position.y = 10;
         this.yawObject.add(this.pitchObject);
         this.updatedPosition = new THREE.Vector3();
+        this.updatedPosition.y = 1.6;
     },
 
     /**
@@ -258,6 +259,11 @@ AFRAME.registerComponent('touch-look-controls', {
         if (mediaController.isFlat) {
             if (mediaController.isFlatScrollable)
                 position.x = updatedPosition.x;
+            else if (mediaController.cam.components.camera.data.zoom > 1) {
+                // console.log(`updated: ${updatedPosition.x} ${updatedPosition.y} || original: ${position.x} ${position.y}`);
+                position.x = updatedPosition.x;
+                position.y = updatedPosition.y;
+            }
         } else {
             // Calculate polyfilled HMD quaternion.
             this.polyfillControls.update();
@@ -376,12 +382,20 @@ AFRAME.registerComponent('touch-look-controls', {
 
 
         if (mediaController.isFlat) {
-            let offset = mediaController.fillScale / 3;
             if (mediaController.isFlatScrollable) {
+                let offset = mediaController.fillScale / 3;
                 updatedPosition.x -= (evt.touches[0].pageX - this.touchStart.x) / canvas.clientWidth;
                 updatedPosition.x = clamp(updatedPosition.x, -offset / 2, offset / 2);
-            }
+            } else if (mediaController.cam.components.camera.data.zoom > 1) {
+                const zoom = (mediaController.cam.components.camera.data.zoom - 1) / 2;
 
+                const zoomY = (zoom / 2);
+                updatedPosition.y += (evt.touches[0].pageY - this.touchStart.y) / canvas.clientHeight;
+                updatedPosition.y = clamp(updatedPosition.y, 1.6 - zoomY, zoomY + 1.6);
+
+                updatedPosition.x -= (evt.touches[0].pageX - this.touchStart.x) / canvas.clientWidth;
+                updatedPosition.x = clamp(updatedPosition.x, -zoom, zoom);
+            }
         } else {
             deltaY = 2 * Math.PI * (evt.touches[0].pageX - this.touchStart.x) / canvas.clientWidth;
             deltaX = 2 * Math.PI * (evt.touches[0].pageY - this.touchStart.y) / canvas.clientHeight;
