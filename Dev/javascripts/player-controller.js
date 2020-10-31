@@ -90,6 +90,7 @@ class MediaMessageChannel {
         var _self = this;
 
         if (this._timeout) clearTimeout(this._timeout);
+        this.controller.setLoader(false);
 
         this._timeout = setTimeout(() => {
             
