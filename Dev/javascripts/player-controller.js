@@ -505,8 +505,10 @@ class MediaController {
     }
 
     resetShader() {
-        var vs = document.querySelector("#videosphere");
-        vs.setAttribute('material', 'shader', 'flat');
+        try {
+            var vs = document.querySelector("#videosphere");
+            vs.setAttribute('material', 'shader', 'flat');
+        } catch (error) {}
     }
 
     iOSversion() {
