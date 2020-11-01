@@ -512,6 +512,7 @@ class MediaController {
             var vs = document.querySelector("#videosphere");
             vs.setAttribute('material', 'shader', 'flat');
         } catch (error) {}
+        return "";
     }
 
     iOSversion() {
@@ -694,15 +695,21 @@ class MediaController {
     }
 
     pause() {
-        this.video.pause();
+        if (this.video) {
+            this.video.pause();
+        }
         return "";
     }
 
     playbackRate(rate) {
-        if (rate < 5 && rate > -1) {
-            this.video.playbackRate = rate;
-            return "";
-        } else return this.video.playbackRate;
+        if (this.video)
+        {
+            if (rate < 5 && rate > -1) {
+                this.video.playbackRate = rate;
+                return "";
+            } else return this.video.playbackRate;
+        }
+        return "";
     }
 
 
@@ -772,12 +779,12 @@ class MediaController {
     }
 
     mute() {
-        this.video.muted = true;
+        if (this.video) {this.video.muted = true;}
         return "";
     }
 
     unmute() {
-        this.video.muted = false;
+        if (this.video) {this.video.muted = false;}
         return "";
     }
 
@@ -803,19 +810,31 @@ class MediaController {
     }
 
     get paused() {
-        return this.video.paused;
+        if (this.video) {
+            return this.video.paused;
+        } 
+        return false;
     }
 
     get duration() {
-        return this.video.duration;
+        if (this.video) {
+            return this.video.duration;
+        }
+        return 0;
     }
 
     get volume() {
-        return this.video.volume * 100;
+        if (this.video) {
+            return this.video.volume * 100;
+        }
+        return 100;
     }
 
     get isMuted() {
-        return this.video.muted;
+        if (this.video) {
+            return this.video.muted;
+        }
+        return false;
     }
 }
 
