@@ -664,24 +664,30 @@ class MediaController {
         let _self = this;
         this.subscribeToBufferingEvents();
         this.setLoader(true);
-        this.video.play().then(function () {
-            // Automatic playback started!
-            console.log('playing...');
-        }).catch(function (error) {
-            _self.setLoader(true);
-            console.log("PlayBack Failed: " + JSON.stringify({
-                'code': error.code,
-                'message': error.message,
-                'name': error.name,
-            }));
-            if (error.message === "Failed to load because no supported source was found." ||
-                error.message == "The element has no supported sources.") {
-                hlsLoad();
+        if (this.video) {
+            this.video.play().then(function () {
+                // Automatic playback started!
+                console.log('playing...');
+            }).catch(function (error) {
+                _self.setLoader(true);
+                console.log("PlayBack Failed: " + JSON.stringify({
+                    'code': error.code,
+                    'message': error.message,
+                    'name': error.name,
+                }));
+                if (error.message === "Failed to load because no supported source was found." ||
+                    error.message == "The element has no supported sources.") {
+                    hlsLoad();
+                }
+            });
+    
+            if (time) {
+                this.video.currentTime = time;
             }
-        });
-
-        if (time) {
-            this.video.currentTime = time;
+        } else {
+            setTimeout(() => {
+                this.play(time);
+            }, 1000);
         }
 
         return "";
@@ -874,7 +880,7 @@ function processParams() {
 
         if (autoPlay !== 'false') {
             setTimeout(() => {
-                if (mediaController && !(mediaController.currentTime() > 0.0)) mediaController.play();
+                if (window.mediaController && !(window.mediaController.currentTime() > 0.0)) window.mediaController.play();
             }, 3000);
         } else {
             mediaController.autoPlay = false;
@@ -925,13 +931,13 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
     
     window.mediaController = new MediaController('video_player_id');
     
-    _vr_btn = vr_btn ? vr_btn : false;
-    _auto_play = auto_play ? auto_play : true;
-    _loop = loop ? loop : false;
-    _debug = debug ? debug : false;
-    _muted = muted ? muted : true;
-    _debug_console = debug_console ? debug_console : false;
-    _ios_perm = ios_perm ? ios_perm : false;
+    let _vr_btn = vr_btn ? vr_btn : false;
+    let _auto_play = auto_play ? auto_play : true;
+    let _loop = loop ? loop : false;
+    let _debug = debug ? debug : false;
+    let _muted = muted ? muted : true;
+    let _debug_console = debug_console ? debug_console : false;
+    let _ios_perm = ios_perm ? ios_perm : false;
 
     if (!url) {
         console.error("URL is required.");
@@ -980,8 +986,8 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
 
         if (_auto_play) {
             setTimeout(() => {
-                if (mediaController && !(mediaController.currentTime() > 0.0)) mediaController.play();
-            }, 1000);
+                if (window.mediaController && !(window.mediaController.currentTime() > 0.0)) window.mediaController.play();
+            }, 3000);
         } else {
             mediaController.autoPlay = false;
         }
