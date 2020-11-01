@@ -93,7 +93,7 @@ class MediaMessageChannel {
         this.controller.setLoader(false);
 
         this._timeout = setTimeout(() => {
-            
+
             if (_self._stalled == _self.controller.video.currentTime) {
                 alert('Video Stalled');
                 buildPlayer(this.controller.video.src);
@@ -395,7 +395,7 @@ class MediaMessageChannel {
     }
 
     _postMessage(message) {
-        const _type = typeof(message);
+        const _type = typeof (message);
         if (_type === "string" || _type === "boolean" || _type === "number") {
             MediaMessageChannel.postMessage(message);
         }
@@ -503,7 +503,7 @@ class MediaController {
                 return "";
             }, 1500);
         }
-        
+
         return "";
     }
 
@@ -656,7 +656,7 @@ class MediaController {
     currentTime(time) {
         if (time < this.duration && time > 0) {
             this.video.currentTime = time;
-            return "";
+            return 0;
         } else return this.video.currentTime;
     }
 
@@ -872,7 +872,7 @@ function processParams() {
 
         if (autoPlay !== 'false') {
             setTimeout(() => {
-                if (!(mediaController.currentTime() > 0.0)) mediaController.play();
+                if (mediaController && !(mediaController.currentTime() > 0.0)) mediaController.play();
             }, 3000);
         } else {
             mediaController.autoPlay = false;
@@ -976,8 +976,8 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
 
         if (_auto_play) {
             setTimeout(() => {
-                if (!(mediaController.currentTime() > 0.0)) mediaController.play();
-            }, 1000);
+                if (mediaController && !(mediaController.currentTime() > 0.0)) mediaController.play();
+            }, 3000);
         } else {
             mediaController.autoPlay = false;
         }
