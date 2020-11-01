@@ -661,13 +661,14 @@ class MediaController {
     }
 
     play(time) {
+        let _self = this;
         this.subscribeToBufferingEvents();
-        mediaController.setLoader(true);
+        this.setLoader(true);
         this.video.play().then(function () {
             // Automatic playback started!
             console.log('playing...');
         }).catch(function (error) {
-            mediaController.setLoader(true);
+            _self.setLoader(true);
             console.log("PlayBack Failed: " + JSON.stringify({
                 'code': error.code,
                 'message': error.message,
@@ -821,6 +822,8 @@ function getUrlParameter(name) {
 };
 
 function processParams() {
+    window.mediaController = new MediaController('video_player_id');
+
     const url = getUrlParameter('video');
     const VRBtn = getUrlParameter('VRBtn');
     const autoPlay = getUrlParameter('autoPlay');
@@ -856,7 +859,6 @@ function processParams() {
         }
     }
 
-    window.mediaController = new MediaController('video_player_id');
 
 
 
@@ -903,7 +905,7 @@ function processParams() {
 }
 
 function canvasRenderForIOS14() {
-    if (mediaController.video && mediaController.video.readyState === mediaController.video.HAVE_ENOUGH_DATA) {
+    if (mediaController && mediaController.video && mediaController.video.readyState === mediaController.video.HAVE_ENOUGH_DATA) {
         var height = mediaController.video.videoHeight;
         var width = mediaController.video.videoWidth;
         mediaController.canvas.height = height;
@@ -919,7 +921,9 @@ function canvasRenderForIOS14() {
 }
 
 function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, ios_perm) {
-
+    
+    window.mediaController = new MediaController('video_player_id');
+    
     _vr_btn = vr_btn ? vr_btn : false;
     _auto_play = auto_play ? auto_play : true;
     _loop = loop ? loop : false;
@@ -960,7 +964,6 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
         }
     }
 
-    window.mediaController = new MediaController('video_player_id');
 
     if (url !== null) {
         playlist.streams[0] = url;
@@ -976,7 +979,7 @@ function buildPlayer(url, vr_btn, auto_play, loop, debug, muted, debug_console, 
 
         if (_auto_play) {
             setTimeout(() => {
-                if (!(mediaController.currentTime() > 0.0)) mediaController.play();
+                if (mediaController && !(mediaController.currentTime() > 0.0)) mediaController.play();
             }, 1000);
         } else {
             mediaController.autoPlay = false;
