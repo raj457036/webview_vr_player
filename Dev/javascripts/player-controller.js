@@ -902,6 +902,7 @@ function processParams() {
 
     window.mediaFilter = new MediaColorFilter('player');
     $("#text").click((_) => $("#text").hide());
+    return "";
 }
 
 function canvasRenderForIOS14() {
